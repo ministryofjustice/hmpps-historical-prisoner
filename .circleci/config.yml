@@ -1,7 +1,7 @@
 version: 2.1
 
 orbs:
-  hmpps: ministryofjustice/hmpps@5.1
+  hmpps: ministryofjustice/hmpps@6.0
   slack: circleci/slack@4.4.2
 
 parameters:
@@ -9,7 +9,7 @@ parameters:
     type: string
     # Normally team specific alert channel e.g. hmpps_tech_alerts, syscon-alerts, dps_sed_alerts
     # This is to avoid a general alert dumping ground that no-one then monitors
-    default: hmpps_tech_alerts
+    default: hmpps_tech_alerts_security
 
   releases-slack-channel:
     type: string
@@ -18,7 +18,7 @@ parameters:
 
   node-version:
     type: string
-    default: 16.15-browsers
+    default: 16.17-browsers
 
 jobs:
   build:
