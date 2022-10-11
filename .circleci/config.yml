@@ -29,7 +29,7 @@ jobs:
       - checkout
       - run:
           name: Update npm
-          command: 'npm install -g npm@latest'
+          command: 'sudo npm install -g npm@latest'
       - restore_cache:
           key: dependency-cache-{{ checksum "package-lock.json" }}
       - run:
@@ -91,7 +91,7 @@ jobs:
           key: dependency-cache-{{ checksum "package-lock.json" }}
       - run:
           name: unit tests
-          command: npm run test
+          command: npm run test:ci
       - store_test_results:
           path: test_results
       - store_artifacts:
