@@ -1,7 +1,7 @@
 version: 2.1
 
 orbs:
-  hmpps: ministryofjustice/hmpps@6.0
+  hmpps: ministryofjustice/hmpps@6.2
   slack: circleci/slack@4.4.2
 
 parameters:
@@ -18,7 +18,7 @@ parameters:
 
   node-version:
     type: string
-    default: 16.17-browsers
+    default: 18.12-browsers
 
 jobs:
   build:
@@ -171,7 +171,7 @@ workflows:
             - unit_test
             - integration_test
             - build_docker
-
+          helm_timeout: 5m
 #      - request-preprod-approval:
 #          type: approval
 #          requires:
