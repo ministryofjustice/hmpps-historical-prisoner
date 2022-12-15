@@ -1,14 +1,11 @@
 ---
-# Per environment values which override defaults in hmpps-template-typescript/values.yaml
+# Per environment values which override defaults in hmpps-historical-prisoner/values.yaml
 
 generic-service:
   replicaCount: 2
 
   ingress:
     host: historical-prisoner-dev.prison.service.justice.gov.uk
-    contextColour: green
-    v1_2_enabled: true
-    v0_47_enabled: false
 
   env:
     INGRESS_URL: "https://historical-prisoner-dev.prison.service.justice.gov.uk"
