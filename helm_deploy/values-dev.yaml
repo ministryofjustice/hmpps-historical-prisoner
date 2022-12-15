@@ -6,7 +6,6 @@ generic-service:
 
   ingress:
     host: historical-prisoner-dev.prison.service.justice.gov.uk
-    contextColour: green
 
   env:
     INGRESS_URL: "https://historical-prisoner-dev.prison.service.justice.gov.uk"
