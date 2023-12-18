@@ -15,7 +15,7 @@ Our security policy is located [here](https://github.com/ministryofjustice/hmpps
 
 More information about the template project including features can be found [here](https://dsdmoj.atlassian.net/wiki/spaces/NDSS/pages/3488677932/Typescript+template+project).
 
-## Creating a CloudPlatform namespace
+## Creating a Cloud Platform namespace
 
 When deploying to a new namespace, you may wish to use this template typescript project namespace as the basis for your new namespace:
 
@@ -23,7 +23,7 @@ When deploying to a new namespace, you may wish to use this template typescript 
 
 This template namespace includes an AWS elasticache setup - which is required by this template project.
 
-Copy this folder, update all the existing namespace references, and submit a PR to the CloudPlatform team. Further instructions from the CloudPlatform team can be found here: <https://user-guide.cloud-platform.service.justice.gov.uk/#cloud-platform-user-guide>
+Copy this folder, update all the existing namespace references, and submit a PR to the Cloud Platform team. Further instructions from the Cloud Platform team can be found here: <https://user-guide.cloud-platform.service.justice.gov.uk/#cloud-platform-user-guide>
 
 ## Renaming from HMPPS Template Typescript - github Actions
 
@@ -48,12 +48,16 @@ It then performs a search and replace and directory renames so the project is re
 
 To ensure notifications are routed to the correct slack channels, update the `alerts-slack-channel` and `releases-slack-channel` parameters in `.circle/config.yml` to an appropriate channel.
 
+## Filling in the `productId`
+
+To allow easy identification of an application, the product Id of the overall product should be set in `values.yaml`. The Service Catalogue contains a list of these IDs and is currently in development here https://developer-portal.hmpps.service.justice.gov.uk/products
+
 ## Running the app
 The easiest way to run the app is to use docker compose to create the service and all dependencies. 
 
-`docker-compose pull`
+`docker compose pull`
 
-`docker-compose up`
+`docker compose up`
 
 ### Dependencies
 The app requires: 
@@ -64,7 +68,7 @@ The app requires:
 
 To start the main services excluding the example typescript template app: 
 
-`docker-compose up --scale=app=0`
+`docker compose up --scale=app=0`
 
 Install dependencies using `npm install`, ensuring you are using `node v18.x` and `npm v9.x`
 
@@ -86,7 +90,7 @@ And then, to build the assets and start the app with nodemon:
 
 For local running, start a test db, redis, and wiremock instance by:
 
-`docker-compose -f docker-compose-test.yml up`
+`docker compose -f docker-compose-test.yml up`
 
 Then run the server in test mode by:
 
@@ -100,8 +104,12 @@ Or run tests with the cypress UI:
 
 `npm run int-test-ui`
 
+## Change log
 
-### Dependency Checks
+A changelog for the service is available [here](./CHANGELOG.md)
+
+
+## Dependency Checks
 
 The template project has implemented some scheduled checks to ensure that key dependencies are kept up to date.
 If these are not desired in the cloned project, remove references to `check_outdated` job from `.circleci/config.yml`
