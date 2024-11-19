@@ -159,7 +159,7 @@ The easiest way to run the app is to use docker compose to create the service an
 
 ### Running the app for development
 
-To start the main services excluding the example typescript template app:
+To start the main services excluding the historical prisoner app:
 
 `docker compose up --scale=app=0`
 
@@ -217,3 +217,6 @@ Or run tests with the cypress UI:
 ## Change log
 
 A changelog for the service is available [here](./CHANGELOG.md)
+
+### Import types from API
+`npx openapi-typescript https://historical-prisoner-api-dev.prison.service.justice.gov.uk/v3/api-docs > ./server/@types/historical-prisoner/index.d.ts`
