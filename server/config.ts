@@ -81,6 +81,14 @@ export default {
       systemClientId: get('CLIENT_CREDS_CLIENT_ID', 'clientid', requiredInProduction),
       systemClientSecret: get('CLIENT_CREDS_CLIENT_SECRET', 'clientsecret', requiredInProduction),
     },
+    historicalPrisonerApi: {
+      url: get('HISTORICAL_PRISONER_API_URL', 'http://localhost:8082', requiredInProduction),
+      timeout: {
+        response: Number(get('HISTORICAL_PRISONER_API_TIMEOUT_RESPONSE', 20000)),
+        deadline: Number(get('HISTORICAL_PRISONER_API_TIMEOUT_DEADLINE', 20000)),
+      },
+      agent: new AgentConfig(Number(get('HISTORICAL_PRISONER_API_TIMEOUT_RESPONSE', 20000))),
+    },
     tokenVerification: {
       url: get('TOKEN_VERIFICATION_API_URL', 'http://localhost:8100', requiredInProduction),
       timeout: {

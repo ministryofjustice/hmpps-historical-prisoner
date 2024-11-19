@@ -3,11 +3,12 @@
 
 generic-service:
   ingress:
-    host: historical-prisoner.hmpps.service.justice.gov.uk
+    host: historical-prisoner.prison.service.justice.gov.uk
 
   env:
-    INGRESS_URL: "https://historical-prisoner.hmpps.service.justice.gov.uk"
-    HMPPS_AUTH_URL: "https://sign-in.hmpps.service.justice.gov.uk/auth"
+    INGRESS_URL: "https://historical-prisoner.prison.service.justice.gov.uk"
+    HMPPS_AUTH_URL: "https://sign-in.prison.service.justice.gov.uk/auth"
+    HISTORICAL_PRISONER_API_URL: "https://historical-prisoner-api-prod.prison.service.justice.gov.uk"
     TOKEN_VERIFICATION_API_URL: "https://token-verification-api.prison.service.justice.gov.uk"
     AUDIT_ENABLED: "false"
 
