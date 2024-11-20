@@ -1,6 +1,4 @@
 ---
-# Per environment values which override defaults in hmpps-historical-prisoner/values.yaml
-
 generic-service:
   ingress:
     host: historical-prisoner.prison.service.justice.gov.uk
@@ -11,6 +9,11 @@ generic-service:
     HISTORICAL_PRISONER_API_URL: "https://historical-prisoner-api-prod.prison.service.justice.gov.uk"
     TOKEN_VERIFICATION_API_URL: "https://token-verification-api.prison.service.justice.gov.uk"
     AUDIT_ENABLED: "false"
+
+  allowlist:
+    groups:
+      - internal
+      - prisons
 
 generic-prometheus-alerts:
   alertSeverity: syscon-alerts
