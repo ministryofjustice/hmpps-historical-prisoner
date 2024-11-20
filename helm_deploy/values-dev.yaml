@@ -1,6 +1,4 @@
 ---
-# Per environment values which override defaults in hmpps-historical-prisoner/values.yaml
-
 generic-service:
   replicaCount: 2
 
@@ -15,5 +13,11 @@ generic-service:
     ENVIRONMENT_NAME: DEV
     AUDIT_ENABLED: "false"
 
+  scheduledDowntime:
+    enabled: true
+    startup: '22 6 * * 1-5' # Start at 6.22am UTC Monday-Friday
+    shutdown: '52 21 * * 1-5' # Stop at 9.52pm UTC Monday-Friday
+
 generic-prometheus-alerts:
+  businessHoursOnly: true
   alertSeverity: syscon-alerts-non-prod
