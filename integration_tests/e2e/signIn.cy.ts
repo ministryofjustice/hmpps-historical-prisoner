@@ -6,7 +6,7 @@ import AuthManageDetailsPage from '../pages/authManageDetails'
 context('Sign In', () => {
   beforeEach(() => {
     cy.task('reset')
-    cy.task('stubSignIn')
+    cy.task('stubSignIn', { roles: ['ROLE_HPA_USER'] })
   })
 
   it('Unauthenticated user directed to auth', () => {
@@ -66,7 +66,7 @@ context('Sign In', () => {
     Page.verifyOnPage(AuthSignInPage)
 
     cy.task('stubVerifyToken', true)
-    cy.task('stubSignIn', { name: 'bobby brown' })
+    cy.task('stubSignIn', { name: 'bobby brown', roles: ['ROLE_HPA_USER'] })
 
     cy.signIn()
 

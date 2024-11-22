@@ -1,0 +1,156 @@
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/date-input/macro.njk" import govukDateInput %}
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "govuk/components/radios/macro.njk" import govukRadios %}
+
+{% extends "../partials/layout.njk" %}
+
+{% set pageTitle = "Usage" %}
+{% set mainClasses = "app-container govuk-body" %}
+
+{% block content %}
+  <div class="govuk-grid-row govuk-body">
+    <h1 class="govuk-heading-l">Prisoner Search</h1>
+
+    <div class="govuk-grid-column-one-third">
+      <form action="/search" method="post">
+        <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>
+
+        {% set nameHtml %}
+          {{ govukInput({
+            id: "first-name",
+            name: "firstName",
+            classes: "govuk-!-width-one-half",
+            label: {
+              text: "First name or initial"
+            },
+            errorMessage: validationErrors.firstName
+          }) }}
+          {{ govukInput({
+            id: "last-name",
+            name: "lastName",
+            classes: "govuk-!-width-one-half",
+            label: {
+              text: "Surname"
+            },
+            errorMessage: validationErrors.contactByEmail
+          }) }}
+          {{ govukDateInput({
+            id: "date-of-birth",
+            namePrefix: "date-of-birth",
+            fieldset: {
+              legend: {
+                text: "Date of birth",
+                isPageHeading: false
+              }
+            }
+          }) }}
+          {{ govukInput({
+            id: "age",
+            name: "age",
+            classes: "govuk-!-width-one-half",
+            label: {
+              text: "Or, enter an age or age range"
+            },
+            errorMessage: validationErrors.age,
+            hint: {
+              text: "For example, 32-34"
+            }
+          }) }}
+        {% endset -%}
+
+        {% set idHtml %}
+          {{ govukInput({
+            id: "prison-number",
+            name: "prisonNumber",
+            classes: "govuk-!-width-one-third",
+            label: {
+              text: "Prison number"
+            }
+          }) }}
+          {{ govukInput({
+            id: "pnc-number",
+            name: "pncNumber",
+            classes: "govuk-!-width-one-third",
+            label: {
+              text: "PNC number"
+            },
+            hint: {
+              text: "Previously known as CRN (Crime Reference Number)"
+            }
+          }) }}
+          {{ govukInput({
+            id: "cro-number",
+            name: "croNumber",
+            classes: "govuk-!-width-one-third",
+            label: {
+              text: "CRO number"
+            }
+          }) }}
+        {% endset -%}
+
+        {% set otherHtml %}
+          {{ govukInput({
+            id: "contact-by-text",
+            name: "contactByText",
+            classes: "govuk-!-width-one-third",
+            label: {
+              text: "Enter any combination of street, town, postcode, eg"
+            },
+            hint: {
+              text: "22b Baker Street W1"
+            }
+          }) }}
+        {% endset -%}
+
+        {{ govukRadios({
+          name: "contact",
+          fieldset: {
+            legend: {
+              text: "Search by",
+              isPageHeading: false,
+              classes: "govuk-fieldset__legend--l"
+            }
+          },
+          items: [
+            {
+              value: "name",
+              text: "Name/age",
+              checked: true,
+              conditional: {
+              html: nameHtml
+            }
+            },
+            {
+              value: "id",
+              text: "Unique identifier",
+              conditional: {
+              html: idHtml
+            }
+            },
+            {
+              value: "other",
+              text: "Other",
+              conditional: {
+              html: otherHtml
+            }
+            }
+          ]
+        }) }}
+
+        {{ govukButton({
+          text: "Search",
+          href: params.href,
+          preventDoubleClick: true,
+          attributes: { "data-qa": "search" }
+        }) }}
+      </form>
+    </div>
+
+    <div class="govuk-grid-column-two-thirds">
+      ADD RESULTS HERE
+    </div>
+
+  </div>
+
+{% endblock %}
