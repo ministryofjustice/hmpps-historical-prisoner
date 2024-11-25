@@ -1,11 +1,14 @@
 import type { Express } from 'express'
 import request from 'supertest'
 import { appWithAllRoutes, user } from './testutils/appSetup'
-import AuditService, { Page } from '../services/auditService'
+import AuditService from '../services/auditService'
+import HistoricalPrisonerService from '../services/historicalPrisonerService'
 
 jest.mock('../services/auditService')
+jest.mock('../services/historicalPrisonerService')
 
 const auditService = new AuditService(null) as jest.Mocked<AuditService>
+const historicalPrisonerService = new HistoricalPrisonerService(null) as jest.Mocked<HistoricalPrisonerService>
 
 let app: Express
 
@@ -13,6 +16,7 @@ beforeEach(() => {
   app = appWithAllRoutes({
     services: {
       auditService,
+      historicalPrisonerService,
     },
     userSupplier: () => user,
   })
@@ -23,18 +27,11 @@ afterEach(() => {
 })
 
 describe('GET /', () => {
-  it('should render index page', () => {
-    auditService.logPageView.mockResolvedValue(null)
-
+  it('should redirect to disclaimer page', () => {
     return request(app)
       .get('/')
-      .expect('Content-Type', /html/)
       .expect(res => {
-        expect(res.text).toContain('This site is under construction...')
-        expect(auditService.logPageView).toHaveBeenCalledWith(Page.EXAMPLE_PAGE, {
-          who: user.username,
-          correlationId: expect.any(String),
-        })
+        expect(res.text).toContain('Redirecting to /disclaimer')
       })
   })
 })
