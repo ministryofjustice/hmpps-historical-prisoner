@@ -6,11 +6,12 @@ export const services = () => {
   const { applicationInfo, hmppsAuditClient, historicalPrisonerApiClient } = dataAccess()
 
   const auditService = new AuditService(hmppsAuditClient)
+  const historicalPrisonerService = new HistoricalPrisonerService(historicalPrisonerApiClient)
 
   return {
     applicationInfo,
     auditService,
-    historicalPrisonerService: new HistoricalPrisonerService(historicalPrisonerApiClient),
+    historicalPrisonerService,
   }
 }
 

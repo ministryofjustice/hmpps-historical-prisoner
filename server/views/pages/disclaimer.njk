@@ -26,29 +26,22 @@
           {{ govukCheckboxes({
             idPrefix: 'disclaimer',
             name: 'disclaimer',
-            fieldset: {
-              legend: {
-                text: ' ',
-                isPageHeading: false,
-                classes: "govuk-label"
-              }
-            },
             items: [
               {
                 value: 'disclaimer',
                 text: 'I confirm that I understand'
               }
             ],
-            errorMessage: errors | findError('disclaimer')
+            errorMessage: validationErrors | findError('disclaimer')
           }) }}
         </div>
 
         {{ govukButton({
-          text: "Continue",
-          href: params.href,
-          preventDoubleClick: true,
-          attributes: { "data-qa": "continue" }
-        }) }}
+            text: "Continue",
+            type: "submit",
+            preventDoubleClick: true,
+            attributes: { "data-qa": "continue-button" }
+          }) }}
       </div>
     </form>
   </div>

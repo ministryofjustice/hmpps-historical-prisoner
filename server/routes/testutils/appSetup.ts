@@ -9,8 +9,10 @@ import type { Services } from '../../services'
 import AuditService from '../../services/auditService'
 import { HmppsUser } from '../../interfaces/hmppsUser'
 import setUpWebSession from '../../middleware/setUpWebSession'
+import HistoricalPrisonerService from '../../services/historicalPrisonerService'
 
 jest.mock('../../services/auditService')
+jest.mock('../../services/historicalPrisonerService')
 
 export const user: HmppsUser = {
   name: 'FIRST LAST',
@@ -37,6 +39,7 @@ function appSetup(services: Services, production: boolean, userSupplier: () => H
     req.flash = flashProvider
     res.locals = {
       user: { ...req.user } as HmppsUser,
+      disclaimerConfirmed: false,
     }
     next()
   })
@@ -57,6 +60,7 @@ export function appWithAllRoutes({
   production = false,
   services = {
     auditService: new AuditService(null) as jest.Mocked<AuditService>,
+    historicalPrisonerService: new HistoricalPrisonerService(null) as jest.Mocked<HistoricalPrisonerService>,
   },
   userSupplier = () => user,
 }: {

@@ -1,9 +1,13 @@
 import Page, { PageElement } from './page'
 
-export default class IndexPage extends Page {
+export default class Disclaimer extends Page {
   constructor() {
-    super('This site is under construction...')
+    super('Usage')
   }
+
+  disclaimerCheckbox = cy.contains('label', 'I confirm that I understand').prev()
+
+  confirmButton = (): PageElement => cy.get('button[type="submit"]')
 
   headerUserName = (): PageElement => cy.get('[data-qa=header-user-name]')
 

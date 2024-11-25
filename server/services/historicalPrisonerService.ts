@@ -8,8 +8,8 @@ export default class HistoricalPrisonerService {
     token: string,
     searchParams: {
       prisonerNumber?: string
-      pnc?: string
-      cro?: string
+      pncNumber?: string
+      croNumber?: string
       sort: string
       page: number
       size: number

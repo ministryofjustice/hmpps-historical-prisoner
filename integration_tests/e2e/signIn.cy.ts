@@ -1,4 +1,4 @@
-import IndexPage from '../pages/index'
+import DisclaimerPage from '../pages/disclaimer'
 import AuthSignInPage from '../pages/authSignIn'
 import Page from '../pages/page'
 import AuthManageDetailsPage from '../pages/authManageDetails'
@@ -21,36 +21,36 @@ context('Sign In', () => {
 
   it('User name visible in header', () => {
     cy.signIn()
-    const indexPage = Page.verifyOnPage(IndexPage)
-    indexPage.headerUserName().should('contain.text', 'J. Smith')
+    const disclaimerPage = Page.verifyOnPage(DisclaimerPage)
+    disclaimerPage.headerUserName().should('contain.text', 'J. Smith')
   })
 
   it('Phase banner visible in header', () => {
     cy.signIn()
-    const indexPage = Page.verifyOnPage(IndexPage)
-    indexPage.headerPhaseBanner().should('contain.text', 'dev')
+    const disclaimerPage = Page.verifyOnPage(DisclaimerPage)
+    disclaimerPage.headerPhaseBanner().should('contain.text', 'dev')
   })
 
   it('User can sign out', () => {
     cy.signIn()
-    const indexPage = Page.verifyOnPage(IndexPage)
-    indexPage.signOut().click()
+    const disclaimerPage = Page.verifyOnPage(DisclaimerPage)
+    disclaimerPage.signOut().click()
     Page.verifyOnPage(AuthSignInPage)
   })
 
   it('User can manage their details', () => {
     cy.signIn()
     cy.task('stubAuthManageDetails')
-    const indexPage = Page.verifyOnPage(IndexPage)
+    const disclaimerPage = Page.verifyOnPage(DisclaimerPage)
 
-    indexPage.manageDetails().get('a').invoke('removeAttr', 'target')
-    indexPage.manageDetails().click()
+    disclaimerPage.manageDetails().get('a').invoke('removeAttr', 'target')
+    disclaimerPage.manageDetails().click()
     Page.verifyOnPage(AuthManageDetailsPage)
   })
 
   it('Token verification failure takes user to sign in page', () => {
     cy.signIn()
-    Page.verifyOnPage(IndexPage)
+    Page.verifyOnPage(DisclaimerPage)
     cy.task('stubVerifyToken', false)
 
     cy.visit('/')
@@ -59,7 +59,7 @@ context('Sign In', () => {
 
   it('Token verification failure clears user session', () => {
     cy.signIn()
-    const indexPage = Page.verifyOnPage(IndexPage)
+    const disclaimerPage = Page.verifyOnPage(DisclaimerPage)
     cy.task('stubVerifyToken', false)
 
     cy.visit('/')
@@ -70,6 +70,6 @@ context('Sign In', () => {
 
     cy.signIn()
 
-    indexPage.headerUserName().contains('B. Brown')
+    disclaimerPage.headerUserName().contains('B. Brown')
   })
 })
