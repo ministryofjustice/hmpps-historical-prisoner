@@ -2,15 +2,14 @@ import type { RequestHandler, Router } from 'express'
 
 import logger from '../../../logger'
 
-import { Services } from '../../services'
 import AuditService, { Page } from '../../services/auditService'
 import asyncMiddleware from '../../middleware/asyncMiddleware'
-import SearchController from './SearchController'
 import HistoricalPrisonerService from '../../services/historicalPrisonerService'
 
 export default function routes(
   router: Router,
   auditService: AuditService,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   historicalPrisonerService: HistoricalPrisonerService,
 ): Router {
   const get = (path: string, handler: RequestHandler) => router.get(path, asyncMiddleware(handler))
