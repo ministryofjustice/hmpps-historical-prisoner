@@ -18,13 +18,9 @@ export default function routes(
 
   get('/search', async (req, res, next) => {
     logger.debug('search /')
-    if (req.session.disclaimerConfirmed) {
-      await auditService.logPageView(Page.SEARCH, { who: res.locals.user.username, correlationId: req.id })
+    await auditService.logPageView(Page.SEARCH, { who: res.locals.user.username, correlationId: req.id })
 
-      res.render('pages/search')
-    } else {
-      res.render('pages/disclaimer')
-    }
+    res.render('pages/search')
   })
 
   post('/search', async (req, res) => {

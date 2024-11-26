@@ -1,6 +1,6 @@
 {% extends "govuk/template.njk" %}
 {% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
-{% set errorSummaryList = validationErrors %}
+{% set errorSummaryList = errors %}
 
 {% block head %}
   <link href="{{ '/assets/css/app.css' | assetMap }}" rel="stylesheet"/>
@@ -18,7 +18,7 @@
       <div class="govuk-grid-column-two-thirds">
         {{ govukErrorSummary({
           titleText: "There is a problem",
-          errorList: (errorSummaryList | customErrorOrderBuilder(customErrorOrder)) if customErrorOrder else errorSummaryList,
+          errorList: errorSummaryList,
           classes: 'govuk-!-margin-top-3 govuk-!-margin-bottom-0'
         }) }}
       </div>

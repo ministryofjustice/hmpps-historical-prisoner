@@ -10,7 +10,7 @@ export default function routes(router: Router, auditService: AuditService): Rout
 
   get('/disclaimer', async (req, res, next) => {
     if (req.session.disclaimerConfirmed) {
-      res.render('pages/search')
+      res.redirect('search')
     } else {
       await auditService.logPageView(Page.LOG_IN, { who: res.locals.user.username, correlationId: req.id })
       res.render('pages/disclaimer')
@@ -20,10 +20,10 @@ export default function routes(router: Router, auditService: AuditService): Rout
   post('/disclaimer', async (req, res) => {
     if (!req.body.disclaimer) {
       res.status(400)
-      const validationErrors: HmppsError[] = [
+      const errors: HmppsError[] = [
         { href: '#disclaimer', text: 'You must confirm that you understand the disclaimer' },
       ]
-      res.render('pages/disclaimer', { validationErrors })
+      res.render('pages/disclaimer', { errors })
     } else {
       req.session.disclaimerConfirmed = true
       logger.info('Disclaimer accepted - redirecting to search', { userId: res.locals.user.username })

@@ -24,7 +24,7 @@
             label: {
               text: "First name or initial"
             },
-            errorMessage: validationErrors.firstName
+            errorMessage: errors.firstName
           }) }}
           {{ govukInput({
             id: "last-name",
@@ -33,7 +33,7 @@
             label: {
               text: "Surname"
             },
-            errorMessage: validationErrors.contactByEmail
+            errorMessage: errors.contactByEmail
           }) }}
           {{ govukDateInput({
             id: "date-of-birth",
@@ -52,7 +52,7 @@
             label: {
               text: "Or, enter an age or age range"
             },
-            errorMessage: validationErrors.age,
+            errorMessage: errors.age,
             hint: {
               text: "For example, 32-34"
             }

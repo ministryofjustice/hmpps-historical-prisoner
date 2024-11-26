@@ -50,7 +50,7 @@ export default function setupAuthentication() {
 
   router.get('/sign-in/callback', (req, res, next) =>
     passport.authenticate('oauth2', {
-      successReturnToOrRedirect: req.session.returnTo || '/disclaimer',
+      successReturnToOrRedirect: '/disclaimer',
       failureRedirect: '/autherror',
     })(req, res, next),
   )

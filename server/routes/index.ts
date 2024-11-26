@@ -11,7 +11,7 @@ export default function routes({ auditService, historicalPrisonerService }: Serv
   const get = (path: string | string[], handler: RequestHandler) => router.get(path, asyncMiddleware(handler))
 
   get('/', async (req, res, next) => {
-    res.redirect('/disclaimer')
+    return res.redirect('/search')
   })
 
   disclaimerRoutes(router, auditService)

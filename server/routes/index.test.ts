@@ -31,7 +31,7 @@ describe('GET /', () => {
     return request(app)
       .get('/')
       .expect(res => {
-        expect(res.text).toContain('Redirecting to /disclaimer')
+        expect(res.text).toContain('Redirecting to /search')
       })
   })
 })
