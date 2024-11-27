@@ -4,9 +4,22 @@ import { PagedModelPrisoner } from '../@types/historical-prisoner/historicalPris
 export default class HistoricalPrisonerService {
   constructor(private readonly historicalPrisonerApiClient: HistoricalPrisonerApiClient) {}
 
+  async findPrisonersByName(
+    token: string,
+
+    nameSearchForm: {
+      forename?: string
+      surname?: string
+      dateOfBirth?: string
+      page?: number
+    },
+  ): Promise<PagedModelPrisoner> {
+    return this.historicalPrisonerApiClient.findPrisonersByNameOrAge(token, nameSearchForm)
+  }
+
   async findPrisonersWithIdentifiers(
     token: string,
-    searchParams: {
+    identifierSearchForm: {
       prisonerNumber?: string
       pncNumber?: string
       croNumber?: string
@@ -15,7 +28,6 @@ export default class HistoricalPrisonerService {
       size: number
     },
   ): Promise<PagedModelPrisoner> {
-    const { ...queryParams } = searchParams
-    return this.historicalPrisonerApiClient.findPrisonersWithIdentifiers(token, queryParams)
+    return this.historicalPrisonerApiClient.findPrisonersByIdentifiers(token, identifierSearchForm)
   }
 }

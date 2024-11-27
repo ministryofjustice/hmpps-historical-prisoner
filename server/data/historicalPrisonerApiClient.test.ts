@@ -30,12 +30,13 @@ describe('historicalPrisonerApiClient', () => {
         .matchHeader('authorization', `Bearer ${token.access_token}`)
         .reply(200, response)
 
-      const output = await historicalPrisonerApiClient.findPrisonersWithIdentifiers(token.access_token, {
-        prisonerNumber: 'A1234BC',
-        pnc: '456',
+      const output = await historicalPrisonerApiClient.findPrisonersByIdentifiers(token.access_token, {
+        prisonNumber: 'A1234BC',
+        pncNumber: '456',
         cro: '789',
         page: 1,
       })
+
       expect(output).toEqual(response)
     })
   })
