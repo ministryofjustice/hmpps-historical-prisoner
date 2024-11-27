@@ -16,4 +16,12 @@ context('Sign In', () => {
     const prisonerSearchPage = Page.verifyOnPage(Search)
     prisonerSearchPage.searchSelectRadioButton('Name/age').should('be.checked')
   })
+
+  it('Will display data returned from the call', () => {
+    cy.task('stubPrisonerSearchByName')
+
+    const prisonerSearchPage = Page.verifyOnPage(Search)
+    prisonerSearchPage.searchButton().click()
+    prisonerSearchPage.searchResults().should('have.length', 2)
+  })
 })

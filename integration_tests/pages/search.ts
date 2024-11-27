@@ -1,4 +1,4 @@
-import Page from './page'
+import Page, { PageElement } from './page'
 
 export default class Search extends Page {
   constructor() {
@@ -6,4 +6,8 @@ export default class Search extends Page {
   }
 
   searchSelectRadioButton = text => cy.contains('label', text).prev()
+
+  searchButton = (): PageElement => cy.get('button[type="submit"]')
+
+  searchResults = (): PageElement => cy.get('[data-qa="search-results"] tbody tr')
 }
