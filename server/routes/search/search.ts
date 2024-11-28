@@ -9,7 +9,6 @@ import HistoricalPrisonerService from '../../services/historicalPrisonerService'
 export default function routes(
   router: Router,
   auditService: AuditService,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   historicalPrisonerService: HistoricalPrisonerService,
 ): Router {
   const get = (path: string, handler: RequestHandler) => router.get(path, asyncMiddleware(handler))
@@ -25,11 +24,15 @@ export default function routes(
 
   post('/search', async (req, res) => {
     logger.debug('post search /')
-    // const { content } = await this.historicalPrisonerService.findPrisonersWithIdentifiers(
-    //   req.user.token,
-    // req.session.prisonerSearchForm,
-    // )
-    res.render('pages/search')
+    const prisonerSearchForm = req.body
+
+    if (prisonerSearchForm.searchType) {
+      logger.debug('searchType', prisonerSearchForm.searchType)
+      const { content } = await historicalPrisonerService.findPrisonersByName(req.user.token, prisonerSearchForm)
+
+      logger.debug('content returned from search', content)
+      res.render('pages/search', { searchResults: content })
+    }
   })
 
   return router
