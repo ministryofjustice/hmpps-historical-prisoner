@@ -172,10 +172,10 @@
                 <div class="govuk-grid-row govuk-!-margin-bottom-2">
                   <div class="govuk-grid-column-three-quarters">
                     <div class="govuk-body-lead">
-                      {{ prisoner.primaryForename1 }} {{ prisoner.prismarySurname }} &middot; {{ prisoner.primaryBirthDate }}
+                      {{ prisoner.primaryForename1 }} {{ prisoner.prismarySurname }} &middot; {{ prisoner.primaryBirthDate | formatDate }}
                     </div>
                     <div class="govuk-body-m">
-                      Prison no. {{ prisoner.prisonNumber }} &middot; Reception {{ prisoner.receptionDate | formatDate('DD/MM/YYYY') }}
+                      Prison no. {{ prisoner.prisonNumber }} &middot; Reception {{ prisoner.receptionDate | formatDate }}
                     </div>
                     <div class="govuk-body-s">
                       Add to shortlist
