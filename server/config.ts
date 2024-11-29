@@ -103,5 +103,6 @@ export default {
     audit: auditConfig(),
   },
   ingressUrl: get('INGRESS_URL', 'http://localhost:3000', requiredInProduction),
+  dpsUrl: get('DPS_URL', 'http://localhost:8281', requiredInProduction),
   environmentName: get('ENVIRONMENT_NAME', ''),
 }
