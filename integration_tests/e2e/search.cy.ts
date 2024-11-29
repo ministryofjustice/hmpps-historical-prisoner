@@ -8,9 +8,7 @@ context('Sign In', () => {
     cy.task('stubFrontendComponents')
     cy.task('stubSignIn', { roles: ['ROLE_HPA_USER'] })
     cy.signIn()
-    const disclaimerPage = Page.verifyOnPage(Disclaimer)
-    disclaimerPage.disclaimerCheckbox.click()
-    disclaimerPage.confirmButton().click()
+    Page.verifyOnPage(Disclaimer).confirmDisclaimer()
   })
 
   it('Will show the search form with name/age selected', () => {

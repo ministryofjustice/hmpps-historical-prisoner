@@ -23,7 +23,6 @@ export interface BaseUser {
  */
 export interface PrisonUser extends BaseUser {
   authSource: 'nomis'
-  staffId: number
 }
 
 /**

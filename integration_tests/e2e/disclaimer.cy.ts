@@ -7,21 +7,19 @@ context('Sign In', () => {
     cy.task('reset')
     cy.task('stubFrontendComponents')
     cy.task('stubSignIn', { roles: ['ROLE_HPA_USER'] })
+    cy.signIn()
   })
 
   it('Will show the disclaimer text', () => {
-    navigateToDisclaimerPage()
     Page.verifyOnPage(Disclaimer)
   })
 
   it('Will provide a checkbox that is unchecked', () => {
-    navigateToDisclaimerPage()
     const disclaimerPage = Page.verifyOnPage(Disclaimer)
     disclaimerPage.disclaimerCheckbox.should('not.be.checked')
   })
 
   it('Will return to disclaimer page and show an error if the disclaimer checkbox is not set', () => {
-    navigateToDisclaimerPage()
     const disclaimerPage = Page.verifyOnPage(Disclaimer)
     disclaimerPage.confirmButton().click()
     const disclaimerPageUpdate = Page.verifyOnPage(Disclaimer)
@@ -34,14 +32,26 @@ context('Sign In', () => {
   })
 
   it('Will successfully move to the search screen if disclaimer checkbox selected', () => {
-    navigateToDisclaimerPage()
     const disclaimerPage = Page.verifyOnPage(Disclaimer)
-    disclaimerPage.disclaimerCheckbox.click()
-    disclaimerPage.confirmButton().click()
+    disclaimerPage.confirmDisclaimer()
     Page.verifyOnPage(Search)
   })
 
-  const navigateToDisclaimerPage = () => {
-    cy.signIn()
-  }
+  it('Will bypass the disclaimer page if the user has already accepted the disclaimer', () => {
+    cy.visit('/disclaimer')
+    const disclaimerPage = Page.verifyOnPage(Disclaimer)
+    disclaimerPage.confirmDisclaimer()
+
+    Page.verifyOnPage(Search)
+
+    cy.visit('/disclaimer')
+    Page.verifyOnPage(Search)
+  })
+
+  it('Will take user to disclaimer page if not accepted disclaimer', () => {
+    Page.verifyOnPage(Disclaimer)
+
+    cy.visit('/search')
+    Page.verifyOnPage(Disclaimer)
+  })
 })

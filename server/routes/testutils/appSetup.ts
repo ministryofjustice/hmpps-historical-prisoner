@@ -21,7 +21,6 @@ export const user: HmppsUser = {
   username: 'user1',
   displayName: 'First Last',
   authSource: 'nomis',
-  staffId: 1234,
   userRoles: [],
 }
 
