@@ -3,11 +3,12 @@ import path from 'path'
 import nunjucks from 'nunjucks'
 import express from 'express'
 import fs from 'fs'
-import moment from 'moment'
 import { initialiseName } from './utils'
+import acronymsToUpperCase from './textHelpers'
 import config from '../config'
 import logger from '../../logger'
 import { buildErrorSummaryList, findError } from '../middleware/validationMiddleware'
+import formatDate from './dateHelpers'
 
 export default function nunjucksSetup(app: express.Express): void {
   app.set('view engine', 'njk')
@@ -40,7 +41,8 @@ export default function nunjucksSetup(app: express.Express): void {
   )
   njkEnv.addFilter('buildErrorSummaryList', buildErrorSummaryList)
   njkEnv.addFilter('findError', findError)
-  njkEnv.addFilter('formatDate', (value, format) => (value ? moment(value).format(format) : null))
+  njkEnv.addFilter('formatDate', formatDate)
   njkEnv.addFilter('initialiseName', initialiseName)
+  njkEnv.addFilter('acronymsToUpperCase', acronymsToUpperCase)
   njkEnv.addFilter('assetMap', (url: string) => assetManifest[url] || url)
 }
