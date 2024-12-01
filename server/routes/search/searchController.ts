@@ -4,10 +4,7 @@ import HistoricalPrisonerService from '../../services/historicalPrisonerService'
 import logger from '../../../logger'
 import AuditService, { Page } from '../../services/auditService'
 import trimForm from '../../utils/trim'
-import {
-  FindPrisonersByIdentifiers,
-  FindPrisonersByName,
-} from '../../@types/historical-prisoner/historicalPrisonerApiTypes'
+import { FindPrisonersByName } from '../../@types/historical-prisoner/historicalPrisonerApiTypes'
 
 export default class SearchController {
   constructor(
