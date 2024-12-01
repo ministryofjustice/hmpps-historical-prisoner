@@ -1,0 +1,137 @@
+{% set nameHtml %}
+  {{ govukInput({
+    id: "firstName",
+    name: "firstName",
+    value: form.firstName,
+    classes: "govuk-input",
+    label: {
+      text: "First name or initial"
+    },
+    errorMessage: errors.forename
+  }) }}
+  {{ govukInput({
+    id: "lastName",
+    name: "lastName",
+    value:  form.lastName ,
+    classes: "govuk-input",
+    label: {
+      text: "Surname"
+    },
+    errorMessage: errors.surname
+  }) }}
+  {{ govukDateInput({
+    id: "date-of-birth",
+    namePrefix: "dob",
+    value: dob,
+    fieldset: {
+      legend: {
+        text: "Date of birth",
+        isPageHeading: false
+      }
+    }
+  }) }}
+  {{ govukInput({
+    id: "age",
+    name: "age",
+    value: prisonerSearchForm.age,
+    classes: "govuk-input",
+    label: {
+      text: "Or, enter an age or age range"
+    },
+    errorMessage: errors.age,
+    hint: {
+      text: "For example, 32-34"
+    }
+  }) }}
+{% endset -%}
+
+{% set idHtml %}
+  {{ govukInput({
+    id: "prison-number",
+    name: "prisonNumber",
+    value: prisonerSearchForm.prisonNumber,
+    classes: "govuk-input",
+    label: {
+      text: "Prison number"
+    }
+  }) }}
+  {{ govukInput({
+    id: "pnc-number",
+    name: "pncNumber",
+    value: prisonerSearchForm.pncNumber,
+    classes: "govuk-input",
+    label: {
+      text: "PNC number"
+    },
+    hint: {
+      text: "Previously known as CRN (Crime Reference Number)"
+    }
+  }) }}
+  {{ govukInput({
+    id: "cro-number",
+    name: "croNumber",
+    classes: "govuk-input",
+    label: {
+      text: "CRO number"
+    }
+  }) }}
+{% endset -%}
+
+{% set otherHtml %}
+  {{ govukInput({
+    id: "contact-by-text",
+    name: "contactByText",
+    classes: "govuk-input",
+    label: {
+      text: "Enter any combination of street, town, postcode, eg"
+    },
+    hint: {
+      text: "22b Baker Street W1"
+    }
+  }) }}
+{% endset -%}
+
+{% set filterOptionsHtml %}
+
+  {{ govukRadios({
+    name: "searchType",
+
+    items: [
+      {
+        value: "name",
+        text: "Name/age",
+        checked: true,
+        conditional: {
+        html: nameHtml
+      }
+      },
+      {
+        value: "id",
+        text: "Unique identifier",
+        conditional: {
+        html: idHtml
+      }
+      },
+      {
+        value: "other",
+        text: "Other",
+        conditional: {
+        html: otherHtml
+      }
+      }
+    ]
+  }) }}
+{% endset -%}
+
+<form action="/search" method="post" novalidate>
+  <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
+
+  {{ mojFilter({
+    heading: {
+      text: 'Filters'
+    },
+    selectedFilters: selectedFilters,
+    optionsHtml: filterOptionsHtml
+  }) }}
+
+</form>

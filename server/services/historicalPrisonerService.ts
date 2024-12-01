@@ -1,33 +1,42 @@
-import HistoricalPrisonerApiClient from '../data/historicalPrisonerApiClient'
-import { PagedModelPrisoner } from '../@types/historical-prisoner/historicalPrisonerApiTypes'
+import querystring from 'querystring'
+import {
+  FindPrisonersByIdentifiers,
+  FindPrisonersByName,
+  PagedModelPrisonerSearchDto,
+} from '../@types/historical-prisoner/historicalPrisonerApiTypes'
+import RestClient from '../data/restClient'
+import config from '../config'
 
 export default class HistoricalPrisonerService {
-  constructor(private readonly historicalPrisonerApiClient: HistoricalPrisonerApiClient) {}
+  constructor() {}
+
+  private static restClient(token: string): RestClient {
+    return new RestClient('Historical Prisoner Api Client', config.apis.historicalPrisonerApi, token)
+  }
 
   async findPrisonersByName(
     token: string,
-
-    nameSearchForm: {
-      forename?: string
-      surname?: string
-      dateOfBirth?: string
-      page?: number
-    },
-  ): Promise<PagedModelPrisoner> {
-    return this.historicalPrisonerApiClient.findPrisonersByNameOrAge(token, nameSearchForm)
+    prisonersByNameForm: FindPrisonersByName,
+  ): Promise<PagedModelPrisonerSearchDto> {
+    return HistoricalPrisonerService.restClient(token).get<PagedModelPrisonerSearchDto>({
+      path: `/search`,
+      query: `${querystring.stringify({ ...prisonersByNameForm, size: 10 })}`,
+    })
   }
 
-  async findPrisonersWithIdentifiers(
+  async findPrisonersByIdentifiers(
     token: string,
-    identifierSearchForm: {
-      prisonerNumber?: string
-      pncNumber?: string
-      croNumber?: string
-      sort: string
-      page: number
-      size: number
-    },
-  ): Promise<PagedModelPrisoner> {
-    return this.historicalPrisonerApiClient.findPrisonersByIdentifiers(token, identifierSearchForm)
+    prisonersByIdentifiersForm: FindPrisonersByIdentifiers,
+  ): Promise<PagedModelPrisonerSearchDto> {
+    return HistoricalPrisonerService.restClient(token).get<PagedModelPrisonerSearchDto>({
+      path: `/identifiers`,
+      query: `${querystring.stringify({ ...prisonersByIdentifiersForm })}`,
+    })
+  }
+
+  async findPrisonersByAddressTerms(token: string, addressTerms: string): Promise<PagedModelPrisonerSearchDto> {
+    return HistoricalPrisonerService.restClient(token).get<PagedModelPrisonerSearchDto>({
+      path: `/address-lookup?addressTerms=${addressTerms}`,
+    })
   }
 }

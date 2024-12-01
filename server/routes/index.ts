@@ -3,7 +3,7 @@ import { type RequestHandler, Router } from 'express'
 import asyncMiddleware from '../middleware/asyncMiddleware'
 import { Services } from '../services'
 import disclaimerRoutes from './disclaimer/disclaimer'
-import searchRoutes from './search/search'
+import searchRoutes from './search/searchRouter'
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export default function routes({ auditService, historicalPrisonerService }: Services): Router {
