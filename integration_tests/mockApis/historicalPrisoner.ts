@@ -63,27 +63,27 @@ const prisonerSearchResults = {
   content: [
     {
       prisonNumber: 'BF123455',
-      surname: 'WILSON',
-      forename1: 'GOLDIE',
-      forename2: '',
+      lastName: 'WILSON',
+      firstName: 'GOLDIE',
+      middleName: '',
       isAlias: false,
       receptionDate: '1955-11-12',
-      primarySurname: 'WILSON',
-      primaryForename1: 'GOLDIE',
-      primaryForename2: '',
-      primaryBirthDate: '1967-01-05',
+      aliasLast: 'WILSON',
+      aliasFirst: 'GOLDIE',
+      aliasMiddle: '',
+      dob: '1967-01-05',
     },
     {
       prisonNumber: 'BF123455',
-      surname: 'WILSON',
-      forename1: 'MAYOR',
-      forename2: '',
+      lastName: 'WILSON',
+      firstName: 'MAYOR',
+      middleName: '',
       isAlias: true,
       receptionDate: '1955-11-12',
-      primarySurname: 'WILSON',
-      primaryForename1: 'GOLDIE',
-      primaryForename2: '',
-      primaryBirthDate: '1967-01-05',
+      aliasLast: 'WILSON',
+      aliasFirst: 'GOLDIE',
+      aliasMiddle: '',
+      dob: '1967-01-05',
     },
   ],
   page: {
@@ -124,8 +124,24 @@ const stubPrisonerSearchByIdentifiers = () =>
     },
   })
 
+const stubPrisonerSearchByAddress = () =>
+  stubFor({
+    request: {
+      method: 'GET',
+      urlPattern: '/historical-prisoner-api//address-lookup.*',
+    },
+    response: {
+      status: 200,
+      headers: {
+        'Content-Type': 'application/json;charset=UTF-8',
+      },
+      jsonBody: prisonerSearchResults,
+    },
+  })
+
 export default {
   stubHistoricalPrisonerPing: ping,
   stubPrisonerSearchByName,
   stubPrisonerSearchByIdentifiers,
+  stubPrisonerSearchByAddress,
 }

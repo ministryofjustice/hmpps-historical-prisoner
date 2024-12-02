@@ -9,5 +9,9 @@ export default class Search extends Page {
 
   searchButton = (): PageElement => cy.get('button[type="submit"]')
 
-  searchResults = (): PageElement => cy.get('[data-qa="search-results"] tbody tr')
+  firstName = (): PageElement => cy.get('[id="firstName"]')
+
+  lastName = (): PageElement => cy.get('[id="lastName"]')
+
+  searchResults = (): PageElement => cy.get('[data-qa="search-results"] tbody tr ')
 }

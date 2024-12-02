@@ -113,23 +113,23 @@ export interface components {
       /** Format: int64 */
       totalPages?: number
     }
-    PagedModelPrisoner: {
-      content?: components['schemas']['Prisoner'][]
+    PagedModelPrisonerSearchDto: {
+      content?: components['schemas']['PrisonerSearchDto'][]
       page?: components['schemas']['PageMetadata']
     }
-    Prisoner: {
+    PrisonerSearchDto: {
       prisonNumber: string
-      surname?: string
-      forename1?: string
-      forename2?: string
-      isAlias: boolean
       /** Format: date */
       receptionDate?: string
-      primarySurname?: string
-      primaryForename1?: string
-      primaryForename2?: string
+      lastName?: string
+      firstName?: string
+      middleName?: string
       /** Format: date */
-      primaryBirthDate?: string
+      dob?: string
+      isAlias: boolean
+      aliasLast?: string
+      aliasFirst?: string
+      aliasMiddle?: string
     }
     AddressesDto: {
       type?: string
@@ -298,7 +298,7 @@ export interface operations {
         ageFrom?: number
         /** @description Age to which to search for.  Must be used in combination with ageFrom. */
         ageTo?: number
-        /** @description Gender to search for. Must be used in combination with forename, surname, dateOfBirth or ageFrom. */
+        /** @description Gender to search for, either M or F. Must be used in combination with forename, surname, dateOfBirth or ageFrom. */
         gender?: string
         /** @description Whether the prisoner has a HDC. Must be used in combination with forename, surname, dateOfBirth or ageFrom. */
         hdc?: boolean
@@ -318,7 +318,7 @@ export interface operations {
           [name: string]: unknown
         }
         content: {
-          'application/json': components['schemas']['PagedModelPrisoner']
+          'application/json': components['schemas']['PagedModelPrisonerSearchDto']
         }
       }
       /** @description Unauthorized to access this endpoint */
@@ -361,7 +361,7 @@ export interface operations {
           [name: string]: unknown
         }
         content: {
-          'application/json': components['schemas']['PagedModelPrisoner']
+          'application/json': components['schemas']['PagedModelPrisonerSearchDto']
         }
       }
       /** @description Unauthorized to access this endpoint */
@@ -437,6 +437,7 @@ export interface operations {
     parameters: {
       query: {
         addressTerms: string
+        pageRequest: components['schemas']['Pageable']
       }
       header?: never
       path?: never
@@ -450,7 +451,7 @@ export interface operations {
           [name: string]: unknown
         }
         content: {
-          'application/json': string[]
+          'application/json': components['schemas']['PagedModelPrisonerSearchDto']
         }
       }
       /** @description Unauthorized to access this endpoint */
