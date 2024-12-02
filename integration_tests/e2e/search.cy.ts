@@ -5,6 +5,7 @@ import Search from '../pages/search'
 context('Sign In', () => {
   beforeEach(() => {
     cy.task('reset')
+    cy.task('stubFrontendComponents')
     cy.task('stubSignIn', { roles: ['ROLE_HPA_USER'] })
     cy.signIn()
     const disclaimerPage = Page.verifyOnPage(Disclaimer)

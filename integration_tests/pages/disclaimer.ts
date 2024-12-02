@@ -10,8 +10,4 @@ export default class Disclaimer extends Page {
   errorSummaryList = (): PageElement => cy.get('[data-module="govuk-error-summary"]')
 
   confirmButton = (): PageElement => cy.get('button[type="submit"]')
-
-  headerUserName = (): PageElement => cy.get('[data-qa=header-user-name]')
-
-  headerPhaseBanner = (): PageElement => cy.get('[data-qa=header-phase-banner]')
 }

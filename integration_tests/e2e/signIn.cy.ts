@@ -6,6 +6,7 @@ import AuthManageDetailsPage from '../pages/authManageDetails'
 context('Sign In', () => {
   beforeEach(() => {
     cy.task('reset')
+    cy.task('stubFrontendComponents')
     cy.task('stubSignIn', { roles: ['ROLE_HPA_USER'] })
   })
 
@@ -28,13 +29,13 @@ context('Sign In', () => {
   it('Phase banner visible in header', () => {
     cy.signIn()
     const disclaimerPage = Page.verifyOnPage(DisclaimerPage)
-    disclaimerPage.headerPhaseBanner().should('contain.text', 'dev')
+    disclaimerPage.headerPhaseBanner().should('contain.text', 'DEV')
   })
 
   it('User can sign out', () => {
     cy.signIn()
     const disclaimerPage = Page.verifyOnPage(DisclaimerPage)
-    disclaimerPage.signOut().click()
+    disclaimerPage.signOutLink().click()
     Page.verifyOnPage(AuthSignInPage)
   })
 
@@ -43,8 +44,8 @@ context('Sign In', () => {
     cy.task('stubAuthManageDetails')
     const disclaimerPage = Page.verifyOnPage(DisclaimerPage)
 
-    disclaimerPage.manageDetails().get('a').invoke('removeAttr', 'target')
-    disclaimerPage.manageDetails().click()
+    disclaimerPage.manageAccountLink().get('a').invoke('removeAttr', 'target')
+    disclaimerPage.manageAccountLink().click()
     Page.verifyOnPage(AuthManageDetailsPage)
   })
 
@@ -57,19 +58,34 @@ context('Sign In', () => {
     Page.verifyOnPage(AuthSignInPage)
   })
 
-  it('Token verification failure clears user session', () => {
-    cy.signIn()
-    const disclaimerPage = Page.verifyOnPage(DisclaimerPage)
-    cy.task('stubVerifyToken', false)
+  describe('Header', () => {
+    it('should display the correct details for the signed in user', () => {
+      cy.signIn()
+      const page = Page.verifyOnPage(DisclaimerPage)
 
-    cy.visit('/')
-    Page.verifyOnPage(AuthSignInPage)
+      page.headerUserName().contains('J. Smith')
+      page.activeLocation().contains('Moorland')
 
-    cy.task('stubVerifyToken', true)
-    cy.task('stubSignIn', { name: 'bobby brown', roles: ['ROLE_HPA_USER'] })
+      page
+        .manageAccountLink()
+        .should('have.attr', 'href')
+        .then(href => {
+          expect(href).to.equal('http://localhost:9091/auth/account-details')
+        })
+    })
 
-    cy.signIn()
+    it('should show change location link when user has more than 1 caseload', () => {
+      cy.signIn()
 
-    disclaimerPage.headerUserName().contains('B. Brown')
+      const page = Page.verifyOnPage(DisclaimerPage)
+
+      page
+        .changeLocationLink()
+        .should('be.visible')
+        .should('have.attr', 'href')
+        .then(href => {
+          expect(href).to.equal('http://localhost:3002/change-caseload')
+        })
+    })
   })
 })

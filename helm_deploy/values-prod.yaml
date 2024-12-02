@@ -8,6 +8,7 @@ generic-service:
     HMPPS_AUTH_URL: "https://sign-in.hmpps.service.justice.gov.uk/auth"
     HISTORICAL_PRISONER_API_URL: "https://historical-prisoner-api-prod.prison.service.justice.gov.uk"
     TOKEN_VERIFICATION_API_URL: "https://token-verification-api.prison.service.justice.gov.uk"
+    COMPONENT_API_URL: https://frontend-components.hmpps.service.justice.gov.uk
     AUDIT_ENABLED: "false"
 
   allowlist:
