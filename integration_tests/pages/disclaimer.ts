@@ -7,7 +7,10 @@ export default class Disclaimer extends Page {
 
   disclaimerCheckbox = cy.contains('label', 'I confirm that I understand').prev()
 
-  errorSummaryList = (): PageElement => cy.get('[data-module="govuk-error-summary"]')
+  confirmDisclaimer = (): PageElement => {
+    this.disclaimerCheckbox.click()
+    return this.confirmButton().click()
+  }
 
   confirmButton = (): PageElement => cy.get('button[type="submit"]')
 }

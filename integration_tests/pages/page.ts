@@ -24,4 +24,6 @@ export default abstract class Page {
   manageAccountLink = (): PageElement => cy.get('[data-test="manage-account-link"]')
 
   changeLocationLink = (): PageElement => cy.get('[data-qa="changeCaseLoad"]')
+
+  errorSummaryList = (): PageElement => cy.get('[data-module="govuk-error-summary"]')
 }
