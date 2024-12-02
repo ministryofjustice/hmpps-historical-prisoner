@@ -78,8 +78,6 @@ export default {
       agent: new AgentConfig(Number(get('HMPPS_AUTH_TIMEOUT_RESPONSE', 10000))),
       authClientId: get('AUTH_CODE_CLIENT_ID', 'clientid', requiredInProduction),
       authClientSecret: get('AUTH_CODE_CLIENT_SECRET', 'clientsecret', requiredInProduction),
-      systemClientId: get('CLIENT_CREDS_CLIENT_ID', 'clientid', requiredInProduction),
-      systemClientSecret: get('CLIENT_CREDS_CLIENT_SECRET', 'clientsecret', requiredInProduction),
     },
     historicalPrisonerApi: {
       url: get('HISTORICAL_PRISONER_API_URL', 'http://localhost:8082', requiredInProduction),
