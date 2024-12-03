@@ -44,8 +44,7 @@ export default class HistoricalPrisonerService {
 
   async getPrisonerDetail(token: string, prisonNumber: string): Promise<PrisonerDetailDto> {
     return HistoricalPrisonerService.restClient(token).get<PrisonerDetailDto>({
-      path: '/detail',
-      query: { prisonNumber },
+      path: `/detail/${prisonNumber}`,
     })
   }
 }
