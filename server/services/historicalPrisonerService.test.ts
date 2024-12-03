@@ -78,10 +78,7 @@ describe('HistoricalPrisonerService', () => {
         personalDetails: { prisonNumber: 'A1234BC', firstName: 'John', lastName: 'Doe' },
       }
 
-      fakeApi
-        .get('/detail?prisonNumber=A1234BC')
-        .matchHeader('authorization', `Bearer ${token}`)
-        .reply(200, expectedResponse)
+      fakeApi.get('/detail/A1234BC').matchHeader('authorization', `Bearer ${token}`).reply(200, expectedResponse)
 
       const result = await service.getPrisonerDetail(token, prisonNumber)
 
