@@ -25,6 +25,7 @@ export declare module 'express-session' {
     nowInMinutes: number
     disclaimerConfirmed: boolean
     prisonerSearchForm: PrisonerSearchForm
+    prisonerDetail: PrisonerDetailDto
   }
 }
 

@@ -1,7 +1,7 @@
 import { components, operations } from './index'
 
-export type PrisonerSearchDto = components['schemas']['PrisonerSearchDto']
 export type PagedModelPrisonerSearchDto = components['schemas']['PagedModelPrisonerSearchDto']
+export type PrisonerDetailDto = components['schemas']['PrisonerDetailDto']
 
 export type FindPrisonersByName = Omit<operations['findPrisoners']['parameters']['query'], 'pageRequest'>
 export type FindPrisonersByIdentifiers = Omit<
@@ -12,3 +12,4 @@ export type FindPrisonersByAddress = Omit<
   operations['findPrisonersWithAddresses']['parameters']['query'],
   'pageRequest'
 >
+export type GetPrisonerDetail = operations['getDetail']['parameters']['path']
