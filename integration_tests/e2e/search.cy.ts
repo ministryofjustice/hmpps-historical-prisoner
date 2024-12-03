@@ -2,7 +2,7 @@ import Page from '../pages/page'
 import Disclaimer from '../pages/disclaimer'
 import Search from '../pages/search'
 
-context('Sign In', () => {
+context('Search', () => {
   beforeEach(() => {
     cy.task('reset')
     cy.task('stubFrontendComponents')

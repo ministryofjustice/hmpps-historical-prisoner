@@ -1,0 +1,155 @@
+{
+  "prisonNumber": "AB111111",
+  "personalDetails": {
+    "prisonNumber": "AB111111",
+    "pncNumber": "012345/99A",
+    "croNumber": "012345/99C",
+    "paroleNumbers": "AA12311",
+    "initial": "F",
+    "firstName": "FIRSTA",
+    "middleName": "MIDDLEA",
+    "lastName": "SURNAMEA",
+    "sex": "M",
+    "dob": "1980-01-01",
+    "ethnicity": "White",
+    "birthCountry": "England",
+    "nationality": "United Kingdom",
+    "religion": "Church of England",
+    "receptionDate": "1999-01-01",
+    "maritalStatus": "Single"
+  },
+  "aliases": [
+    { "last": "ALIASA", "first": "OTHERA", "middle": "A", "birthDate": "19800101" },
+    { "last": "ALIASB", "first": "OTHERB", "middle": "B", "birthDate": "19800102" }
+  ],
+  "hdcInfo": [
+    { "stage": "HDC ELIGIBILITY RESULT", "status": "ELIGIBLE", "date": "2013-03-18", "reasons": "CREATED MANUALLY" },
+    {
+      "stage": "HDC ELIGIBILITY",
+      "status": "MANUAL CHECK PASS",
+      "date": "2013-03-18",
+      "reasons": "PASS ALL ELIGIBILITY CHECKS"
+    },
+    {
+      "stage": "HDC ELIGIBILITY",
+      "status": "AUTO CHECK PASS",
+      "date": "2012-06-27",
+      "reasons": "<14 DAYS FROM HDCED, CHANGE IN SENTENCE HISTORY, HDCED EARLIER THAN 28/01/99, UNDER 18"
+    },
+    {
+      "stage": "HDC ELIGIBILITY",
+      "status": "AUTO CHECK PASS",
+      "date": "2012-06-27",
+      "reasons": "<14 DAYS FROM HDCED, MANUAL CHECK - PREV. CUSTODY"
+    }
+  ],
+  "hdcRecall": [
+    {
+      "createdDate": "2001-01-04",
+      "curfewEndDate": "2001-01-05",
+      "outcomeDate": "2001-01-02",
+      "outcome": "Re-released following recall",
+      "reason": "CHANGE OF CIRCS 38A1(b)"
+    },
+    {
+      "createdDate": "2001-01-01",
+      "curfewEndDate": "2001-01-02",
+      "outcomeDate": "2001-01-02",
+      "outcome": "Licence revoked: recalled",
+      "reason": "BREACH CONDITIONS 38A1(a)"
+    }
+  ],
+  "addresses": [
+    {
+      "type": "Other",
+      "person": "FIRST LASTA",
+      "street": "1, Street Road",
+      "town": "Town A",
+      "county": "MERSEYSIDE",
+      "sequence": 8
+    },
+    { "type": "Unknown", "person": "", "street": "", "town": "Town B", "county": "MERSEYSIDE", "sequence": 7 },
+    {
+      "type": "Next of kin",
+      "person": "FIRST LASTC",
+      "street": "3, Street Road",
+      "town": "Town C",
+      "county": "MERSEYSIDE",
+      "sequence": 6
+    }
+  ],
+  "adjudications": [
+    { "date": "1991-01-04", "outcome": "DISMISSED", "charge": "ASSAULT ON INMATE", "establishment": "FULL SUTTON" },
+    { "date": "1991-01-03", "outcome": "NOT PROCEEDED WITH", "charge": "FIGHTING", "establishment": "FRANKLAND" },
+    {
+      "date": "1991-01-02",
+      "outcome": "NOT PROVEN",
+      "charge": "OFFENCE AGAINST GOAD",
+      "establishment": "DURHAM",
+      "punishments": [{ "punishment": "EXTRA WORK", "duration": 21 }]
+    },
+    {
+      "date": "1991-01-01",
+      "outcome": "PROVED",
+      "charge": "DISOBEYING A LAWFUL ORDER",
+      "establishment": "BELMARSH",
+      "punishments": [
+        { "punishment": "CAUTION", "duration": 7 },
+        { "punishment": "CONFINEMENT TO CELL OR ROOM", "duration": 7 }
+      ]
+    }
+  ],
+  "category": { "date": "2001-01-02", "category": "UNCATEGORISED (SENT MALES)" },
+  "courtHearings": [
+    { "date": "2001-01-12", "court": "LISKEARD COUNTY COURT" },
+    { "date": "2001-01-04", "court": "WELLS COUNTY COURT" },
+    { "date": "2001-01-03", "court": "THORNBURY COUNTY COURT" },
+    { "date": "2001-01-02", "court": "LISKEARD COUNTY COURT" }
+  ],
+  "movements": [
+    { "date": "1988-02-12", "type": "D", "movement": "DISCHARGED TO COURT", "establishment": "FRANKLAND" },
+    { "date": "1987-12-21", "type": "R", "movement": "UNCONVICTED REMAND", "establishment": "DURHAM" },
+    { "date": "1987-12-21", "type": "D", "movement": "DISCHARGED TO COURT", "establishment": "BELMARSH" },
+    { "date": "1987-09-28", "type": "R", "movement": "UNCONVICTED REMAND", "establishment": "BELMARSH" }
+  ],
+  "offences": [
+    { "code": 101, "date": "2001-01-01", "establishment": "BELMARSH" },
+    { "code": 48, "date": "2001-01-02", "establishment": "DURHAM" },
+    { "code": 99, "date": "2001-01-03", "establishment": "FRANKLAND" }
+  ],
+  "offencesInCustody": [
+    { "date": "1991-01-04", "charge": "ASSAULT ON INMATE", "outcome": "DISMISSED", "establishment": "FULL SUTTON" },
+    { "date": "1991-01-03", "charge": "FIGHTING", "outcome": "NOT PROCEEDED WITH", "establishment": "FRANKLAND" },
+    { "date": "1991-01-02", "charge": "POFFENCE AGAINST GOAD", "outcome": "NOT PROVEN", "establishment": "DURHAM" },
+    { "date": "1991-01-01", "charge": "DISOBEYING A LAWFUL ORDER", "outcome": "PROVED", "establishment": "BELMARSH" }
+  ],
+  "sentencing": [
+    {
+      "lengthDays": 3027,
+      "changeDate": "2004-01-01",
+      "SED": "2006-01-01",
+      "LED": "2005-03-03",
+      "CRD": "2004-04-04",
+      "HDCED": "2004-03-03"
+    },
+    { "lengthDays": 2373, "changeDate": "2003-01-01", "SED": "2006-02-02", "LED": "2005-02-02", "CRD": "2004-03-03" },
+    {
+      "lengthDays": 1278,
+      "changeDate": "2002-01-01",
+      "SED": "2006-02-01",
+      "LED": "2004-01-01",
+      "CRD": "2004-02-02",
+      "HDCAD": "2002-02-02",
+      "HDCED": "2004-02-02"
+    },
+    {
+      "lengthDays": 1278,
+      "changeDate": "2001-01-01",
+      "SED": "2006-01-01",
+      "LED": "2005-01-01",
+      "CRD": "2004-01-01",
+      "HDCAD": "2001-01-01",
+      "HDCED": "2004-01-01"
+    }
+  ]
+}
