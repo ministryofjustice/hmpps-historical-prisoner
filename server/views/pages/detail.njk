@@ -1,0 +1,13 @@
+{% from "govuk/components/checkboxes/macro.njk" import govukCheckboxes %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+
+{% extends "../partials/layout.njk" %}
+
+{% set pageTitle = "Usage" %}
+{% set mainClasses = "app-container govuk-body" %}
+
+{% block content %}
+  <div class="govuk-grid-row govuk-body">
+    <h1>{{ detail.personalDetails.firstName | capitalize }} {{ detail.personalDetails.middleName | capitalize }} {{ detail.personalDetails.lastName }}</h1>
+  </div>
+{% endblock %}
