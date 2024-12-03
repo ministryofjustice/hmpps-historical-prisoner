@@ -1,4 +1,5 @@
 import { stubFor } from './wiremock'
+import prisonerDetail from './prisonerDetail.json'
 
 const ping = () =>
   stubFor({
@@ -128,7 +129,7 @@ const stubPrisonerSearchByAddress = () =>
   stubFor({
     request: {
       method: 'GET',
-      urlPattern: '/historical-prisoner-api//address-lookup.*',
+      urlPattern: '/historical-prisoner-api/address-lookup.*',
     },
     response: {
       status: 200,
@@ -139,9 +140,25 @@ const stubPrisonerSearchByAddress = () =>
     },
   })
 
+const stubPrisonerDetail = () =>
+  stubFor({
+    request: {
+      method: 'GET',
+      urlPattern: '/historical-prisoner-api/detail/.*',
+    },
+    response: {
+      status: 200,
+      headers: {
+        'Content-Type': 'application/json;charset=UTF-8',
+      },
+      jsonBody: prisonerDetail,
+    },
+  })
+
 export default {
   stubHistoricalPrisonerPing: ping,
   stubPrisonerSearchByName,
   stubPrisonerSearchByIdentifiers,
   stubPrisonerSearchByAddress,
+  stubPrisonerDetail,
 }
