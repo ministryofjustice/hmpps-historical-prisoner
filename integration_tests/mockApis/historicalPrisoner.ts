@@ -89,7 +89,7 @@ const prisonerSearchResults = {
   ],
   page: {
     size: 20,
-    number: 1,
+    number: 0,
     totalElements: 2,
     totalPages: 1,
   },
