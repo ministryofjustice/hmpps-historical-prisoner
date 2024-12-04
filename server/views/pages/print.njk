@@ -9,24 +9,31 @@
 {% block content %}
   <div class="govuk-grid-row govuk-body">
     <div class="govuk-grid-column-two-thirds">
-      {{ govukCheckboxes({
-        name: "section",
-        fieldset: {
-          legend: {
-            text: "Which details would you like to save for " + (detail.firstName | capitalize) + " " + detail.lastName + "?",
-            isPageHeading: true,
-            classes: "govuk-fieldset__legend--l"
-          }
-        },
-        hint: {
-          text: "Select all options that you would like"
-        },
-        items: items
-      }) }}
 
-      {{ govukButton({
-        text: "Save as PDF"
-      }) }}
+      <form action="/print/{{ detail.prisonNumber }}" method="post">
+        <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
+        {{ govukCheckboxes({
+          name: "section",
+          fieldset: {
+            legend: {
+              text: "Which details would you like to save for " + (detail.firstName | capitalize) + " " + detail.lastName + "?",
+              isPageHeading: true,
+              classes: "govuk-fieldset__legend--l"
+            }
+          },
+          hint: {
+            text: "Select all options that you would like"
+          },
+          items: items,
+          errorMessage: errors | findError("section")
+        }) }}
+
+        {{ govukButton({
+          text: "Save as PDF",
+          preventDoubleClick: true,
+          attributes: { "data-qa": "save-button" }
+        }) }}
+      </form>
     </div>
   </div>
 {% endblock %}
