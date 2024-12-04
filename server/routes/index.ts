@@ -2,7 +2,7 @@ import { type RequestHandler, Router } from 'express'
 
 import asyncMiddleware from '../middleware/asyncMiddleware'
 import { Services } from '../services'
-import disclaimerRoutes from './disclaimer/disclaimer'
+import disclaimerRoutes from './disclaimer/disclaimerRouter'
 import searchRoutes from './search/searchRouter'
 import printRoutes from './print/printRouter'
 import detailRoutes from './detail/detailRouter'
@@ -16,7 +16,7 @@ export default function routes({ auditService, historicalPrisonerService }: Serv
     return res.redirect('/search')
   })
 
-  disclaimerRoutes(router, auditService)
+  disclaimerRoutes(router)
   searchRoutes(router, auditService, historicalPrisonerService)
   detailRoutes(router, auditService, historicalPrisonerService)
   printRoutes(router, auditService, historicalPrisonerService)
