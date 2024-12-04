@@ -1,24 +1,23 @@
 import { Request, Response } from 'express'
 import HistoricalPrisonerService from '../../services/historicalPrisonerService'
 import AuditService, { Page } from '../../services/auditService'
+import AbstractDetailController from './abstractDetailController'
 
-export default class DetailController {
+export default class DetailController extends AbstractDetailController {
   constructor(
-    private readonly historicalPrisonerService: HistoricalPrisonerService,
+    historicalPrisonerService: HistoricalPrisonerService,
     private readonly auditService: AuditService,
-  ) {}
+  ) {
+    super(historicalPrisonerService)
+  }
 
   async getDetail(req: Request, res: Response): Promise<void> {
-    const { prisonNo } = req.params
-    if (prisonNo !== req.session.prisonerDetail?.prisonNumber) {
-      // update session if we don't have the correct or any prison details
-      req.session.prisonerDetail = await this.historicalPrisonerService.getPrisonerDetail(req.user.token, prisonNo)
-    }
+    const prisonerDetail = await this.getPrisonerDetail(req)
     await this.auditService.logPageView(Page.DETAIL, {
       who: res.locals.user.username,
-      subjectId: prisonNo,
+      subjectId: prisonerDetail.prisonNumber,
       correlationId: req.id,
     })
-    res.render('pages/detail', { detail: req.session.prisonerDetail })
+    res.render('pages/detail', { detail: prisonerDetail })
   }
 }

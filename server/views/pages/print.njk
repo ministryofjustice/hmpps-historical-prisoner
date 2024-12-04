@@ -3,20 +3,20 @@
 
 {% extends "../partials/layout.njk" %}
 
-{% set pageTitle = "Usage" %}
+{% set pageTitle = "Print details" %}
 {% set mainClasses = "app-container govuk-body" %}
 
 {% block content %}
   <div class="govuk-grid-row govuk-body">
     <div class="govuk-grid-column-two-thirds">
 
-      <form action="/print/{{ detail.prisonNumber }}" method="post">
+      <form action="/print/{{ personalDetails.prisonNumber }}" method="post">
         <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
         {{ govukCheckboxes({
           name: "section",
           fieldset: {
             legend: {
-              text: "Which details would you like to save for " + (detail.firstName | capitalize) + " " + detail.lastName + "?",
+              text: "Which details would you like to save for " + (personalDetails.firstName | capitalize) + " " + personalDetails.lastName + "?",
               isPageHeading: true,
               classes: "govuk-fieldset__legend--l"
             }
