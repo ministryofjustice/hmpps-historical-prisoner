@@ -2,18 +2,19 @@ import { Request, Response } from 'express'
 import HistoricalPrisonerService from '../../services/historicalPrisonerService'
 import AuditService from '../../services/auditService'
 import HmppsError from '../../interfaces/HmppsError'
+import AbstractDetailController from '../detail/abstractDetailController'
 
 type ItemType = { divider?: string; value?: string; text?: string; behaviour?: string }
 
 const items: ItemType[] = [
   { value: 'summary', text: 'Subject' },
-  { value: 'sentenceSummary', text: 'Sentence' },
-  { value: 'sentencing', text: 'Sentence' },
-  { value: 'courtHearings', text: 'Court' },
+  { value: 'sentenceSummary', text: 'Sentence summary' },
+  { value: 'sentencing', text: 'Sentence history' },
+  { value: 'courtHearings', text: 'Court hearings' },
   { value: 'movements', text: 'Movements' },
-  { value: 'hdc', text: 'HDC' },
+  { value: 'hdc', text: 'HDC history' },
   { value: 'offences', text: 'Offences' },
-  { value: 'offencesInCustody', text: 'Offences' },
+  { value: 'offencesInCustody', text: 'Offences in custody' },
   { value: 'aliases', text: 'Aliases' },
   { value: 'addresses', text: 'Addresses' },
 ]
@@ -27,11 +28,13 @@ type PageData = {
   errors?: HmppsError[]
 }
 
-export default class PrintController {
+export default class PrintController extends AbstractDetailController {
   constructor(
-    private readonly historicalPrisonerService: HistoricalPrisonerService,
+    historicalPrisonerService: HistoricalPrisonerService,
     private readonly auditService: AuditService,
-  ) {}
+  ) {
+    super(historicalPrisonerService)
+  }
 
   async getPrintForm(req: Request, res: Response): Promise<void> {
     return this.renderView(req, res)
@@ -45,16 +48,11 @@ export default class PrintController {
       return this.renderView(req, res, { errors })
     }
     const { prisonNo } = req.params
-    // TODO: display PDF
     return res.redirect(`/detail/${prisonNo}`)
   }
 
   async renderView(req: Request, res: Response, pageData?: PageData): Promise<void> {
-    const { prisonNo } = req.params
-    if (prisonNo !== req.session.prisonerDetail?.prisonNumber) {
-      // update session if we don't have the correct or any prison details
-      req.session.prisonerDetail = await this.historicalPrisonerService.getPrisonerDetail(req.user.token, prisonNo)
-    }
-    res.render('pages/print', { detail: req.session.prisonerDetail.personalDetails, items: itemsWithAll, ...pageData })
+    const prisonerDetail = await this.getPrisonerDetail(req)
+    res.render('pages/print', { personalDetails: prisonerDetail.personalDetails, items: itemsWithAll, ...pageData })
   }
 }
