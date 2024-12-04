@@ -5,8 +5,10 @@ export declare module 'express-session' {
     searchType: string
     firstName?: string
     lastName?: string
-    dob: string
-    ageRange?: string
+    'dob-day'?: string
+    'dob-month'?: string
+    'dob-year'?: string
+    age?: string
 
     prisonNumber?: string
     pncNumber?: string
@@ -14,6 +16,8 @@ export declare module 'express-session' {
 
     address?: string
 
+    female?: string
+    male?: string
     gender?: string
     hdc?: boolean
     lifer?: boolean
@@ -25,6 +29,7 @@ export declare module 'express-session' {
     nowInMinutes: number
     disclaimerConfirmed: boolean
     prisonerSearchForm: PrisonerSearchForm
+    searchParams: SearchParams
     prisonerDetail: PrisonerDetailDto
   }
 }
@@ -48,3 +53,7 @@ export declare global {
     }
   }
 }
+type SearchParams = Partial<{
+  filters: string[] | null
+  page: number
+}>

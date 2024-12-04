@@ -13,5 +13,7 @@ export default class Search extends Page {
 
   lastName = (): PageElement => cy.get('[id="lastName"]')
 
+  newSearch = (): PageElement => cy.get('[data-qa="clear-search"]')
+
   searchResults = (): PageElement => cy.get('[data-qa="search-results"] tbody tr ')
 }

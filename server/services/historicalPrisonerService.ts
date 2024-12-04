@@ -1,5 +1,6 @@
 import querystring from 'querystring'
 import {
+  FindPrisonersByAddress,
   FindPrisonersByIdentifiers,
   FindPrisonersByName,
   PagedModelPrisonerSearchDto,
@@ -18,27 +19,33 @@ export default class HistoricalPrisonerService {
   async findPrisonersByName(
     token: string,
     prisonersByNameForm: FindPrisonersByName,
+    page: number = undefined,
   ): Promise<PagedModelPrisonerSearchDto> {
     return HistoricalPrisonerService.restClient(token).get<PagedModelPrisonerSearchDto>({
       path: '/search',
-      query: querystring.stringify({ ...prisonersByNameForm, size: 10 }),
+      query: querystring.stringify({ ...prisonersByNameForm, page }),
     })
   }
 
   async findPrisonersByIdentifiers(
     token: string,
     prisonersByIdentifiersForm: FindPrisonersByIdentifiers,
+    page: number = undefined,
   ): Promise<PagedModelPrisonerSearchDto> {
     return HistoricalPrisonerService.restClient(token).get<PagedModelPrisonerSearchDto>({
       path: '/identifiers',
-      query: querystring.stringify({ ...prisonersByIdentifiersForm }),
+      query: querystring.stringify({ ...prisonersByIdentifiersForm, page }),
     })
   }
 
-  async findPrisonersByAddressTerms(token: string, addressTerms: string): Promise<PagedModelPrisonerSearchDto> {
+  async findPrisonersByAddressTerms(
+    token: string,
+    prisonersByAddress: FindPrisonersByAddress,
+    page: number = undefined,
+  ): Promise<PagedModelPrisonerSearchDto> {
     return HistoricalPrisonerService.restClient(token).get<PagedModelPrisonerSearchDto>({
       path: '/address-lookup',
-      query: { addressTerms },
+      query: querystring.stringify({ ...prisonersByAddress, page }),
     })
   }
 

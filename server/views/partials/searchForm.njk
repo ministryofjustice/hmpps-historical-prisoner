@@ -22,7 +22,7 @@
   {{ govukDateInput({
     id: "date-of-birth",
     namePrefix: "dob",
-    value: dob,
+    value: form.dob,
     fieldset: {
       legend: {
         text: "Date of birth",
@@ -33,7 +33,7 @@
   {{ govukInput({
     id: "age",
     name: "age",
-    value: prisonerSearchForm.age,
+    value: form.age,
     classes: "govuk-input",
     label: {
       text: "Or, enter an age or age range"
@@ -49,7 +49,7 @@
   {{ govukInput({
     id: "prison-number",
     name: "prisonNumber",
-    value: prisonerSearchForm.prisonNumber,
+    value: form.prisonNumber,
     classes: "govuk-input",
     label: {
       text: "Prison number"
@@ -58,7 +58,7 @@
   {{ govukInput({
     id: "pnc-number",
     name: "pncNumber",
-    value: prisonerSearchForm.pncNumber,
+    value: form.pncNumber,
     classes: "govuk-input",
     label: {
       text: "PNC number"
@@ -70,6 +70,7 @@
   {{ govukInput({
     id: "cro-number",
     name: "croNumber",
+    value: form.croNumber,
     classes: "govuk-input",
     label: {
       text: "CRO number"
@@ -79,8 +80,9 @@
 
 {% set otherHtml %}
   {{ govukInput({
-    id: "contact-by-text",
-    name: "contactByText",
+    id: "address",
+    name: "address",
+    value: form.address,
     classes: "govuk-input",
     label: {
       text: "Enter any combination of street, town, postcode, eg"
@@ -95,32 +97,97 @@
 
   {{ govukRadios({
     name: "searchType",
-
     items: [
       {
         value: "name",
         text: "Name/age",
-        checked: true,
+        checked: form.searchType === "name",
         conditional: {
         html: nameHtml
       }
       },
       {
-        value: "id",
+        value: "identifier",
         text: "Unique identifier",
+        checked: form.searchType === "identifier",
         conditional: {
         html: idHtml
       }
       },
       {
-        value: "other",
+        value: "address",
         text: "Other",
+        checked: form.searchType === "address",
         conditional: {
         html: otherHtml
       }
       }
     ]
   }) }}
+
+  {% if searchResults.length >1 %}
+    {{ govukCheckboxes({
+      name: "lifer",
+      fieldset: {
+        legend: {
+          text: 'Life Imprisonment',
+          classes: 'govuk-label--s'
+        }
+      },
+      classes: 'govuk-checkboxes--small govuk-checkboxes--inline',
+      items: [
+        {
+          text: "Lifer",
+          value: true,
+          checked: form.lifer === true
+        }
+      ]
+    }) }}
+    {{ govukCheckboxes({
+      name: "hdc",
+      classes: 'govuk-checkboxes--small govuk-checkboxes--inline',
+      fieldset: {
+        legend: {
+          text: 'Home Detention Curfew',
+          classes: 'govuk-label--s'
+        }
+      },
+      items: [
+        {
+          text: "HDC",
+          value: true,
+          checked: form.hdc === true
+        }
+      ]
+    }) }}
+
+    {{ govukCheckboxes({
+      name: "male",
+      classes: 'govuk-checkboxes--small govuk-checkboxes--inline',
+      fieldset: {
+        legend: {
+          text: 'Gender',
+          classes: 'govuk-label--s'
+        }
+      },
+      items: [
+        {
+          text: "Male",
+          value: 'M',
+          checked: form.male === 'M'
+        },
+        {
+          text: "Female",
+          value: 'F',
+          checked: form.female === 'F'
+        }
+      ]
+    }) }}
+
+  {% endif %}
+  <div>
+    <a data-qa="clear-search" href="/search" class="govuk-link">New Search</a>
+  </div>
 {% endset -%}
 
 <form action="/search" method="post" novalidate>
@@ -128,7 +195,7 @@
 
   {{ mojFilter({
     heading: {
-      text: 'Filters'
+      text: 'Search'
     },
     selectedFilters: selectedFilters,
     optionsHtml: filterOptionsHtml

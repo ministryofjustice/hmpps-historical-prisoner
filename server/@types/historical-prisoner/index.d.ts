@@ -72,7 +72,7 @@ export interface paths {
       cookie?: never
     }
     /**
-     * Retrieve prisoner numbers from address terms
+     * Retrieve prisoners from address terms
      * @description Requires role ROLE_HPA_USER
      */
     get: operations['findPrisonersWithAddresses']
@@ -118,17 +118,17 @@ export interface components {
       page?: components['schemas']['PageMetadata']
     }
     PrisonerSearchDto: {
-      prisonNumber: string
-      /** Format: date */
-      receptionDate?: string
       lastName?: string
       firstName?: string
       middleName?: string
-      /** Format: date */
-      dob?: string
-      isAlias: boolean
       aliasLast?: string
       aliasFirst?: string
+      prisonNumber: string
+      /** Format: date */
+      receptionDate?: string
+      isAlias: boolean
+      /** Format: date */
+      dob?: string
       aliasMiddle?: string
     }
     AddressesDto: {
@@ -288,9 +288,9 @@ export interface operations {
   findPrisoners: {
     parameters: {
       query: {
-        /** @description Forename to search for. Wildcards (%) can be used. A single initial will automatically be wildcarded. */
+        /** @description Forename to search for. Wildcards (% or *) can be used. A single initial will automatically be wildcarded. */
         forename?: string
-        /** @description Surname to search for. Wildcards (%) can be used. */
+        /** @description Surname to search for. Wildcards (% or *) can be used. */
         surname?: string
         /** @description Date of birth to search for */
         dateOfBirth?: string
@@ -347,6 +347,12 @@ export interface operations {
         prisonNumber?: string
         pnc?: string
         cro?: string
+        /** @description Gender to search for, either M or F. Must be used in combination with prisonNumber, pnc or cro. */
+        gender?: string
+        /** @description Whether the prisoner has a HDC. Must be used in combination with prisonNumber, pnc or cro. */
+        hdc?: boolean
+        /** @description Whether the prisoner is a lifer. Must be used in combination with prisonNumber, pnc or cro. */
+        lifer?: boolean
         pageRequest: components['schemas']['Pageable']
       }
       header?: never
@@ -436,7 +442,14 @@ export interface operations {
   findPrisonersWithAddresses: {
     parameters: {
       query: {
+        /** @description Address terms to search for */
         addressTerms: string
+        /** @description Gender to search for, either M or F. Must be used in combination with addressTerms. */
+        gender?: string
+        /** @description Whether the prisoner has a HDC. Must be used in combination with addressTerms. */
+        hdc?: boolean
+        /** @description Whether the prisoner is a lifer. Must be used in combination with addressTerms. */
+        lifer?: boolean
         pageRequest: components['schemas']['Pageable']
       }
       header?: never

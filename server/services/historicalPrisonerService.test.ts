@@ -6,6 +6,7 @@ import {
   FindPrisonersByIdentifiers,
   PagedModelPrisonerSearchDto,
   PrisonerDetailDto,
+  FindPrisonersByAddress,
 } from '../@types/historical-prisoner/historicalPrisonerApiTypes'
 
 describe('HistoricalPrisonerService', () => {
@@ -28,7 +29,7 @@ describe('HistoricalPrisonerService', () => {
       const expectedResponse: PagedModelPrisonerSearchDto = { content: [], page: { totalElements: 0 } }
 
       fakeApi
-        .get('/search?forename=John&surname=Doe&size=10')
+        .get('/search?forename=John&surname=Doe&page=')
         .matchHeader('authorization', `Bearer ${token}`)
         .reply(200, expectedResponse)
 
@@ -44,7 +45,7 @@ describe('HistoricalPrisonerService', () => {
       const expectedResponse: PagedModelPrisonerSearchDto = { content: [], page: { totalElements: 0 } }
 
       fakeApi
-        .get('/identifiers?prisonNumber=A1234BC')
+        .get('/identifiers?prisonNumber=A1234BC&page=')
         .matchHeader('authorization', `Bearer ${token}`)
         .reply(200, expectedResponse)
 
@@ -56,15 +57,15 @@ describe('HistoricalPrisonerService', () => {
 
   describe('findPrisonersByAddressTerms', () => {
     it('returns paged model of prisoners by address terms', async () => {
-      const addressTerms = '123 Main & St'
+      const prisonersByAddressForm: FindPrisonersByAddress = { addressTerms: '123 Main & St' }
       const expectedResponse: PagedModelPrisonerSearchDto = { content: [], page: { totalElements: 0 } }
 
       fakeApi
-        .get('/address-lookup?addressTerms=123 Main %26 St')
+        .get('/address-lookup?addressTerms=123 Main %26 St&page=')
         .matchHeader('authorization', `Bearer ${token}`)
         .reply(200, expectedResponse)
 
-      const result = await service.findPrisonersByAddressTerms(token, addressTerms)
+      const result = await service.findPrisonersByAddressTerms(token, prisonersByAddressForm)
 
       expect(result).toEqual(expectedResponse)
     })

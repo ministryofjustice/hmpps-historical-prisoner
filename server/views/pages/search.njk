@@ -1,25 +1,19 @@
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/checkboxes/macro.njk" import govukCheckboxes %}
 {% from "govuk/components/date-input/macro.njk" import govukDateInput %}
 {%- from "govuk/components/error-summary/macro.njk" import govukErrorSummary -%}
 {% from "govuk/components/input/macro.njk" import govukInput %}
 {% from "govuk/components/radios/macro.njk" import govukRadios %}
 {% from "govuk/components/table/macro.njk" import govukTable %}
 {%- from "govuk/components/tag/macro.njk" import govukTag -%}
+{% from "govuk/components/select/macro.njk" import govukSelect %}
 {% from "moj/components/filter/macro.njk" import mojFilter %}
 {%- from "moj/components/pagination/macro.njk" import mojPagination -%}
 {% from "../partials/multiselectfilter/macro.njk" import multiSelectFilter %}
-{% from "govuk/components/button/macro.njk" import govukButton %}
-{% from "govuk/components/checkboxes/macro.njk" import govukCheckboxes %}
-{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
-{% from "govuk/components/input/macro.njk" import govukInput %}
-{% from "govuk/components/radios/macro.njk" import govukRadios %}
-{% from "govuk/components/select/macro.njk" import govukSelect %}
-{% from "govuk/components/table/macro.njk" import govukTable %}
-{% from "govuk/components/tag/macro.njk" import govukTag %}
-{% from "moj/components/filter/macro.njk" import mojFilter %}
 
 {% extends "../partials/layout.njk" %}
 
-{% set pageTitle = "Prisoner Search" %}
+{% set pageTitle = "HPA Prisoner Search" %}
 {% set mainClasses = "app-container govuk-body" %}
 
 {% block content %}
@@ -42,45 +36,47 @@
               {% if searchResults.length %}
                 <h2 class="govuk-heading-l">{{ searchResults.length }} Prisoners</h2>
 
-                {{ mojPagination(pagination) }}
+                {% if searchResults.length %}
+                  {{ mojPagination(paginationParams) }}
+                {% endif %}
 
                 {% set rows = [] %}
                 {% for prisoner in searchResults %}
-                {% set cellHtml %}
-                <div class="govuk-!-margin-bottom-5">
-                  <div class="govuk-grid-row govuk-!-margin-bottom-2">
+                  {% set cellHtml %}
                     <div class="govuk-grid-column-three-quarters">
-                      <div class="govuk-body-lead">
-                        {{ prisoner.firstName }} {{ prisoner.lastName }} &middot; {{ prisoner.dob | formatDate }}
+                      <div class="govuk-body-lead govuk-!-font-weight-bold govuk-!-margin-bottom-1">
+                        <a href = '/detail/{{ prisoner.prisonNumber }}'>{{ prisoner.firstName | capitalize }} {{ prisoner.lastName }}</a> &middot; {{ prisoner.dob | formatDate }}
                       </div>
-                      <div class="govuk-body-m">Prison no. {{ prisoner.prisonNumber }} &middot;
+                      <div class="govuk-body-m govuk-!-margin-bottom-1">Prison no. {{ prisoner.prisonNumber }} &middot;
                         Reception {{ prisoner.receptionDate | formatDate }}
                       </div>
                       {% if prisoner.isAlias %}
-                        <p class="govuk-body" data-qa="alias">
+                        <div class="govuk-body govuk-!-margin-bottom-1" data-qa="alias">
                           Matched on alias {{ prisoner.aliasFirst }} {{ prisoner.aliasLast }}
-                        </p>
+                        </div>
                       {% endif %}
-                      <p class="govuk-body">
+                      <div class="govuk-body govuk-!-margin-bottom-2">
                         <a href="#" class="govuk-link">Add to shortlist</a>
-                      </p>
+                      </div>
                     </div>
-                    {% endset %}
-                    {% set rows = (rows.push([
-                      { html: cellHtml }
-                    ]), rows) %}
+                  {% endset %}
 
-                    {% endfor %}
-                    {{ govukTable({
-                      rows: rows,
-                      attributes: { "data-qa": "search-results" }
-                    }) }}
-                    {{ mojPagination(pagination) }}
-                  {% else %}
-                    <p class="govuk-body" data-qa="no-results">No records found matching search criteria.</p>
-                  {% endif %}
-                </div>
-              </div>
+                  {% set rows = (rows.push([
+                    { html: cellHtml }
+                  ]), rows) %}
+
+                {% endfor %}
+                {{ govukTable({
+                  rows: rows,
+                  attributes: { "data-qa": "search-results" }
+                }) }}
+
+                {% if searchResults.length %}
+                  {{ mojPagination(paginationParams) }}
+                {% endif %}
+              {% else %}
+                <p class="govuk-body" data-qa="no-results">No records found matching search criteria.</p>
+              {% endif %}
             </div>
           </div>
         </div>
