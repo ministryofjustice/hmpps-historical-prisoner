@@ -1,0 +1,14 @@
+{% from "../../macros/summaryCardMacro.njk" import summaryCard %}
+{% from "../../macros/summaryListRow.njk" import summaryListRow %}
+
+{%- call summaryCard({title: "Subject", id: "summary"}) -%}
+  <div class="govuk-grid-row" data-qa="summary">
+    <div class="govuk-grid-column-full">
+      {% if personalDetails.dob %}
+        <dl class="govuk-summary-list govuk-summary-list--no-border govuk-!-margin-bottom-0">
+          {{ summaryListRow("Date of birth", (personalDetails.dob | formatDate) + " (" + personalDetails.dob | getAge + " years)", "dob") }}
+        </dl>
+      {% endif %}
+    </div>
+  </div>
+{%- endcall -%}

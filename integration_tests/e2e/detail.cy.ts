@@ -17,4 +17,13 @@ context('Detail', () => {
     cy.visit('/detail/A1234BC')
     Page.verifyOnPageWithTitleParam(DetailPage, 'Firsta Middlea SURNAMEA')
   })
+
+  it('Will show prisoner summary', () => {
+    cy.task('stubPrisonerDetail')
+
+    cy.visit('/detail/A1234BC')
+    Page.verifyOnPageWithTitleParam(DetailPage, 'Firsta Middlea SURNAMEA')
+
+    cy.get('[data-qa="dob"]').contains('01/01/1980')
+  })
 })

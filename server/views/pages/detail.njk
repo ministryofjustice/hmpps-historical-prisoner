@@ -9,6 +9,77 @@
 
 {% block content %}
   <div class="govuk-grid-row govuk-body">
-    <h1>{{ detail.personalDetails.firstName | capitalize }} {{ detail.personalDetails.middleName | capitalize }} {{ detail.personalDetails.lastName }}</h1>
+    <div class="govuk-grid-column-three-quarters">
+      <h1>{{ personalDetails.firstName | capitalize }} {{ personalDetails.middleName | capitalize }} {{ personalDetails.lastName }}</h1>
+    </div>
   </div>
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-one-quarter app-sidebar govuk-!-display-none-print">
+      <ul class="govuk-list hmpps-sidebar">
+        <li><a class="govuk-link govuk-link--no-visited-state" href="#summary">Subject</a></li>
+        <li><a class="govuk-link govuk-link--no-visited-state" href="#sentence-summary">Sentence summary</a></li>
+        <li><a class="govuk-link govuk-link--no-visited-state" href="#sentencing">Sentence history</a></li>
+        <li><a class="govuk-link govuk-link--no-visited-state" href="#court-hearings">Court hearings</a></li>
+        <li><a class="govuk-link govuk-link--no-visited-state" href="#movements">Movements</a></li>
+        <li><a class="govuk-link govuk-link--no-visited-state" href="#hdc">HDC history</a></li>
+        <li><a class="govuk-link govuk-link--no-visited-state" href="#offences">Offences</a></li>
+        <li><a class="govuk-link govuk-link--no-visited-state" href="#offences-in-custody">Offences in custody</a></li>
+        <li><a class="govuk-link govuk-link--no-visited-state" href="#aliases">Aliases</a></li>
+        <li><a class="govuk-link govuk-link--no-visited-state" href="#addresses">Addresses</a></li>
+      </ul>
+    </div>
+    <div class="govuk-grid-column-three-quarters hmpps-profile--personal-content hmpps-full-width-print">
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-full">
+          {% include "../partials/detail/summary.njk" %}
+        </div>
+      </div>
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-full">
+          {% include "../partials/detail/sentenceSummary.njk" %}
+        </div>
+      </div>
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-full">
+          {% include "../partials/detail/sentencing.njk" %}
+        </div>
+      </div>
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-full">
+          {% include "../partials/detail/courtHearings.njk" %}
+        </div>
+      </div>
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-full">
+          {% include "../partials/detail/movements.njk" %}
+        </div>
+      </div>
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-full">
+          {% include "../partials/detail/hdc.njk" %}
+        </div>
+      </div>
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-full">
+          {% include "../partials/detail/offences.njk" %}
+        </div>
+      </div>
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-full">
+          {% include "../partials/detail/offencesInCustody.njk" %}
+        </div>
+      </div>
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-full">
+          {% include "../partials/detail/aliases.njk" %}
+        </div>
+      </div>
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-full">
+          {% include "../partials/detail/addresses.njk" %}
+        </div>
+      </div>
+    </div>
+  </div>
+
 {% endblock %}
