@@ -81,6 +81,6 @@ describe('Detail controller', () => {
   })
 
   function expectRenderDetailContainingDetail() {
-    expect(res.render).toHaveBeenCalledWith('pages/detail', expect.objectContaining({ detail }))
+    expect(res.render).toHaveBeenCalledWith('pages/detail', expect.objectContaining({ ...detail }))
   }
 })
