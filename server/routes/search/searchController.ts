@@ -20,6 +20,14 @@ export default class SearchController {
     private readonly auditService: AuditService,
   ) {}
 
+  async clearSearch(req: Request, res: Response): Promise<void> {
+    logger.debug('GET /search')
+    await this.auditService.logPageView(Page.SEARCH, { who: res.locals.user.username, correlationId: req.id })
+    req.session.searchParams = {}
+
+    return res.render('pages/search', { form: { searchType: 'name' } })
+  }
+
   async getSearch(req: Request, res: Response): Promise<void> {
     logger.debug('GET /search')
     await this.auditService.logPageView(Page.SEARCH, { who: res.locals.user.username, correlationId: req.id })
@@ -58,6 +66,7 @@ export default class SearchController {
     const pagedResults: PagedModelPrisonerSearchDto = await this.doSearch(req, res)
 
     const paginationParams = this.getPaginationParams(req, pagedResults.page)
+    logger.debug('paginationParams', paginationParams)
     return res.render('pages/search', {
       searchResults: pagedResults.content,
       form: req.session.prisonerSearchForm,

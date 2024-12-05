@@ -34,7 +34,7 @@
               </div>
 
               {% if searchResults.length %}
-                <h2 class="govuk-heading-l">{{ searchResults.length }} Prisoners</h2>
+                <h2 class="govuk-heading-l" data-qa="search-results-count">{{ paginationParams.results.count }} Prisoners</h2>
 
                 {% if searchResults.length %}
                   {{ mojPagination(paginationParams) }}
