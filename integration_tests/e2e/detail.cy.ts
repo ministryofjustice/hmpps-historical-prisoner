@@ -50,5 +50,14 @@ context('Detail', () => {
       cy.get('[data-qa="movementDate1"]').should('have.text', '21/12/1987')
       cy.get('[data-qa="movementPrison1"]').should('have.text', 'Durham')
     })
+
+    it('Will show prisoner offences', () => {
+      cy.get('[data-qa="offence0"]').should('have.text', '101')
+      cy.get('[data-qa="offenceDate0"]').should('have.text', '01/01/2001')
+      cy.get('[data-qa="offencePrison0"]').should('have.text', 'Belmarsh')
+      cy.get('[data-qa="offence1"]').should('have.text', '48')
+      cy.get('[data-qa="offenceDate1"]').should('have.text', '02/01/2001')
+      cy.get('[data-qa="offencePrison1"]').should('have.text', 'Durham')
+    })
   })
 })

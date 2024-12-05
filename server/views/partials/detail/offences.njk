@@ -1,0 +1,25 @@
+{% from "../../macros/summaryCardMacro.njk" import summaryCard %}
+{% from "../../macros/summaryListRow.njk" import summaryListRow %}
+{% from "govuk/components/table/macro.njk" import govukTable %}
+
+{% if offences %}
+  {% set offenceRows = [] %}
+  {% for offence in offences %}
+    {% set attributeDate = { "data-qa": "offenceDate" + loop.index0 } %}
+    {% set attribute = { "data-qa": "offence" + loop.index0 } %}
+    {% set attributePrison = { "data-qa": "offencePrison" + loop.index0 } %}
+    {% set offenceRows = (offenceRows.push([
+      { text: offence.date | formatDate, attributes: attributeDate },
+      { text: offence.code, attributes: attribute },
+      { text: offence.establishment | title | acronymsToUpperCase, attributes: attributePrison }
+    ]), offenceRows) %}
+  {% endfor %}
+
+  {%- call summaryCard({title: "Offences", id: "offences"}) -%}
+    <div class="govuk-grid-row" data-qa="offences">
+      <div class="govuk-grid-column-full">
+        {{ govukTable({ head: [ { text: "Date" }, { text: "Code" }, { text: "Prison" } ], rows: offenceRows }) }}
+      </div>
+    </div>
+  {%- endcall -%}
+{% endif %}
