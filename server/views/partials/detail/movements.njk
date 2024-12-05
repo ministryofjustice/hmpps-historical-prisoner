@@ -1,21 +1,24 @@
 {% from "../../macros/summaryCardMacro.njk" import summaryCard %}
 {% from "../../macros/summaryListRow.njk" import summaryListRow %}
+{% from "govuk/components/table/macro.njk" import govukTable %}
 
 {% if movements %}
+  {% set movementRows = [] %}
+  {% for movement in movements %}
+    {% set attributeDate = { "data-qa": "movementDate" + loop.index0 } %}
+    {% set attribute = { "data-qa": "movement" + loop.index0 } %}
+    {% set attributePrison = { "data-qa": "movementPrison" + loop.index0 } %}
+    {% set movementRows = (movementRows.push([
+        { text: movement.date | formatDate, attributes: attributeDate },
+        { text: ("OUT" if movement.type == 'D' else 'IN') + ' - ' + movement.movement | capitalize, attributes: attribute },
+        { text: movement.establishment | title | acronymsToUpperCase, attributes: attributePrison }
+      ]), movementRows) %}
+  {% endfor %}
+
   {%- call summaryCard({title: "Movements", id: "movements"}) -%}
     <div class="govuk-grid-row" data-qa="movements">
       <div class="govuk-grid-column-full">
-        {% for movement in movements %}
-          <dl class="govuk-summary-list govuk-summary-list--no-border govuk-!-margin-bottom-0">
-            {{ summaryListRow("Date", movement.date | formatDate, "movementDate" + loop.index0) }}
-          </dl>
-          <dl class="govuk-summary-list govuk-summary-list--no-border govuk-!-margin-bottom-0">
-            {{ summaryListRow("Movement", ("OUT" if movement.type == 'D' else 'IN') + ' - ' + movement.movement | capitalize, "movement" + loop.index0) }}
-          </dl>
-          <dl class="govuk-summary-list">
-            {{ summaryListRow("Prison", movement.establishment | title | acronymsToUpperCase, "movementPrison" + loop.index0) }}
-          </dl>
-        {% endfor %}
+        {{ govukTable({ head: [ { text: "Date" }, { text: "Movement" }, { text: "Prison" } ], rows: movementRows }) }}
       </div>
     </div>
   {%- endcall -%}
