@@ -13,7 +13,7 @@ describe('Detail controller', () => {
   let req: Request
   let res: Response
 
-  const detail = { prisonNumber: 'AB12345', personalDetails: { firstName: 'JOHN', lastName: 'SMITH' } }
+  const detail = { prisonNumber: 'AB12345', summary: { firstName: 'JOHN', lastName: 'SMITH' } }
 
   beforeEach(() => {
     jest.resetAllMocks()

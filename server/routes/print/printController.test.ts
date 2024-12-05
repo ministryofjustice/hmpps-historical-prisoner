@@ -12,7 +12,7 @@ describe('Print controller', () => {
   let req: Request
   let res: Response
 
-  const detail = { prisonNumber: 'AB12345', personalDetails: { firstName: 'JOHN', lastName: 'SMITH' } }
+  const detail = { prisonNumber: 'AB12345', summary: { firstName: 'JOHN', lastName: 'SMITH' } }
 
   beforeEach(() => {
     jest.resetAllMocks()
@@ -123,9 +123,6 @@ describe('Print controller', () => {
   })
 
   function expectRenderPrintContainingDetail() {
-    expect(res.render).toHaveBeenCalledWith(
-      'pages/print',
-      expect.objectContaining({ personalDetails: detail.personalDetails }),
-    )
+    expect(res.render).toHaveBeenCalledWith('pages/print', expect.objectContaining({ summary: detail.summary }))
   }
 })

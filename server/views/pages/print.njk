@@ -10,13 +10,13 @@
   <div class="govuk-grid-row govuk-body">
     <div class="govuk-grid-column-two-thirds">
 
-      <form action="/print/{{ personalDetails.prisonNumber }}" method="post">
+      <form action="/print/{{ summary.prisonNumber }}" method="post">
         <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
         {{ govukCheckboxes({
           name: "section",
           fieldset: {
             legend: {
-              text: "Which details would you like to save for " + (personalDetails.firstName | title) + " " + personalDetails.lastName + "?",
+              text: "Which details would you like to save for " + (summary.firstName | title) + " " + summary.lastName + "?",
               isPageHeading: true,
               classes: "govuk-fieldset__legend--l"
             }

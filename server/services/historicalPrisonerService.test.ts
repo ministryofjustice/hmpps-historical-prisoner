@@ -76,7 +76,7 @@ describe('HistoricalPrisonerService', () => {
       const prisonNumber = 'A1234BC'
       const expectedResponse: PrisonerDetailDto = {
         prisonNumber: 'A1234BC',
-        personalDetails: { prisonNumber: 'A1234BC', firstName: 'John', lastName: 'Doe' },
+        summary: { prisonNumber: 'A1234BC', firstName: 'John', lastName: 'Doe' },
       }
 
       fakeApi.get('/detail/A1234BC').matchHeader('authorization', `Bearer ${token}`).reply(200, expectedResponse)
