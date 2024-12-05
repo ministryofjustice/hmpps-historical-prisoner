@@ -35,6 +35,8 @@ export default class Search extends Page {
 
   newSearch = (): PageElement => cy.get('[data-qa="clear-search"]')
 
+  suggestions = (): PageElement => cy.get('[data-qa="suggestions"]')
+
   searchResults = (): PageElement => cy.get('[data-qa="search-results"] tbody tr ')
 
   searchResultsCount = (): PageElement => cy.get('[data-qa="search-results-count"] ')

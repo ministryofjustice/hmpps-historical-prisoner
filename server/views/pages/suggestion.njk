@@ -1,0 +1,39 @@
+{% from "govuk/components/back-link/macro.njk" import govukBackLink %}
+
+{% extends "../partials/layout.njk" %}
+
+{% set pageTitle = "Suggestions & tips" %}
+
+{% block beforeContent %}
+  {{ govukBackLink({
+    text: "Back to prisoners",
+    href: '/search'
+  }) }}
+{% endblock %}
+
+{% block content %}
+
+  <div class="govuk-grid-row govuk-body">
+    <div class="govuk-grid-column-full">
+      <h1 class="govuk-heading-l">Suggestions & tips</h1>
+
+      <div class="govuk-grid-column-two-thirds">
+        <div class="govuk-body-l">Add a wildcard to the surname: TODO ADD IN
+          <p class="govuk-body">Reason: Some establishments when using LIDS added more information after a surname - e.g. alerts.
+            An exact surname match may not pick up these records
+          </p>
+        </div>
+        <div class="govuk-body-l">
+          Shorten the surname by 2 characters and add a wildcard: TODO ADD IN
+          <p class="govuk-body">
+            Reason: An exact surname search for example for STEELE will miss and records where the surname has been incorrectly recorded as STEEL
+          </p>
+        </div>
+        <div>
+          <a data-qa="clear-search" href="/search" class="govuk-link">New Search</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}

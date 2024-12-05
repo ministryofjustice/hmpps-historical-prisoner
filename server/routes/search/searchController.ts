@@ -66,7 +66,6 @@ export default class SearchController {
     const pagedResults: PagedModelPrisonerSearchDto = await this.doSearch(req, res)
 
     const paginationParams = this.getPaginationParams(req, pagedResults.page)
-    logger.debug('paginationParams', paginationParams)
     return res.render('pages/search', {
       searchResults: pagedResults.content,
       form: req.session.prisonerSearchForm,
@@ -99,6 +98,12 @@ export default class SearchController {
       default:
         throw new Error(`Unknown search type: ${prisonerSearchForm.searchType}`)
     }
+  }
+
+  getSuggestions(req: Request, res: Response) {
+    logger.debug('GET /search')
+    // TODO
+    return res.render('pages/suggestion')
   }
 
   getPaginationParams(req: Request, page: PageMetaData): LegacyPagination {
