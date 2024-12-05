@@ -15,7 +15,8 @@ export default function routes(
 
   const searchController = new SearchController(historicalPrisonerService, auditService)
 
-  get('/search', async (req, res, next) => searchController.getSearch(req, res))
+  get('/search', async (req, res, next) => searchController.clearSearch(req, res))
+  get('/search/results', async (req, res, next) => searchController.getSearch(req, res))
   post('/search', async (req, res) => searchController.postSearch(req, res))
 
   return router

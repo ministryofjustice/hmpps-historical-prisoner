@@ -20,7 +20,7 @@
     errorMessage: errors.surname
   }) }}
   {{ govukDateInput({
-    id: "date-of-birth",
+    id: "dob",
     namePrefix: "dob",
     value: form.dob,
     fieldset: {
@@ -47,7 +47,7 @@
 
 {% set idHtml %}
   {{ govukInput({
-    id: "prison-number",
+    id: "prisonNumber",
     name: "prisonNumber",
     value: form.prisonNumber,
     classes: "govuk-input",
@@ -56,7 +56,7 @@
     }
   }) }}
   {{ govukInput({
-    id: "pnc-number",
+    id: "pncNumber",
     name: "pncNumber",
     value: form.pncNumber,
     classes: "govuk-input",
@@ -68,7 +68,7 @@
     }
   }) }}
   {{ govukInput({
-    id: "cro-number",
+    id: "croNumber",
     name: "croNumber",
     value: form.croNumber,
     classes: "govuk-input",

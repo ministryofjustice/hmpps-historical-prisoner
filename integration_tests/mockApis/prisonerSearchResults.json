@@ -1,0 +1,34 @@
+{
+  "content": [
+    {
+      "prisonNumber": "BF123455",
+      "lastName": "WILSON",
+      "firstName": "GOLDIE",
+      "middleName": "",
+      "isAlias": false,
+      "receptionDate": "1955-11-12",
+      "aliasLast": "WILSON",
+      "aliasFirst": "GOLDIE",
+      "aliasMiddle": "",
+      "dob": "1967-01-05"
+    },
+    {
+      "prisonNumber": "BF123455",
+      "lastName": "WILSON",
+      "firstName": "MAYOR",
+      "middleName": "",
+      "isAlias": true,
+      "receptionDate": "1955-11-12",
+      "aliasLast": "WILSON",
+      "aliasFirst": "GOLDIE",
+      "aliasMiddle": "",
+      "dob": "1967-01-05"
+    }
+  ],
+  "page": {
+    "size": 2,
+    "number": 0,
+    "totalElements": 3,
+    "totalPages": 2
+  }
+}
