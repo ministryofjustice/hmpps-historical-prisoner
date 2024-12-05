@@ -1,0 +1,19 @@
+{% from "../../macros/summaryCardMacro.njk" import summaryCard %}
+{% from "../../macros/summaryListRow.njk" import summaryListRow %}
+
+{% if aliases %}
+  {%- call summaryCard({title: "Aliases", id: "aliases"}) -%}
+    <div class="govuk-grid-row" data-qa="aliases">
+      <div class="govuk-grid-column-full">
+        {% for alias in aliases %}
+          <dl class="govuk-summary-list govuk-summary-list--no-border govuk-!-margin-bottom-0">
+            {{ summaryListRow("Alias", (alias.first + " " + alias.middle + " " + alias.last) | title, "alias" + loop.index0) }}
+          </dl>
+          <dl class="govuk-summary-list">
+            {{ summaryListRow("Date of birth", alias.birthDate | formatDateNoHyphens, "aliasDob" + loop.index0) }}
+          </dl>
+        {% endfor %}
+      </div>
+    </div>
+  {%- endcall -%}
+{% endif %}

@@ -9,6 +9,14 @@ export function formatDate(date: string): string {
     return date
   }
 }
+export function formatDateNoHyphens(date: string): string {
+  if (!date) return ''
+  if (date.length !== 8) {
+    logger.warn(`Invalid date found ${date}, wrong length ${date.length}, should be 8`)
+    return date
+  }
+  return date.replace(/(\d{4})(\d{2})(\d{2})/, '$3/$2/$1')
+}
 
 export function getAge(dateOfBirth: string): number {
   const dob = new Date(dateOfBirth)
