@@ -6,36 +6,36 @@
     <div class="govuk-grid-column-full">
       <dl class="govuk-summary-list">
 
-        {% if personalDetails.dob %}
-          {{ summaryListRow("Date of birth", (personalDetails.dob | formatDate) + " (" + personalDetails.dob | getAge + " years)", "dob") }}
+        {% if summary.dob %}
+          {{ summaryListRow("Date of birth", (summary.dob | formatDate) + " (" + summary.dob | getAge + " years)", "dob") }}
         {% endif %}
-        {% if personalDetails.sex === 'F' or personalDetails.sex === 'M' %}
-          {{ summaryListRow("Gender", "Male" if personalDetails.sex === 'M' else "Female", "gender") }}
+        {% if summary.sex === 'F' or summary.sex === 'M' %}
+          {{ summaryListRow("Gender", "Male" if summary.sex === 'M' else "Female", "gender") }}
         {% endif %}
-        {% if personalDetails.ethnicity and personalDetails.ethnicity !== 'NOT STATED' and personalDetails.ethnicity !== 'OTHER' and personalDetails.ethnicity !== 'Other' %}
-          {{ summaryListRow("Ethnicity", personalDetails.ethnicity | title, "ethnicity") }}
+        {% if summary.ethnicity and summary.ethnicity !== 'NOT STATED' and summary.ethnicity !== 'OTHER' and summary.ethnicity !== 'Other' %}
+          {{ summaryListRow("Ethnicity", summary.ethnicity | title, "ethnicity") }}
         {% endif %}
-        {% if personalDetails.maritalStatus and personalDetails.maritalStatus !== 'NOT REQUIRED' and personalDetails.maritalStatus !== 'Refused or Unacceptable Ans.' %}
-          {{ summaryListRow("Marital status", personalDetails.maritalStatus | title, "maritalStatus") }}
+        {% if summary.maritalStatus and summary.maritalStatus !== 'NOT REQUIRED' and summary.maritalStatus !== 'Refused or Unacceptable Ans.' %}
+          {{ summaryListRow("Marital status", summary.maritalStatus | title, "maritalStatus") }}
         {% endif %}
-        {% if personalDetails.birthCountry and personalDetails.birthCountry !== 'UNKNOWN' and personalDetails.birthCountry !== 'OTHER' and personalDetails.birthCountry !== 'Other' %}
-          {{ summaryListRow("Country of birth", personalDetails.birthCountry | title, "birthCountry") }}
+        {% if summary.birthCountry and summary.birthCountry !== 'UNKNOWN' and summary.birthCountry !== 'OTHER' and summary.birthCountry !== 'Other' %}
+          {{ summaryListRow("Country of birth", summary.birthCountry | title, "birthCountry") }}
         {% endif %}
-        {% if personalDetails.nationality and personalDetails.nationality !== 'UNAVAILABALE' %}
-          {{ summaryListRow("Nationality", personalDetails.nationality | title, "nationality") }}
+        {% if summary.nationality and summary.nationality !== 'UNAVAILABALE' %}
+          {{ summaryListRow("Nationality", summary.nationality | title, "nationality") }}
         {% endif %}
-        {% if personalDetails.religion and personalDetails.religion !== 'NON PERMITTED RELIGIONS' and personalDetails.religion !== 'OTHER NON PERMITTED RELIGION' %}
-          {{ summaryListRow("Religion", personalDetails.religion | title, "religion") }}
+        {% if summary.religion and summary.religion !== 'NON PERMITTED RELIGIONS' and summary.religion !== 'OTHER NON PERMITTED RELIGION' %}
+          {{ summaryListRow("Religion", summary.religion | title, "religion") }}
         {% endif %}
-        {{ summaryListRow("Prison number", personalDetails.prisonNumber, "prisonNumber") }}
-        {% if personalDetails.paroleNumbers %}
-          {{ summaryListRow("Parole numbers", personalDetails.paroleNumbers, "paroleNumbers") }}
+        {{ summaryListRow("Prison number", summary.prisonNumber, "prisonNumber") }}
+        {% if summary.paroleNumbers %}
+          {{ summaryListRow("Parole numbers", summary.paroleNumbers, "paroleNumbers") }}
         {% endif %}
-        {% if personalDetails.pncNumber %}
-          {{ summaryListRow("PNC number", personalDetails.pncNumber, "pncNumber") }}
+        {% if summary.pncNumber %}
+          {{ summaryListRow("PNC number", summary.pncNumber, "pncNumber") }}
         {% endif %}
-        {% if personalDetails.croNumber %}
-          {{ summaryListRow("CRO number", personalDetails.croNumber, "croNumber") }}
+        {% if summary.croNumber %}
+          {{ summaryListRow("CRO number", summary.croNumber, "croNumber") }}
         {% endif %}
       </dl>
     </div>

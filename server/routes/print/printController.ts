@@ -53,6 +53,6 @@ export default class PrintController extends AbstractDetailController {
 
   async renderView(req: Request, res: Response, pageData?: PageData): Promise<void> {
     const prisonerDetail = await this.getPrisonerDetail(req)
-    res.render('pages/print', { personalDetails: prisonerDetail.personalDetails, items: itemsWithAll, ...pageData })
+    res.render('pages/print', { summary: prisonerDetail.summary, items: itemsWithAll, ...pageData })
   }
 }

@@ -9,7 +9,7 @@
     {% set attributeDob = { "data-qa": "aliasDob" + loop.index0 } %}
     {% set aliasRows = (aliasRows.push([
         { text: (alias.first + " " + alias.middle + " " + alias.last) | title, attributes: attribute },
-        { text: alias.birthDate | formatDateNoHyphens, attributes: attributeDob }
+        { text: alias.birthDate | formatDate, attributes: attributeDob }
       ]), aliasRows) %}
   {% endfor %}
 

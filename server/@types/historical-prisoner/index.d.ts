@@ -118,18 +118,20 @@ export interface components {
       page?: components['schemas']['PageMetadata']
     }
     PrisonerSearchDto: {
-      lastName?: string
-      firstName?: string
-      middleName?: string
-      aliasLast?: string
-      aliasFirst?: string
       prisonNumber: string
       /** Format: date */
       receptionDate?: string
-      isAlias: boolean
+      lastName?: string
+      firstName?: string
+      middleName?: string
       /** Format: date */
       dob?: string
+      isAlias: boolean
+      aliasLast?: string
+      aliasFirst?: string
       aliasMiddle?: string
+      /** Format: date */
+      aliasDob?: string
     }
     AddressesDto: {
       type?: string
@@ -140,18 +142,11 @@ export interface components {
       /** Format: int32 */
       sequence?: number
     }
-    AdjudicationsDto: {
-      /** Format: date */
-      date?: string
-      outcome?: string
-      charge?: string
-      establishment?: string
-      punishments?: components['schemas']['PunishmentDto'][]
-    }
     AliasesDto: {
       last?: string
       first?: string
       middle?: string
+      /** Format: date */
       birthDate?: string
     }
     CategoryDto: {
@@ -201,6 +196,7 @@ export interface components {
       outcome?: string
       charge?: string
       establishment?: string
+      punishments?: components['schemas']['PunishmentDto'][]
     }
     PersonalDetailsDto: {
       prisonNumber?: string
@@ -224,10 +220,9 @@ export interface components {
     }
     PrisonerDetailDto: {
       prisonNumber?: string
-      personalDetails: components['schemas']['PersonalDetailsDto']
+      summary: components['schemas']['PersonalDetailsDto']
       addresses?: components['schemas']['AddressesDto'][]
       aliases?: components['schemas']['AliasesDto'][]
-      category?: components['schemas']['CategoryDto']
       courtHearings?: components['schemas']['CourtHearingsDto'][]
       hdcInfo?: components['schemas']['HdcInfoDto'][]
       hdcRecall?: components['schemas']['HdcRecallDto'][]
@@ -235,12 +230,18 @@ export interface components {
       offences?: components['schemas']['OffencesDto'][]
       offencesInCustody?: components['schemas']['OffencesInCustodyDto'][]
       sentencing?: components['schemas']['SentencingDto'][]
-      adjudications?: components['schemas']['AdjudicationsDto'][]
+      sentenceSummary?: components['schemas']['SentenceSummaryDto']
     }
     PunishmentDto: {
       punishment?: string
       /** Format: int32 */
       duration?: number
+    }
+    SentenceSummaryDto: {
+      category?: components['schemas']['CategoryDto']
+      establishment?: string
+      courtHearing?: components['schemas']['CourtHearingsDto']
+      effectiveSentence?: components['schemas']['SentencingDto']
     }
     SentencingDto: {
       /** Format: int32 */
@@ -261,20 +262,6 @@ export interface components {
       HDCAD?: string
       /** Format: date */
       HDCED?: string
-      /** Format: date */
-      sed?: string
-      /** Format: date */
-      ped?: string
-      /** Format: date */
-      npd?: string
-      /** Format: date */
-      led?: string
-      /** Format: date */
-      crd?: string
-      /** Format: date */
-      hdcad?: string
-      /** Format: date */
-      hdced?: string
     }
   }
   responses: never
@@ -401,7 +388,7 @@ export interface operations {
     }
     requestBody?: never
     responses: {
-      /** @description prisoner detail */
+      /** @description Prisoner detail */
       200: {
         headers: {
           [name: string]: unknown
