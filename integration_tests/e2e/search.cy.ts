@@ -93,6 +93,14 @@ context('Search', () => {
     searchPage.searchResults().should('have.length', 2)
     searchPage.searchResults().eq(0).should('contain.text', 'Add to shortlist')
   })
+
+  it('Will provide suggestions link to improve search', () => {
+    cy.task('stubPrisonerSearchByName')
+    const searchPage = Page.verifyOnPage(Search)
+    searchPage.suggestions().should('not.exist')
+    searchPage.searchButton().click()
+    searchPage.suggestions().should('be.visible')
+  })
 })
 
 context('Paging', () => {
