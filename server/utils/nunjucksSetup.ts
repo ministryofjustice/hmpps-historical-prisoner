@@ -8,7 +8,7 @@ import acronymsToUpperCase from './textHelpers'
 import config from '../config'
 import logger from '../../logger'
 import { buildErrorSummaryList, findError } from '../middleware/validationMiddleware'
-import { formatDate, getAge } from './dateHelpers'
+import { formatDate, formatDateNoHyphens, getAge } from './dateHelpers'
 
 export default function nunjucksSetup(app: express.Express): void {
   app.set('view engine', 'njk')
@@ -43,6 +43,7 @@ export default function nunjucksSetup(app: express.Express): void {
   njkEnv.addFilter('buildErrorSummaryList', buildErrorSummaryList)
   njkEnv.addFilter('findError', findError)
   njkEnv.addFilter('formatDate', formatDate)
+  njkEnv.addFilter('formatDateNoHyphens', formatDateNoHyphens)
   njkEnv.addFilter('getAge', getAge)
   njkEnv.addFilter('initialiseName', initialiseName)
   njkEnv.addFilter('acronymsToUpperCase', acronymsToUpperCase)

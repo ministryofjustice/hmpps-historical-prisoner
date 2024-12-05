@@ -4,59 +4,40 @@
 {%- call summaryCard({title: "Subject", id: "summary"}) -%}
   <div class="govuk-grid-row" data-qa="summary">
     <div class="govuk-grid-column-full">
-      {% if personalDetails.dob %}
-        <dl class="govuk-summary-list govuk-summary-list--no-border govuk-!-margin-bottom-0">
+      <dl class="govuk-summary-list">
+
+        {% if personalDetails.dob %}
           {{ summaryListRow("Date of birth", (personalDetails.dob | formatDate) + " (" + personalDetails.dob | getAge + " years)", "dob") }}
-        </dl>
-      {% endif %}
-      {% if personalDetails.sex === 'F' or personalDetails.sex === 'M' %}
-        <dl class="govuk-summary-list govuk-summary-list--no-border govuk-!-margin-bottom-0">
+        {% endif %}
+        {% if personalDetails.sex === 'F' or personalDetails.sex === 'M' %}
           {{ summaryListRow("Gender", "Male" if personalDetails.sex === 'M' else "Female", "gender") }}
-        </dl>
-      {% endif %}
-      {% if personalDetails.ethnicity and personalDetails.ethnicity !== 'NOT STATED' and personalDetails.ethnicity !== 'OTHER' and personalDetails.ethnicity !== 'Other' %}
-        <dl class="govuk-summary-list govuk-summary-list--no-border govuk-!-margin-bottom-0">
+        {% endif %}
+        {% if personalDetails.ethnicity and personalDetails.ethnicity !== 'NOT STATED' and personalDetails.ethnicity !== 'OTHER' and personalDetails.ethnicity !== 'Other' %}
           {{ summaryListRow("Ethnicity", personalDetails.ethnicity | title, "ethnicity") }}
-        </dl>
-      {% endif %}
-      {% if personalDetails.maritalStatus and personalDetails.maritalStatus !== 'NOT REQUIRED' and personalDetails.maritalStatus !== 'Refused or Unacceptable Ans.' %}
-        <dl class="govuk-summary-list govuk-summary-list--no-border govuk-!-margin-bottom-0">
+        {% endif %}
+        {% if personalDetails.maritalStatus and personalDetails.maritalStatus !== 'NOT REQUIRED' and personalDetails.maritalStatus !== 'Refused or Unacceptable Ans.' %}
           {{ summaryListRow("Marital status", personalDetails.maritalStatus | title, "maritalStatus") }}
-        </dl>
-      {% endif %}
-      {% if personalDetails.birthCountry and personalDetails.birthCountry !== 'UNKNOWN' and personalDetails.birthCountry !== 'OTHER' and personalDetails.birthCountry !== 'Other' %}
-        <dl class="govuk-summary-list govuk-summary-list--no-border govuk-!-margin-bottom-0">
+        {% endif %}
+        {% if personalDetails.birthCountry and personalDetails.birthCountry !== 'UNKNOWN' and personalDetails.birthCountry !== 'OTHER' and personalDetails.birthCountry !== 'Other' %}
           {{ summaryListRow("Country of birth", personalDetails.birthCountry | title, "birthCountry") }}
-        </dl>
-      {% endif %}
-      {% if personalDetails.nationality and personalDetails.nationality !== 'UNAVAILABALE' %}
-        <dl class="govuk-summary-list govuk-summary-list--no-border govuk-!-margin-bottom-0">
+        {% endif %}
+        {% if personalDetails.nationality and personalDetails.nationality !== 'UNAVAILABALE' %}
           {{ summaryListRow("Nationality", personalDetails.nationality | title, "nationality") }}
-        </dl>
-      {% endif %}
-      {% if personalDetails.religion and personalDetails.religion !== 'NON PERMITTED RELIGIONS' and personalDetails.religion !== 'OTHER NON PERMITTED RELIGION' %}
-        <dl class="govuk-summary-list govuk-summary-list--no-border govuk-!-margin-bottom-0">
+        {% endif %}
+        {% if personalDetails.religion and personalDetails.religion !== 'NON PERMITTED RELIGIONS' and personalDetails.religion !== 'OTHER NON PERMITTED RELIGION' %}
           {{ summaryListRow("Religion", personalDetails.religion | title, "religion") }}
-        </dl>
-      {% endif %}
-      <dl class="govuk-summary-list govuk-summary-list--no-border govuk-!-margin-bottom-0">
+        {% endif %}
         {{ summaryListRow("Prison number", personalDetails.prisonNumber, "prisonNumber") }}
-      </dl>
-      {% if personalDetails.paroleNumbers %}
-        <dl class="govuk-summary-list govuk-summary-list--no-border govuk-!-margin-bottom-0">
+        {% if personalDetails.paroleNumbers %}
           {{ summaryListRow("Parole numbers", personalDetails.paroleNumbers, "paroleNumbers") }}
-        </dl>
-      {% endif %}
-      {% if personalDetails.pncNumber %}
-        <dl class="govuk-summary-list govuk-summary-list--no-border govuk-!-margin-bottom-0">
+        {% endif %}
+        {% if personalDetails.pncNumber %}
           {{ summaryListRow("PNC number", personalDetails.pncNumber, "pncNumber") }}
-        </dl>
-      {% endif %}
-      {% if personalDetails.croNumber %}
-        <dl class="govuk-summary-list govuk-summary-list--no-border govuk-!-margin-bottom-0">
+        {% endif %}
+        {% if personalDetails.croNumber %}
           {{ summaryListRow("CRO number", personalDetails.croNumber, "croNumber") }}
-        </dl>
-      {% endif %}
+        {% endif %}
+      </dl>
     </div>
   </div>
 {%- endcall -%}

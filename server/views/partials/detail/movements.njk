@@ -1,0 +1,22 @@
+{% from "../../macros/summaryCardMacro.njk" import summaryCard %}
+{% from "../../macros/summaryListRow.njk" import summaryListRow %}
+
+{% if movements %}
+  {%- call summaryCard({title: "Movements", id: "movements"}) -%}
+    <div class="govuk-grid-row" data-qa="movements">
+      <div class="govuk-grid-column-full">
+        {% for movement in movements %}
+          <dl class="govuk-summary-list govuk-summary-list--no-border govuk-!-margin-bottom-0">
+            {{ summaryListRow("Date", movement.date | formatDate, "movementDate" + loop.index0) }}
+          </dl>
+          <dl class="govuk-summary-list govuk-summary-list--no-border govuk-!-margin-bottom-0">
+            {{ summaryListRow("Movement", ("OUT" if movement.type == 'D' else 'IN') + ' - ' + movement.movement | capitalize, "movement" + loop.index0) }}
+          </dl>
+          <dl class="govuk-summary-list">
+            {{ summaryListRow("Prison", movement.establishment | title | acronymsToUpperCase, "movementPrison" + loop.index0) }}
+          </dl>
+        {% endfor %}
+      </div>
+    </div>
+  {%- endcall -%}
+{% endif %}
