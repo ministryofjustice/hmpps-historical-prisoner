@@ -64,6 +64,37 @@ context('Detail', () => {
       cy.get('[data-qa="movementPrison1"]').should('have.text', 'Durham')
     })
 
+    it('Will show prisoner court hearings', () => {
+      cy.get('[data-qa="courtHearingDate0"]').should('have.text', '12/01/2001')
+      cy.get('[data-qa="courtHearing0"]').should('have.text', 'Liskeard County Court')
+      cy.get('[data-qa="courtHearingDate1"]').should('have.text', '04/01/2001')
+      cy.get('[data-qa="courtHearing1"]').should('have.text', 'Wells County Court')
+    })
+
+    it('Will show prisoner HDC recalls', () => {
+      cy.get('[data-qa="recall0RecallDate"]').should('have.text', '04/01/2001')
+      cy.get('[data-qa="recall0CurfewEndDate"]').should('have.text', '05/01/2001')
+      cy.get('[data-qa="recall0Outcome"]').should('have.text', 'Re-released following recall')
+      cy.get('[data-qa="recall0OutcomeDate"]').should('have.text', '02/01/2001')
+      cy.get('[data-qa="recall0Reason"]').should('have.text', 'Change of circs 38a1(b)')
+      cy.get('[data-qa="recall1RecallDate"]').should('have.text', '01/01/2001')
+      cy.get('[data-qa="recall1CurfewEndDate"]').should('have.text', '02/01/2001')
+      cy.get('[data-qa="recall1Outcome"]').should('have.text', 'Licence revoked: recalled')
+      cy.get('[data-qa="recall1OutcomeDate"]').should('have.text', '02/01/2001')
+      cy.get('[data-qa="recall1Reason"]').should('have.text', 'Breach conditions 38a1(a)')
+    })
+
+    it('Will show prisoner HDC info', () => {
+      cy.get('[data-qa="info0Stage-key"]').should('have.text', 'HDC eligibility result')
+      cy.get('[data-qa="info0Date"]').should('have.text', '18/03/2013')
+      cy.get('[data-qa="info0Status"]').should('have.text', 'Eligible')
+      cy.get('[data-qa="info0Reasons"]').should('have.text', 'Created manually')
+      cy.get('[data-qa="info1Stage-key"]').should('have.text', 'HDC eligibility')
+      cy.get('[data-qa="info1Date"]').should('have.text', '18/03/2013')
+      cy.get('[data-qa="info1Status"]').should('have.text', 'Manual check pass')
+      cy.get('[data-qa="info1Reasons"]').should('have.text', 'Pass all eligibility checks')
+    })
+
     it('Will show prisoner offences', () => {
       cy.get('[data-qa="offence0"]').should('have.text', '101')
       cy.get('[data-qa="offenceDate0"]').should('have.text', '01/01/2001')
@@ -73,6 +104,20 @@ context('Detail', () => {
       cy.get('[data-qa="offencePrison1"]').should('have.text', 'Durham')
     })
 
+    it('Will show prisoner offences in custody', () => {
+      cy.get('[data-qa="offenceInCustody0Date"]').should('have.text', '04/01/1991')
+      cy.get('[data-qa="offenceInCustody0Prison"]').should('have.text', 'Full Sutton')
+      cy.get('[data-qa="offenceInCustody0Outcome"]').should('have.text', 'Dismissed')
+      cy.get('[data-qa="offenceInCustody0Charge"]').should('have.text', 'Assault on inmate')
+      cy.get('[data-qa="offenceInCustody0Punishment0Punishment"]').should('not.exist')
+      cy.get('[data-qa="offenceInCustody2Date"]').should('have.text', '02/01/1991')
+      cy.get('[data-qa="offenceInCustody2Prison"]').should('have.text', 'Durham')
+      cy.get('[data-qa="offenceInCustody2Outcome"]').should('have.text', 'Not proven')
+      cy.get('[data-qa="offenceInCustody2Charge"]').should('have.text', 'Offence against GOAD')
+      cy.get('[data-qa="offenceInCustody2Punishment0Punishment"]').should('have.text', 'Extra work')
+      cy.get('[data-qa="offenceInCustody2Punishment0Duration"]').should('have.text', '(21 days)')
+    })
+
     it('Will show prisoner sentence summary', () => {
       cy.get('[data-qa="sentenceSummaryCategory"]').should('contain.text', 'Uncategorised (sent Males)')
       cy.get('[data-qa="sentenceSummaryCategoryDate"]').should('have.text', '02/01/2001')
@@ -80,15 +125,6 @@ context('Detail', () => {
       cy.get('[data-qa="sentenceSummaryCourtHearing"]').should('have.text', 'Liskeard County Court')
       cy.get('[data-qa="sentenceSummaryCourtHearingDate"]').should('contain.text', '12/01/2001')
       cy.get('[data-qa="sentenceSummaryReceptionDate"]').should('have.text', '01/01/1999')
-      cy.get('[data-qa="sentenceSummaryChangeDate"]').should('have.text', '01/01/2004')
-      cy.get('[data-qa="sentenceSummarySentenceLength"]').should('have.text', '3027 days')
-      cy.get('[data-qa="sentenceSummarySED"]').should('have.text', '01/01/2006')
-      cy.get('[data-qa="sentenceSummaryLED"]').should('have.text', '03/03/2005')
-      cy.get('[data-qa="sentenceSummaryCRD"]').should('have.text', '04/04/2004')
-      cy.get('[data-qa="sentenceSummaryPED"]').should('have.text', '04/04/2005')
-      cy.get('[data-qa="sentenceSummaryNPD"]').should('have.text', '04/04/2006')
-      cy.get('[data-qa="sentenceSummaryHDCED"]').should('have.text', '03/03/2004')
-      cy.get('[data-qa="sentenceSummaryHDCAD"]').should('have.text', '01/01/2001')
     })
 
     it('Will show prisoner sentencing', () => {

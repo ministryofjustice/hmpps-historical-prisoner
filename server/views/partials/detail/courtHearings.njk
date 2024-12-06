@@ -1,10 +1,21 @@
 {% from "../../macros/summaryCardMacro.njk" import summaryCard %}
 {% from "../../macros/summaryListRow.njk" import summaryListRow %}
+{% from "govuk/components/table/macro.njk" import govukTable %}
 
 {%- call summaryCard({title: "Court hearings", id: "court-hearings"}) -%}
-  <div class="govuk-grid-row" data-qa="hearings">
+  <div class="govuk-grid-row" data-qa="courtHearings">
     <div class="govuk-grid-column-full">
       {% if courtHearings %}
+        {% set courtRows = [] %}
+        {% for courtHearing in courtHearings %}
+          {% set attributeDate = { "data-qa": "courtHearingDate" + loop.index0 } %}
+          {% set attributeCourt = { "data-qa": "courtHearing" + loop.index0 } %}
+          {% set courtRows = (courtRows.push([
+            { text: courtHearing.date | formatDate, attributes: attributeDate },
+            { text: courtHearing.court | title | acronymsToUpperCase, attributes: attributeCourt }
+          ]), courtRows) %}
+        {% endfor %}
+        {{ govukTable({ head: [ { text: "Date" }, { text: "Court" } ], rows: courtRows }) }}
       {% else %}
         <p class="govuk-body" data-qa="noCourtHearings">No court hearings entered</p>
       {% endif %}
