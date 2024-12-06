@@ -26,24 +26,6 @@
           {% if summary.receptionDate %}
             {{ summaryListRow("Date of reception", summary.receptionDate | formatDate, "sentenceSummaryReceptionDate") }}
           {% endif %}
-          {% if sentenceSummary.effectiveSentence %}
-            {% set sentence = sentenceSummary.effectiveSentence %}
-            {% set effectiveSentenceHtml %}
-              <span data-qa="sentenceSummaryChangeDate">{{ sentence.changeDate | formatDate }}</span>
-              <br>
-              <span class="govuk-body" data-qa="sentenceSummarySentenceLength">{{ sentence.lengthDays }} days</span>
-              <dl class="govuk-summary-list govuk-summary-list--no-border">
-                {{ summaryListRow("SED", sentence.SED | formatDate, "sentenceSummarySED", { hideIfEmpty: "true" }) }}
-                {{ summaryListRow("LED", sentence.LED | formatDate, "sentenceSummaryLED", { hideIfEmpty: "true" }) }}
-                {{ summaryListRow("CRD", sentence.CRD | formatDate, "sentenceSummaryCRD", { hideIfEmpty: "true" }) }}
-                {{ summaryListRow("PED", sentence.PED | formatDate, "sentenceSummaryPED", { hideIfEmpty: "true" }) }}
-                {{ summaryListRow("NPD", sentence.NPD | formatDate, "sentenceSummaryNPD", { hideIfEmpty: "true" }) }}
-                {{ summaryListRow("HDCED", sentence.HDCED | formatDate, "sentenceSummaryHDCED", { hideIfEmpty: "true" }) }}
-                {{ summaryListRow("HDCAD", sentence.HDCAD | formatDate, "sentenceSummaryHDCAD", { hideIfEmpty: "true" }) }}
-              </dl>
-            {% endset %}
-            {{ summaryListRow("Effective sentence", effectiveSentenceHtml, "sentenceSummaryEffectiveSentence", { html: true }) }}
-          {% endif %}
         {% else %}
           <p class="govuk-body" data-qa="noSentenceSummary">No sentence summary entered</p>
         {% endif %}

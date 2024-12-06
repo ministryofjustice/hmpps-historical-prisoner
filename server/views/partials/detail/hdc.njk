@@ -5,6 +5,27 @@
   <div class="govuk-grid-row" data-qa="hdc">
     <div class="govuk-grid-column-full">
       {% if hdcRecall or hdcInfo %}
+        {% for recall in hdcRecall %}
+          <div class="section-divider">
+            {% set recallNo = "recall" + loop.index0 %}
+            {{ summaryListRow("Recall date", recall.createdDate | formatDate, recallNo + "RecallDate", { hideIfEmpty: "true" }) }}
+            {{ summaryListRow("Original curfew end date", recall.curfewEndDate | formatDate, recallNo + "CurfewEndDate", { hideIfEmpty: "true" }) }}
+            {{ summaryListRow("Outcome", recall.outcome, recallNo + "Outcome", { hideIfEmpty: "true" }) }}
+            {{ summaryListRow("Outcome date", recall.outcomeDate | formatDate, recallNo + "OutcomeDate", { hideIfEmpty: "true" }) }}
+            {{ summaryListRow("Reason", recall.reason | capitalize | acronymsToUpperCase, recallNo + "Reason", { hideIfEmpty: "true" }) }}
+          </div>
+        {% endfor %}
+        {% for info in hdcInfo %}
+          <div class="section-divider">
+            {% set infoNo = "info" + loop.index0 %}
+            {% set stageHtml %}
+              <span class="govuk-body" data-qa="{{ infoNo }}Status">{{ info.status | capitalize | acronymsToUpperCase }}</span>,
+              <span class="govuk-body" data-qa="{{ infoNo }}Date">{{ info.date | formatDate }}</span>
+            {% endset %}
+            {{ summaryListRow(info.stage | capitalize | acronymsToUpperCase, stageHtml, infoNo + "Stage", { html: true }) }}
+            {{ summaryListRow("Reasons", info.reasons | capitalize | acronymsToUpperCase, infoNo + "Reasons", { hideIfEmpty: "true" }) }}
+          </div>
+        {% endfor %}
       {% else %}
         <p class="govuk-body" data-qa="noHdc">No HDC history entered</p>
       {% endif %}
