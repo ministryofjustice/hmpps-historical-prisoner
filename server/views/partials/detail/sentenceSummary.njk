@@ -1,0 +1,51 @@
+{% from "../../macros/summaryCardMacro.njk" import summaryCard %}
+{% from "../../macros/summaryListRow.njk" import summaryListRow %}
+
+{% if sentenceSummary %}
+  {%- call summaryCard({title: "Sentence summary", id: "sentenceSummary"}) -%}
+    <div class="govuk-grid-row" data-qa="sentenceSummary">
+      <div class="govuk-grid-column-full">
+        <dl class="govuk-summary-list">
+          {% if sentenceSummary.category %}
+            {{ summaryListRow("Last recorded category",
+              (sentenceSummary.category.category | title | acronymsToUpperCase | safe) +
+            "<p class='govuk-body' data-qa='sentenceSummaryCategoryDate'>" + (sentenceSummary.category.date | formatDate) + "</span>",
+            "sentenceSummaryCategory", {html: true}) }}
+          {% endif %}
+          {% if sentenceSummary.establishment %}
+            {{ summaryListRow("Last recorded prison",
+              sentenceSummary.establishment | title | acronymsToUpperCase,
+              "sentenceSummaryPrison") }}
+          {% endif %}
+          {% if sentenceSummary.courtHearing %}
+            {{ summaryListRow("Court hearing",
+              (sentenceSummary.courtHearing.date | formatDate) +
+            "<p class='govuk-body' data-qa='sentenceSummaryCourtHearing'>" + (sentenceSummary.courtHearing.court | title | acronymsToUpperCase | safe) + "</p>",
+            "sentenceSummaryCourtHearingDate", {html: true}) }}
+          {% endif %}
+          {% if summary.receptionDate %}
+            {{ summaryListRow("Date of reception", summary.receptionDate | formatDate, "sentenceSummaryReceptionDate") }}
+          {% endif %}
+          {% if sentenceSummary.effectiveSentence %}
+            {% set sentence = sentenceSummary.effectiveSentence %}
+            {% set effectiveSentenceHtml %}
+              <span data-qa="sentenceSummaryChangeDate">{{ sentence.changeDate | formatDate }}</span>
+              <br>
+              <span class="govuk-body" data-qa="sentenceSummarySentenceLength">{{ sentence.lengthDays }} days</span>
+              <dl class="govuk-summary-list govuk-summary-list--no-border">
+                {{ summaryListRow("SED", sentence.SED | formatDate, "sentenceSummarySED", { hideIfEmpty: "true" }) }}
+                {{ summaryListRow("LED", sentence.LED | formatDate, "sentenceSummaryLED", { hideIfEmpty: "true" }) }}
+                {{ summaryListRow("CRD", sentence.CRD | formatDate, "sentenceSummaryCRD", { hideIfEmpty: "true" }) }}
+                {{ summaryListRow("PED", sentence.PED | formatDate, "sentenceSummaryPED", { hideIfEmpty: "true" }) }}
+                {{ summaryListRow("NPD", sentence.NPD | formatDate, "sentenceSummaryNPD", { hideIfEmpty: "true" }) }}
+                {{ summaryListRow("HDCED", sentence.HDCED | formatDate, "sentenceSummaryHDCED", { hideIfEmpty: "true" }) }}
+                {{ summaryListRow("HDCAD", sentence.HDCAD | formatDate, "sentenceSummaryHDCAD", { hideIfEmpty: "true" }) }}
+              </dl>
+            {% endset %}
+            {{ summaryListRow("Effective sentence", effectiveSentenceHtml, "sentenceSummaryEffectiveSentence", { html: true }) }}
+          {% endif %}
+        </dl>
+      </div>
+    </div>
+  {% endcall %}
+{% endif %}

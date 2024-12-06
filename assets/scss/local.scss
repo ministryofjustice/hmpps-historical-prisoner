@@ -1,3 +1,19 @@
 .govuk-main-wrapper {
   min-height: 600px;
 }
+
+.govuk-summary-list__row--hidden {
+  display: none;
+}
+
+.section-divider {
+  padding-top: 15px;
+  padding-bottom: 15px;
+  border-bottom: 3px solid $govuk-border-colour;
+}
+
+.govuk-summary-list__row {
+  .govuk-summary-list__key, .govuk-summary-list__value {
+    padding-bottom: 0;
+  }
+}
