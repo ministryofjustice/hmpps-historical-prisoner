@@ -58,7 +58,7 @@ const stubPrisonerSearchByAddress = () =>
     },
   })
 
-const stubPrisonerDetail = () =>
+const stubPrisonerDetail = (detail = prisonerDetail) =>
   stubFor({
     request: {
       method: 'GET',
@@ -69,7 +69,7 @@ const stubPrisonerDetail = () =>
       headers: {
         'Content-Type': 'application/json;charset=UTF-8',
       },
-      jsonBody: prisonerDetail,
+      jsonBody: detail,
     },
   })
 

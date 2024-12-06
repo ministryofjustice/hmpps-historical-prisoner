@@ -1,11 +1,11 @@
 {% from "../../macros/summaryCardMacro.njk" import summaryCard %}
 {% from "../../macros/summaryListRow.njk" import summaryListRow %}
 
-{% if sentenceSummary %}
-  {%- call summaryCard({title: "Sentence summary", id: "sentenceSummary"}) -%}
-    <div class="govuk-grid-row" data-qa="sentenceSummary">
-      <div class="govuk-grid-column-full">
-        <dl class="govuk-summary-list">
+{%- call summaryCard({title: "Sentence summary", id: "sentence-summary"}) -%}
+  <div class="govuk-grid-row" data-qa="sentenceSummary">
+    <div class="govuk-grid-column-full">
+      <dl class="govuk-summary-list">
+        {% if sentenceSummary %}
           {% if sentenceSummary.category %}
             {{ summaryListRow("Last recorded category",
               (sentenceSummary.category.category | title | acronymsToUpperCase | safe) +
@@ -44,8 +44,10 @@
             {% endset %}
             {{ summaryListRow("Effective sentence", effectiveSentenceHtml, "sentenceSummaryEffectiveSentence", { html: true }) }}
           {% endif %}
-        </dl>
-      </div>
+        {% else %}
+          <p class="govuk-body" data-qa="noSentenceSummary">No sentence summary entered</p>
+        {% endif %}
+      </dl>
     </div>
-  {% endcall %}
-{% endif %}
+  </div>
+{% endcall %}

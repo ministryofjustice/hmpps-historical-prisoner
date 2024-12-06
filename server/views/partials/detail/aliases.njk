@@ -2,22 +2,23 @@
 {% from "../../macros/summaryListRow.njk" import summaryListRow %}
 {% from "govuk/components/table/macro.njk" import govukTable %}
 
-{% if aliases %}
-  {% set aliasRows = [] %}
-  {% for alias in aliases %}
-    {% set attribute = { "data-qa": "alias" + loop.index0 } %}
-    {% set attributeDob = { "data-qa": "aliasDob" + loop.index0 } %}
-    {% set aliasRows = (aliasRows.push([
-        { text: (alias.first + " " + alias.middle + " " + alias.last) | title, attributes: attribute },
-        { text: alias.birthDate | formatDate, attributes: attributeDob }
-      ]), aliasRows) %}
-  {% endfor %}
-
-  {%- call summaryCard({title: "Aliases", id: "aliases"}) -%}
-    <div class="govuk-grid-row" data-qa="aliases">
-      <div class="govuk-grid-column-full">
+{%- call summaryCard({title: "Aliases", id: "aliases"}) -%}
+  <div class="govuk-grid-row" data-qa="aliases">
+    <div class="govuk-grid-column-full">
+      {% if aliases %}
+        {% set aliasRows = [] %}
+        {% for alias in aliases %}
+          {% set attribute = { "data-qa": "alias" + loop.index0 } %}
+          {% set attributeDob = { "data-qa": "aliasDob" + loop.index0 } %}
+          {% set aliasRows = (aliasRows.push([
+            { text: (alias.first + " " + alias.middle + " " + alias.last) | title, attributes: attribute },
+            { text: alias.birthDate | formatDate, attributes: attributeDob }
+          ]), aliasRows) %}
+        {% endfor %}
         {{ govukTable({ head: [ { text: "Alias" }, { text: "Date of birth" } ], rows: aliasRows }) }}
-      </div>
+      {% else %}
+        <p class="govuk-body" data-qa="noAliases">No aliases entered</p>
+      {% endif %}
     </div>
-  {%- endcall -%}
-{% endif %}
+  </div>
+{%- endcall -%}

@@ -1,0 +1,13 @@
+{% from "../../macros/summaryCardMacro.njk" import summaryCard %}
+{% from "../../macros/summaryListRow.njk" import summaryListRow %}
+
+{%- call summaryCard({title: "Offences in custody", id: "offences-in-custody"}) -%}
+  <div class="govuk-grid-row" data-qa="offencesInCustody">
+    <div class="govuk-grid-column-full">
+      {% if offencesInCustody %}
+      {% else %}
+        <p class="govuk-body" data-qa="noOffencesInCustody">No offences in custody entered</p>
+      {% endif %}
+    </div>
+  </div>
+{%- endcall -%}

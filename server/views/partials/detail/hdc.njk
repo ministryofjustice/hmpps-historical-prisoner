@@ -1,0 +1,13 @@
+{% from "../../macros/summaryCardMacro.njk" import summaryCard %}
+{% from "../../macros/summaryListRow.njk" import summaryListRow %}
+
+{%- call summaryCard({title: "HDC history", id: "hdc"}) -%}
+  <div class="govuk-grid-row" data-qa="hdc">
+    <div class="govuk-grid-column-full">
+      {% if hdcRecall or hdcInfo %}
+      {% else %}
+        <p class="govuk-body" data-qa="noHdc">No HDC history entered</p>
+      {% endif %}
+    </div>
+  </div>
+{%- endcall -%}
