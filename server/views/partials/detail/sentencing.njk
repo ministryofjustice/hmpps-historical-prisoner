@@ -1,34 +1,33 @@
 {% from "../../macros/summaryCardMacro.njk" import summaryCard %}
 {% from "../../macros/summaryListRow.njk" import summaryListRow %}
 
-{% if sentencing %}
-  {%- call summaryCard({title: "Sentence history", id: "sentencing"}) -%}
-    <div class="govuk-grid-row" data-qa="sentences">
-      <div class="govuk-grid-column-full">
-        <dl class="govuk-summary-list govuk-summary-list--no-border">
-          {% for sentence in sentencing %}
-            {% if not loop.last %}
-              <div class="section-divider">
-                {% set sentenceNo = "sentence" + loop.index0 %}
-                {% set effectiveSentenceHtml %}
-                  <span class="govuk-body"
-                        data-qa="{{ sentenceNo }}ChangeDate">{{ sentence.changeDate | formatDate }}</span>
-                  <br>
-                  <span class="govuk-body" data-qa="{{ sentenceNo }}SentenceLength">{{ sentence.lengthDays }} days</span>
-                {% endset %}
-                {{ summaryListRow("Effective sentence", effectiveSentenceHtml, sentenceNo + "EffectiveSentence", { html: true }) }}
-                {{ summaryListRow("SED", sentence.SED | formatDate, sentenceNo + "SED", { hideIfEmpty: "true" }) }}
-                {{ summaryListRow("LED", sentence.LED | formatDate, sentenceNo + "LED", { hideIfEmpty: "true" }) }}
-                {{ summaryListRow("CRD", sentence.CRD | formatDate, sentenceNo + "CRD", { hideIfEmpty: "true" }) }}
-                {{ summaryListRow("PED", sentence.PED | formatDate, sentenceNo + "PED", { hideIfEmpty: "true" }) }}
-                {{ summaryListRow("NPD", sentence.NPD | formatDate, sentenceNo + "NPD", { hideIfEmpty: "true" }) }}
-                {{ summaryListRow("HDCED", sentence.HDCED | formatDate, sentenceNo + "HDCED", { hideIfEmpty: "true" }) }}
-                {{ summaryListRow("HDCAD", sentence.HDCAD | formatDate, sentenceNo + "HDCAD", { hideIfEmpty: "true" }) }}
-              </div>
-            {% endif %}
-          {% endfor %}
-        </dl>
-      </div>
+{%- call summaryCard({title: "Sentence history", id: "sentencing"}) -%}
+  <div class="govuk-grid-row" data-qa="sentences">
+    <div class="govuk-grid-column-full">
+      <dl class="govuk-summary-list govuk-summary-list--no-border">
+        {% for sentence in sentencing %}
+          <div class="section-divider">
+            {% set sentenceNo = "sentence" + loop.index0 %}
+            {% set effectiveSentenceHtml %}
+              <span class="govuk-body"
+                    data-qa="{{ sentenceNo }}ChangeDate">{{ sentence.changeDate | formatDate }}</span>
+              <br>
+              <span class="govuk-body" data-qa="{{ sentenceNo }}SentenceLength">{{ sentence.lengthDays }} days</span>
+            {% endset %}
+            {{ summaryListRow("Effective sentence", effectiveSentenceHtml, sentenceNo + "EffectiveSentence", { html: true }) }}
+            {{ summaryListRow("SED", sentence.SED | formatDate, sentenceNo + "SED", { hideIfEmpty: "true" }) }}
+            {{ summaryListRow("LED", sentence.LED | formatDate, sentenceNo + "LED", { hideIfEmpty: "true" }) }}
+            {{ summaryListRow("CRD", sentence.CRD | formatDate, sentenceNo + "CRD", { hideIfEmpty: "true" }) }}
+            {{ summaryListRow("PED", sentence.PED | formatDate, sentenceNo + "PED", { hideIfEmpty: "true" }) }}
+            {{ summaryListRow("NPD", sentence.NPD | formatDate, sentenceNo + "NPD", { hideIfEmpty: "true" }) }}
+            {{ summaryListRow("HDCED", sentence.HDCED | formatDate, sentenceNo + "HDCED", { hideIfEmpty: "true" }) }}
+            {{ summaryListRow("HDCAD", sentence.HDCAD | formatDate, sentenceNo + "HDCAD", { hideIfEmpty: "true" }) }}
+          </div>
+        {% endfor %}
+        {% if not sentencing %}
+          <p class="govuk-body" data-qa="noSentences">No sentences entered</p>
+        {% endif %}
+      </dl>
     </div>
-  {% endcall %}
-{% endif %}
+  </div>
+{% endcall %}

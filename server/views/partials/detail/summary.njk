@@ -5,7 +5,6 @@
   <div class="govuk-grid-row" data-qa="summary">
     <div class="govuk-grid-column-full">
       <dl class="govuk-summary-list">
-
         {% if summary.dob %}
           {{ summaryListRow("Date of birth", (summary.dob | formatDate) + " (" + summary.dob | getAge + " years)", "dob") }}
         {% endif %}

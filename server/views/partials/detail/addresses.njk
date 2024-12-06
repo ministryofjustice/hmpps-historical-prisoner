@@ -1,0 +1,40 @@
+{% from "../../macros/summaryCardMacro.njk" import summaryCard %}
+{% from "../../macros/summaryListRow.njk" import summaryListRow %}
+
+{%- call summaryCard({title: "Addresses", id: "addresses"}) -%}
+  <div class="govuk-grid-row" data-qa="addresses">
+    <div class="govuk-grid-column-full">
+      <dl class="govuk-summary-list govuk-summary-list--no-border">
+        {% for address in addresses %}
+          <div class="section-divider">
+            {% set addressNo = "address" + loop.index0 %}
+            {% set addressHtml %}
+              {% if address.person %}
+                <span class="govuk-body"
+                      data-qa="{{ addressNo }}Person">{{ address.person | title | acronymsToUpperCase }}</span>
+                <br>
+              {% endif %}
+              {% if address.street %}
+                <span class="govuk-body"
+                      data-qa="{{ addressNo }}Street">{{ address.street | title | acronymsToUpperCase }}</span>
+                <br>
+              {% endif %}
+              {% if address.town %}
+                <span class="govuk-body" data-qa="{{ addressNo }}Town">{{ address.town | title }}</span>
+                <br>
+              {% endif %}
+              {% if address.county %}
+                <span class="govuk-body" data-qa="{{ addressNo }}County">{{ address.county | title }}</span>
+              {% endif %}
+            {% endset %}
+            {{ summaryListRow("Address", addressHtml, addressNo + "address", { html: true }) }}
+            {{ summaryListRow("Type of address", address.type | title, addressNo + "Type", { hideIfEmpty: "true" }) }}
+          </div>
+        {% endfor %}
+        {% if not addresses %}
+          <p class="govuk-body" data-qa="noAddresses">No addresses entered</p>
+        {% endif %}
+      </dl>
+    </div>
+  </div>
+{% endcall %}

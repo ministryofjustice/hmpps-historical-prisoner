@@ -11,7 +11,7 @@ context('Detail', () => {
     Page.verifyOnPage(Disclaimer).confirmDisclaimer()
   })
 
-  describe('Will show all sections', () => {
+  describe('Will show all sections with data', () => {
     beforeEach(() => {
       cy.task('stubPrisonerDetail')
       cy.visit('/detail/A1234BC')
@@ -40,6 +40,19 @@ context('Detail', () => {
       cy.get('[data-qa="aliasDob0"]').should('have.text', '01/01/1980')
       cy.get('[data-qa="alias1"]').should('have.text', 'Otherb B Aliasb')
       cy.get('[data-qa="aliasDob1"]').should('have.text', '02/01/1980')
+    })
+
+    it('Will show prisoner addresses', () => {
+      cy.get('[data-qa="address0Type"]').should('have.text', 'Other')
+      cy.get('[data-qa="address0Person"]').should('have.text', 'First Lasta')
+      cy.get('[data-qa="address0Street"]').should('have.text', '1, Street Road')
+      cy.get('[data-qa="address0Town"]').should('have.text', 'Town A')
+      cy.get('[data-qa="address0County"]').should('have.text', 'Merseyside')
+      cy.get('[data-qa="address1Type"]').should('have.text', 'Unknown')
+      cy.get('[data-qa="address1Person"]').should('not.exist')
+      cy.get('[data-qa="address1Street"]').should('not.exist')
+      cy.get('[data-qa="address1Town"]').should('have.text', 'Town B')
+      cy.get('[data-qa="address1County"]').should('have.text', 'Merseyside')
     })
 
     it('Will show prisoner movements', () => {
@@ -97,6 +110,67 @@ context('Detail', () => {
       cy.get('[data-qa="sentence1NPD"]').should('not.exist')
       cy.get('[data-qa="sentence1HDCED"]').should('not.exist')
       cy.get('[data-qa="sentence1HDCAD"]').should('not.exist')
+    })
+  })
+
+  describe('Will show all sections with no data', () => {
+    beforeEach(() => {
+      cy.task('stubPrisonerDetail', { summary: { prisonNumber: 'AB111111', lastName: 'SURNAMEA' } })
+      cy.visit('/detail/A1234BC')
+    })
+
+    it('Will show prisoner detail', () => {
+      Page.verifyOnPageWithTitleParam(DetailPage, 'SURNAMEA')
+    })
+
+    it('Will show prisoner summary', () => {
+      cy.get('[data-qa="dob"]').should('not.exist')
+      cy.get('[data-qa="gender"]').should('not.exist')
+      cy.get('[data-qa="ethnicity"]').should('not.exist')
+      cy.get('[data-qa="birthCountry"]').should('not.exist')
+      cy.get('[data-qa="maritalStatus"]').should('not.exist')
+      cy.get('[data-qa="nationality"]').should('not.exist')
+      cy.get('[data-qa="religion"]').should('not.exist')
+      cy.get('[data-qa="prisonNumber"]').should('have.text', 'AB111111')
+      cy.get('[data-qa="paroleNumbers"]').should('not.exist')
+      cy.get('[data-qa="pncNumber"]').should('not.exist')
+      cy.get('[data-qa="croNumber"]').should('not.exist')
+    })
+
+    it('Will not show prisoner addresses', () => {
+      cy.get('[data-qa="noAddresses"]').should('exist')
+    })
+
+    it('Will not show prisoner aliases', () => {
+      cy.get('[data-qa="noAliases"]').should('exist')
+    })
+
+    it('Will not show court hearings', () => {
+      cy.get('[data-qa="noCourtHearings"]').should('exist')
+    })
+
+    it('Will not show hdc history', () => {
+      cy.get('[data-qa="noHdc"]').should('exist')
+    })
+
+    it('Will not show prisoner movements', () => {
+      cy.get('[data-qa="noMovements"]').should('exist')
+    })
+
+    it('Will not show prisoner offences', () => {
+      cy.get('[data-qa="noOffences"]').should('exist')
+    })
+
+    it('Will not show prisoner offences in custody', () => {
+      cy.get('[data-qa="noOffencesInCustody"]').should('exist')
+    })
+
+    it('Will not show prisoner sentence summary', () => {
+      cy.get('[data-qa="noSentenceSummary"]').should('exist')
+    })
+
+    it('Will not show prisoner sentencing', () => {
+      cy.get('[data-qa="noSentences"]').should('exist')
     })
   })
 })
