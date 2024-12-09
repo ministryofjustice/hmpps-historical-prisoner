@@ -9,7 +9,7 @@ parameters:
     default: dps-releases
   node-version:
     type: string
-    default: 22.11-browsers
+    default: 22.12-browsers
 
 jobs:
   build:
@@ -73,7 +73,7 @@ jobs:
           key: dependency-cache-{{ checksum "package-lock.json" }}
       - run:
           name: Get wiremock
-          command: curl -o wiremock.jar https://repo1.maven.org/maven2/org/wiremock/wiremock-standalone/3.9.2/wiremock-standalone-3.9.2.jar
+          command: curl -o wiremock.jar https://repo1.maven.org/maven2/org/wiremock/wiremock-standalone/3.10.0/wiremock-standalone-3.10.0.jar
       - run:
           name: Run wiremock
           command: java -jar wiremock.jar --port 9091
