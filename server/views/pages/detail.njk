@@ -6,6 +6,7 @@
 {% set pageTitle = "Details" %}
 
 {% set mainClasses = "app-container govuk-body" %}
+{% set bodyAttributes = {'data-page': 'detail'} %}
 
 {% block content %}
   <div class="govuk-grid-row govuk-body">
@@ -81,5 +82,5 @@
       </div>
     </div>
   </div>
-
+  {% include "../partials/backToTop.njk" %}
 {% endblock %}
