@@ -209,4 +209,22 @@ context('Detail', () => {
       cy.get('[data-qa="noSentences"]').should('exist')
     })
   })
+
+  context('Back to top', () => {
+    beforeEach(() => {
+      cy.task('stubPrisonerDetail')
+      cy.visit('/detail/A1234BC')
+    })
+
+    it('Does not display the back to top link initially', () => {
+      const page = Page.verifyOnPageWithTitleParam(DetailPage, 'Firsta Middlea SURNAMEA')
+      page.backToTopLinkHidden().should('exist')
+    })
+
+    it('Displays the back to top link after scrolling down', () => {
+      const page = Page.verifyOnPageWithTitleParam(DetailPage, 'Firsta Middlea SURNAMEA')
+      cy.get('.connect-dps-common-footer').scrollTo('bottom', { ensureScrollable: false })
+      page.backToTopLink().should('be.visible')
+    })
+  })
 })
