@@ -27,9 +27,9 @@
           {{ summaryListRow("Religion", summary.religion | title, "religion") }}
         {% endif %}
         {{ summaryListRow("Prison number", summary.prisonNumber, "prisonNumber") }}
-        {{ summaryListRow("Parole numbers", summary.paroleNumbers, "paroleNumbers", { hideIfEmpty: "true" }) }}
-        {{ summaryListRow("PNC number", summary.pncNumber, "pncNumber", { hideIfEmpty: "true" }) }}
-        {{ summaryListRow("CRO number", summary.croNumber, "croNumber", { hideIfEmpty: "true" }) }}
+        {{ summaryListRow("Parole reference(s)", summary.paroleNumbers, "paroleNumbers", { hideIfEmpty: "true" }) }}
+        {{ summaryListRow("PNC", summary.pncNumber, "pncNumber", { hideIfEmpty: "true" }) }}
+        {{ summaryListRow("CRO", summary.croNumber, "croNumber", { hideIfEmpty: "true" }) }}
       </dl>
     </div>
   </div>

@@ -6,7 +6,7 @@
     <div class="govuk-grid-column-full">
       {% if hdcRecall or hdcInfo %}
         {% for recall in hdcRecall %}
-          <div class="section-divider">
+          <div class="section-divider{{ "-bottom" if loop.last else "" }}">
             {% set recallNo = "recall" + loop.index0 %}
             {{ summaryListRow("Recall date", recall.createdDate | formatDate, recallNo + "RecallDate", { hideIfEmpty: "true" }) }}
             {{ summaryListRow("Original curfew end date", recall.curfewEndDate | formatDate, recallNo + "CurfewEndDate", { hideIfEmpty: "true" }) }}
@@ -16,7 +16,7 @@
           </div>
         {% endfor %}
         {% for info in hdcInfo %}
-          <div class="section-divider">
+          <div class="section-divider{{ "-bottom" if loop.last else "" }}">
             {% set infoNo = "info" + loop.index0 %}
             {% set stageHtml %}
               <span class="govuk-body" data-qa="{{ infoNo }}Status">{{ info.status | capitalize | acronymsToUpperCase }}</span>,

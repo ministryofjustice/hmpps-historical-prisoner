@@ -12,6 +12,11 @@
   border-bottom: 3px solid $govuk-border-colour;
 }
 
+.section-divider-bottom {
+  padding-top: 15px;
+  padding-bottom: 15px;
+}
+
 .govuk-summary-list__row {
   .govuk-summary-list__key, .govuk-summary-list__value {
     padding-bottom: 0;
