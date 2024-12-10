@@ -1,4 +1,4 @@
-import acronymsToUpperCase from './textHelpers'
+import { acronymsToUpperCase, spaceHyphens } from './textHelpers'
 
 describe('acronymsToUpperCase', () => {
   it.each([
@@ -13,5 +13,15 @@ describe('acronymsToUpperCase', () => {
     ['Acronyms in the middle', 'This ARD is an acronym.', 'This ARD is an acronym.'],
   ])('%s acronymsToUpperCase(%s, %s)', (_: string, a: string, expected: string) => {
     expect(acronymsToUpperCase(a)).toEqual(expected)
+  })
+})
+
+describe('spaceHyphens', () => {
+  it.each([
+    ['Empty string', '', ''],
+    ['No hyphens', 'This is a test sentence.', 'This is a test sentence.'],
+    ['Single hyphen', 'This-is-a-test.', 'This - is - a - test.'],
+  ])('%s spaceHyphens(%s, %s)', (_: string, a: string, expected: string) => {
+    expect(spaceHyphens(a)).toEqual(expected)
   })
 })

@@ -12,7 +12,7 @@
           {{ summaryListRow("Gender", "Male" if summary.sex === 'M' else "Female", "gender") }}
         {% endif %}
         {% if summary.ethnicity and summary.ethnicity !== 'NOT STATED' and summary.ethnicity !== 'OTHER' and summary.ethnicity !== 'Other' %}
-          {{ summaryListRow("Ethnicity", summary.ethnicity | title, "ethnicity") }}
+          {{ summaryListRow("Ethnicity", summary.ethnicity | spaceHyphens | title, "ethnicity") }}
         {% endif %}
         {% if summary.maritalStatus and summary.maritalStatus !== 'NOT REQUIRED' and summary.maritalStatus !== 'Refused or Unacceptable Ans.' %}
           {{ summaryListRow("Marital status", summary.maritalStatus | title, "maritalStatus") }}
