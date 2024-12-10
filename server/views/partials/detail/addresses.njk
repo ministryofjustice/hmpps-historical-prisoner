@@ -6,7 +6,7 @@
     <div class="govuk-grid-column-full">
       <dl class="govuk-summary-list govuk-summary-list--no-border">
         {% for address in addresses %}
-          <div class="section-divider">
+          <div class="section-divider{{ "-bottom" if loop.last else "" }}">
             {% set addressNo = "address" + loop.index0 %}
             {% set addressHtml %}
               {% if address.person %}

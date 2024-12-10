@@ -5,7 +5,7 @@
   <div class="govuk-grid-row" data-qa="offencesInCustody">
     <div class="govuk-grid-column-full">
       {% for offence in offencesInCustody %}
-        <div class="section-divider">
+        <div class="section-divider{{ "-bottom" if loop.last else "" }}">
           {% set offenceNo = "offenceInCustody" + loop.index0 %}
           {{ summaryListRow("Date", offence.date | formatDate, offenceNo + "Date", { hideIfEmpty: "true" }) }}
           {{ summaryListRow("Prison", offence.establishment | title | acronymsToUpperCase, offenceNo + "Prison", { hideIfEmpty: "true" }) }}
