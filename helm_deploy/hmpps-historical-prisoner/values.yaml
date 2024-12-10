@@ -23,6 +23,14 @@ generic-service:
       SecAction "id:900200,phase:1,nolog,pass,t:none,setvar:tx.allowed_methods=GET HEAD POST OPTIONS,setvar:tx.paranoia_level=3"
       # Searching for prisoners gives Invalid character in request (outside of printable chars below ascii 127) so remove
       SecRuleRemoveById 920272
+      # Allow 1c in request cookie and csrf for SQL Injection Attack Detected via libinjection
+      SecRuleUpdateTargetById 942100 "!ARGS:_csrf"
+      SecRuleUpdateTargetById 942100 "!REQUEST_COOKIES:/connect.sid/"
+      SecRuleUpdateTargetById 942100 "!REQUEST_COOKIES:/hmpps-historical-prisoner.session/"
+      # Allow -- in session cookie and csrf for SQL Comment Sequence Detected
+      SecRuleUpdateTargetById 942440 "!ARGS:_csrf"
+      SecRuleUpdateTargetById 942440 "!REQUEST_COOKIES:/connect.sid/"
+      SecRuleUpdateTargetById 942440 "!REQUEST_COOKIES:/hmpps-historical-prisoner.session/"
       # Change default denial to be a 406 so that we can tell easily that it is modsecurity doing the blocking
       SecRuleUpdateActionById 949110 "t:none,deny,status:406,logdata:%{SERVER_NAME}"
       SecRuleUpdateActionById 959100 "t:none,deny,status:406,logdata:%{SERVER_NAME}"
