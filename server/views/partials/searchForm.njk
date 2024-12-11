@@ -44,6 +44,7 @@
     },
     items: [
       {
+        id: "dobDay",
         name: "dobDay",
         label: "Day",
         value: form.dobDay,
@@ -51,6 +52,7 @@
         errorMessage: errors | findError('dobDay')
       },
       {
+        id: "dobMonth",
         name: "dobMonth",
         label: "Month",
         value: form.dobMonth,
@@ -58,6 +60,7 @@
         errorMessage: errors | findError('dobMonth')
       },
       {
+        id: "dobYear",
         name: "dobYear",
         label: "Year",
         classes: "govuk-input--width-4",
@@ -70,6 +73,7 @@
     id: "age",
     name: "age",
     value: form.age,
+    errorMessage: errors | findError('age'),
     classes: "govuk-input",
     label: {
       text: "Or, enter an age or age range"
@@ -119,6 +123,7 @@
     id: "address",
     name: "address",
     value: form.address,
+    errorMessage: errors | findError('address'),
     classes: "govuk-input",
     label: {
       text: "Enter any combination of street, town, postcode, eg"

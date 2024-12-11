@@ -1,10 +1,8 @@
 import { PrisonerSearchForm } from 'express-session'
 import HmppsError from '../../interfaces/HmppsError'
 
-const MAX_AGE_RANGE = 10
-
 export function isAlphabetic(field: string) {
-  return /^[A-Za-z']+$/.test(field)
+  return /^[A-Za-z']*$/.test(field)
 }
 
 function validateNameData(form: PrisonerSearchForm, errors: HmppsError[]) {
