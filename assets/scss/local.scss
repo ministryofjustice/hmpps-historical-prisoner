@@ -2,6 +2,7 @@
   min-height: 600px;
 }
 
+<<<<<<< Updated upstream
 .govuk-summary-list__row--hidden {
   display: none;
 }
@@ -21,4 +22,12 @@
   .govuk-summary-list__key, .govuk-summary-list__value {
     padding-bottom: 0;
   }
+}
+
+.no-prisoners {
+  text-align: center;
+  margin-top: 100px;
+  padding-top: 260px;
+  color: #6f777b;
+  background: url(/assets/images/prison-cell.png) top center no-repeat;
 }
