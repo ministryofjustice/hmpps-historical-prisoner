@@ -134,12 +134,12 @@ export default class SearchController {
 
   private static toPrisonersByName(form: PrisonerSearchForm): FindPrisonersByName {
     const hasDateField = form.dobDay && form.dobMonth && form.dobYear
-    const month = form.dobMonth.length < 2 ? `0${form.dobMonth}` : form.dobMonth
-    const day = form.dobDay.length < 2 ? `0${form.dobDay}` : form.dobDay
     return {
       forename: form.firstName,
       surname: form.lastName,
-      dateOfBirth: hasDateField ? [form.dobYear, month, day].join('-') : undefined,
+      dateOfBirth: hasDateField
+        ? [form.dobYear, form.dobMonth.padStart(2, '0'), form.dobDay.padStart(2, '0')].join('-')
+        : undefined,
       ageFrom: Number(form.age?.split('-')[0]) || Number(form.age) || undefined,
       ageTo: Number(form.age?.split('-')[1]) || undefined,
 

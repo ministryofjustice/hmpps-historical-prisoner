@@ -138,7 +138,69 @@ context('FormValidation', () => {
     searchPage.errorBlock().should('contain.text', 'Please enter a value for the address field')
   })
 
-  it('Will show an error if attempt to submit the address form with only one word', () => {
+  it('Will show an error if attempt to submit the first name form with invalid characters', () => {
+    const searchPage = Page.verifyOnPage(Search)
+    searchPage.firstName().type('dfg4')
+    searchPage.doSearch()
+    searchPage.errorBlock().should('exist')
+    searchPage.errorBlock().should('contain.text', 'First Name must not contain space, numbers or special characters')
+  })
+
+  it('Will show an error if attempt to submit the last name form with invalid characters', () => {
+    const searchPage = Page.verifyOnPage(Search)
+    searchPage.lastName().type('dfg4')
+    searchPage.doSearch()
+    searchPage.errorBlock().should('exist')
+    searchPage.errorBlock().should('contain.text', 'Last Name must not contain space, numbers or special characters')
+  })
+
+  it('Will show an error if attempt to submit the dob with missing day', () => {
+    const searchPage = Page.verifyOnPage(Search)
+    searchPage.dobMonth().type('12')
+    searchPage.dobYear().type('1984')
+    searchPage.doSearch()
+    searchPage.errorBlock().should('exist')
+    searchPage.errorBlock().should('contain.text', 'Enter a valid date of birth in the format DD/MM/YYYY')
+  })
+
+  it('Will show an error if attempt to submit the dob with missing month', () => {
+    const searchPage = Page.verifyOnPage(Search)
+    searchPage.dobDay().type('25')
+    searchPage.dobYear().type('1984')
+    searchPage.doSearch()
+    searchPage.errorBlock().should('exist')
+    searchPage.errorBlock().should('contain.text', 'Enter a valid date of birth in the format DD/MM/YYYY')
+  })
+
+  it('Will show an error if attempt to submit the dob with missing year', () => {
+    const searchPage = Page.verifyOnPage(Search)
+    searchPage.dobDay().type('25')
+    searchPage.dobDay().type('12')
+    searchPage.doSearch()
+    searchPage.errorBlock().should('exist')
+    searchPage.errorBlock().should('contain.text', 'Enter a valid date of birth in the format DD/MM/YYYY')
+  })
+  it('Will show an error if attempt to submit the dob with invalid characters', () => {
+    const searchPage = Page.verifyOnPage(Search)
+    searchPage.dobDay().type('et')
+    searchPage.dobDay().type('12')
+    searchPage.dobYear().type('1984')
+    searchPage.doSearch()
+    searchPage.errorBlock().should('exist')
+    searchPage.errorBlock().should('contain.text', 'Enter a valid date of birth in the format DD/MM/YYYY')
+  })
+
+  it('Will show an error if attempt to submit the dob with an invalid date', () => {
+    const searchPage = Page.verifyOnPage(Search)
+    searchPage.dobDay().type('31')
+    searchPage.dobDay().type('11')
+    searchPage.dobYear().type('1984')
+    searchPage.doSearch()
+    searchPage.errorBlock().should('exist')
+    searchPage.errorBlock().should('contain.text', 'Enter a valid date of birth in the format DD/MM/YYYY')
+  })
+
+  it('Will show an error if attempt to submit an address with only one word', () => {
     const searchPage = Page.verifyOnPage(Search)
     searchPage.searchSelectRadioButton('Other').click()
     searchPage.address().type('Hill')

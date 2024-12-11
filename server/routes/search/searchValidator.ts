@@ -1,5 +1,6 @@
 import { PrisonerSearchForm } from 'express-session'
 import HmppsError from '../../interfaces/HmppsError'
+import dateOfBirthValidator from '../../utils/dateOfBirthValidator'
 
 export function isAlphabetic(field: string) {
   return /^[A-Za-z']*$/.test(field)
@@ -14,13 +15,17 @@ function validateNameData(form: PrisonerSearchForm, errors: HmppsError[]) {
   }
   if (!isAlphabetic(form.firstName)) {
     errors.push({ href: '#firstName', text: 'First Name must not contain space, numbers or special characters' })
+    return
   }
 
   if (!isAlphabetic(form.lastName)) {
-    errors.push({ href: '#lastName', text: "Last Name mustn't contain space, numbers or special characters" })
+    errors.push({ href: '#lastName', text: 'Last Name must not contain space, numbers or special characters' })
+    return
   }
-
-  // TODO validate date of birth
+  const dobError = dateOfBirthValidator(form.dobDay, form.dobMonth, form.dobYear)
+  if (dobError) {
+    errors.push({ href: '#dobDay', text: dobError })
+  }
 
   // TODO validate age
 }
