@@ -4,6 +4,7 @@ import HistoricalPrisonerService from '../../services/historicalPrisonerService'
 import logger from '../../../logger'
 import AuditService, { Page } from '../../services/auditService'
 import trimForm from '../../utils/trim'
+import searchValidator from './searchValidator'
 
 import {
   FindPrisonersByAddress,
@@ -57,19 +58,27 @@ export default class SearchController {
 
   async postSearch(req: Request, res: Response): Promise<void> {
     logger.debug('post search /')
-    // TODO Validate form
     req.session.searchParams ??= {}
 
     req.session.prisonerSearchForm = { ...trimForm(req.body) }
     logger.debug('search form is', req.session.prisonerSearchForm)
 
-    const pagedResults: PagedModelPrisonerSearchDto = await this.doSearch(req, res)
+    const errors = searchValidator(req.session.prisonerSearchForm)
 
+    if (errors.length) {
+      return res.render('pages/search', {
+        form: req.session.prisonerSearchForm,
+        errors,
+      })
+    }
+
+    const pagedResults: PagedModelPrisonerSearchDto = await this.doSearch(req, res)
     const paginationParams = this.getPaginationParams(req, pagedResults.page)
     return res.render('pages/search', {
       searchResults: pagedResults.content,
       form: req.session.prisonerSearchForm,
       paginationParams,
+      errors,
     })
   }
 
@@ -109,7 +118,7 @@ export default class SearchController {
   getPaginationParams(req: Request, page: PageMetaData): LegacyPagination {
     // const filters = req.session.searchParams.filters ? `&filters=${req.session.searchParams.filters}` : ''
     // const paginationUrlPrefix = `/search/results?${filters}&`
-    const paginationUrlPrefix = `/search?`
+    const paginationUrlPrefix = `/search/results?`
 
     const paginationParams = pagination(
       page.number + 1,
@@ -124,11 +133,13 @@ export default class SearchController {
   }
 
   private static toPrisonersByName(form: PrisonerSearchForm): FindPrisonersByName {
-    const hasDateField = form['dob-day'] && form['dob-month'] && form['dob-year']
+    const hasDateField = form.dobDay && form.dobMonth && form.dobYear
+    const month = form.dobMonth.length < 2 ? `0${form.dobMonth}` : form.dobMonth
+    const day = form.dobDay.length < 2 ? `0${form.dobDay}` : form.dobDay
     return {
       forename: form.firstName,
       surname: form.lastName,
-      dateOfBirth: hasDateField ? [form['dob-year'], form['dob-month'], form['dob-day']].join('-') : undefined,
+      dateOfBirth: hasDateField ? [form.dobYear, month, day].join('-') : undefined,
       ageFrom: Number(form.age?.split('-')[0]) || Number(form.age) || undefined,
       ageTo: Number(form.age?.split('-')[1]) || undefined,
 
@@ -144,7 +155,7 @@ export default class SearchController {
       pnc: form.pncNumber,
       cro: form.croNumber,
 
-      gender: null,
+      gender: undefined,
       hdc: form.hdc,
       lifer: form.lifer,
     }
@@ -154,7 +165,7 @@ export default class SearchController {
     return {
       addressTerms: form.address,
 
-      gender: null,
+      gender: undefined,
       hdc: form.hdc,
       lifer: form.lifer,
     }
