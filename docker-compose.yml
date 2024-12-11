@@ -40,5 +40,25 @@ services:
       - INGRESS_URL=http://localhost:3000
       - NO_HTTPS=true
 
+  gotenberg:
+    image: gotenberg/gotenberg:8.14.1
+    networks:
+      - hmpps
+    container_name: gotenberg
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    ports:
+      - "3001:3000"
+    command:
+      - "gotenberg"
+      - "--chromium-ignore-certificate-errors"
+      - "--pdfengines-merge-engines=pdftk"
+      - "--libreoffice-disable-routes"
+      - "--webhook-disable"
+      - "--prometheus-disable-collect"
+    restart: always
+    healthcheck:
+      test: [ 'CMD', 'curl', '-f', 'http://localhost:3001/health' ]
+
 networks:
   hmpps:
