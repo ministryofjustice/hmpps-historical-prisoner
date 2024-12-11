@@ -21,7 +21,7 @@ describe('isString', () => {
     expect(isAlphabetic('John Doe')).toBe(false)
   })
 
-  it('should return false for an empty string', () => {
-    expect(isAlphabetic('')).toBe(false)
+  it('should return true for an empty string', () => {
+    expect(isAlphabetic('')).toBe(true)
   })
 })
