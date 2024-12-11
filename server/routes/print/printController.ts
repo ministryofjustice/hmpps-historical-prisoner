@@ -3,6 +3,7 @@ import HistoricalPrisonerService from '../../services/historicalPrisonerService'
 import AuditService from '../../services/auditService'
 import HmppsError from '../../interfaces/HmppsError'
 import AbstractDetailController from '../detail/abstractDetailController'
+import config from '../../config'
 
 type ItemType = { divider?: string; value?: string; text?: string; behaviour?: string }
 
@@ -48,7 +49,25 @@ export default class PrintController extends AbstractDetailController {
       return this.renderView(req, res, { errors })
     }
     const { prisonNo } = req.params
-    return res.redirect(`/detail/${prisonNo}`)
+    // TODO: pass the selected sections to the pdf render service
+    return res.redirect(`/print/${prisonNo}/pdf`)
+  }
+
+  async renderPdf(req: Request, res: Response): Promise<void> {
+    const prisonerDetail = await this.getPrisonerDetail(req)
+    const { pdfMargins } = config.apis.gotenberg
+    res.renderPdf(
+      `pages/pdf`,
+      { ...prisonerDetail },
+      `pages/pdfHeader`,
+      { ...prisonerDetail },
+      `pages/pdfFooter`,
+      {},
+      {
+        filename: `print-${prisonerDetail.prisonNumber}.pdf`,
+        pdfMargins,
+      },
+    )
   }
 
   async renderView(req: Request, res: Response, pageData?: PageData): Promise<void> {

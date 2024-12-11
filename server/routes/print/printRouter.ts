@@ -17,6 +17,7 @@ export default function routes(
 
   get('/print/:prisonNo', async (req, res, next) => printController.getPrintForm(req, res))
   post('/print/:prisonNo', async (req, res, next) => printController.postPrintForm(req, res))
+  get('/print/:prisonNo/pdf', async (req, res, next) => printController.renderPdf(req, res))
 
   return router
 }

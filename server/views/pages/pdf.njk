@@ -1,0 +1,68 @@
+{% extends "../partials/pdfLayout.njk" %}
+
+{% set pageTitle = "Details" %}
+
+{% set mainClasses = "app-container govuk-body" %}
+{% set bodyAttributes = {'data-page': 'detail'} %}
+
+{% block content %}
+  <div class="govuk-grid-row govuk-body">
+    <div class="govuk-grid-column-three-quarters">
+      <h1>{{ summary.firstName | title }} {{ summary.middleName | title }} {{ summary.lastName }}</h1>
+    </div>
+  </div>
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-three-quarters hmpps-profile--personal-content hmpps-full-width-print">
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-full">
+          {% include "../partials/detail/summary.njk" %}
+        </div>
+      </div>
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-full">
+          {% include "../partials/detail/sentenceSummary.njk" %}
+        </div>
+      </div>
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-full">
+          {% include "../partials/detail/sentencing.njk" %}
+        </div>
+      </div>
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-full">
+          {% include "../partials/detail/courtHearings.njk" %}
+        </div>
+      </div>
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-full">
+          {% include "../partials/detail/movements.njk" %}
+        </div>
+      </div>
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-full">
+          {% include "../partials/detail/hdc.njk" %}
+        </div>
+      </div>
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-full">
+          {% include "../partials/detail/offences.njk" %}
+        </div>
+      </div>
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-full">
+          {% include "../partials/detail/offencesInCustody.njk" %}
+        </div>
+      </div>
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-full">
+          {% include "../partials/detail/aliases.njk" %}
+        </div>
+      </div>
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-full">
+          {% include "../partials/detail/addresses.njk" %}
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

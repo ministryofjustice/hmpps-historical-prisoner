@@ -3,6 +3,7 @@ import { Request, Response } from 'express'
 import PrintController from './printController'
 import HistoricalPrisonerService from '../../services/historicalPrisonerService'
 import auditServiceMock from '../../testutils/auditServiceMock'
+import config from '../../config'
 
 jest.mock('../../services/historicalPrisonerService')
 const historicalPrisonerService = new HistoricalPrisonerService() as jest.Mocked<HistoricalPrisonerService>
@@ -26,6 +27,7 @@ describe('Print controller', () => {
       render: jest.fn(),
       redirect: jest.fn(),
       status: jest.fn(),
+      renderPdf: jest.fn(),
     } as unknown as Response
   })
 
@@ -117,8 +119,30 @@ describe('Print controller', () => {
 
         await controller.postPrintForm(req, res)
 
-        expect(res.redirect).toHaveBeenCalledWith('/detail/AB12345')
+        expect(res.redirect).toHaveBeenCalledWith('/print/AB12345/pdf')
       })
+    })
+  })
+
+  describe('renderPdf', () => {
+    it('should render PDF with correct parameters', async () => {
+      historicalPrisonerService.getPrisonerDetail.mockResolvedValue(detail)
+      req.params = { prisonNo: 'AB12345' }
+
+      await controller.renderPdf(req, res)
+
+      expect(res.renderPdf).toHaveBeenCalledWith(
+        'pages/pdf',
+        { ...detail },
+        'pages/pdfHeader',
+        { ...detail },
+        'pages/pdfFooter',
+        {},
+        {
+          filename: 'print-AB12345.pdf',
+          pdfMargins: config.apis.gotenberg.pdfMargins,
+        },
+      )
     })
   })
 

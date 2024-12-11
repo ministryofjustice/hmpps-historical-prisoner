@@ -2,6 +2,7 @@ import express from 'express'
 
 import createError from 'http-errors'
 import dpsComponents from '@ministryofjustice/hmpps-connect-dps-components'
+import GotenbergClient from './data/gotenbergClient'
 
 import nunjucksSetup from './utils/nunjucksSetup'
 import errorHandler from './errorHandler'
@@ -21,6 +22,7 @@ import setUpWebSession from './middleware/setUpWebSession'
 import routes from './routes'
 import config from './config'
 import type { Services } from './services'
+import { pdfRenderer } from './utils/pdfRenderer'
 
 export default function createApp(services: Services): express.Application {
   const app = express()
@@ -37,6 +39,7 @@ export default function createApp(services: Services): express.Application {
   app.use(setUpStaticResources())
   nunjucksSetup(app)
   app.use(setUpAuthentication())
+  app.use(pdfRenderer(new GotenbergClient(config.apis.gotenberg.apiUrl)))
   app.use(authorisationMiddleware(['ROLE_HPA_USER']))
   app.use(setUpCsrf())
 
