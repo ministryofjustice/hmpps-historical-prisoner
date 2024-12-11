@@ -32,8 +32,9 @@ const acronyms = rawAcronyms.map(ac => {
   }
 })
 
-export default function acronymsToUpperCase(text: string): string {
-  return acronyms.reduce((returnText, acronym) => {
+export const acronymsToUpperCase = (text: string): string =>
+  acronyms.reduce((returnText, acronym) => {
     return returnText.replace(acronym.regEx, acronym.raw)
   }, text)
-}
+
+export const spaceHyphens = (text: string): string => text.replace(/-/g, ' - ').replace(/ {2}/g, ' ')

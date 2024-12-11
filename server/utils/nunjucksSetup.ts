@@ -4,7 +4,7 @@ import nunjucks from 'nunjucks'
 import express from 'express'
 import fs from 'fs'
 import { initialiseName } from './utils'
-import acronymsToUpperCase from './textHelpers'
+import { acronymsToUpperCase, spaceHyphens } from './textHelpers'
 import config from '../config'
 import logger from '../../logger'
 import { buildErrorSummaryList, findError } from '../middleware/validationMiddleware'
@@ -46,5 +46,6 @@ export default function nunjucksSetup(app: express.Express): void {
   njkEnv.addFilter('getAge', getAge)
   njkEnv.addFilter('initialiseName', initialiseName)
   njkEnv.addFilter('acronymsToUpperCase', acronymsToUpperCase)
+  njkEnv.addFilter('spaceHyphens', spaceHyphens)
   njkEnv.addFilter('assetMap', (url: string) => assetManifest[url] || url)
 }
