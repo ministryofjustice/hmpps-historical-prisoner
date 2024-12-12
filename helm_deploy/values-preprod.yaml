@@ -17,7 +17,7 @@ generic-service:
 
   scheduledDowntime:
     enabled: true
-    startup: '50 6 * * 1-5' # Start at 6.40am UTC Monday-Friday
+    startup: '40 6 * * 1-5' # Start at 6.40am UTC Monday-Friday
     shutdown: '50 20 * * 1-5' # Stop at 8.50pm UTC Monday-Friday
 
 generic-prometheus-alerts:
@@ -26,3 +26,8 @@ generic-prometheus-alerts:
 
 gotenberg:
   replicaCount: 2
+
+  scheduledDowntime:
+    enabled: true
+    startup: '38 6 * * 1-5' # Start at 6.38am UTC Monday-Friday
+    shutdown: '52 20 * * 1-5' # Stop at 8.52pm UTC Monday-Friday
