@@ -9,10 +9,13 @@
 {% set bodyAttributes = {'data-page': 'detail'} %}
 
 {% block content %}
-  <div class="govuk-grid-row govuk-body">
+  <div class="govuk-grid-row">
     <div class="govuk-grid-column-three-quarters">
       <h1>{{ summary.firstName | title }} {{ summary.middleName | title }} {{ summary.lastName }}</h1>
     </div>
+  </div>
+  <div class="govuk-grid-column-full govuk-body">
+    <a class="govuk-link pdf-link" href="/print/{{ summary.prisonNumber }}">Save as PDF</a>
   </div>
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-one-quarter app-sidebar govuk-!-display-none-print">

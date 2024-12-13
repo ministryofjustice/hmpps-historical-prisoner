@@ -7,6 +7,8 @@ export default class Detail extends Page {
 
   summaryLink = (): PageElement => cy.get('a[href="#summary"]')
 
+  printLink = (): PageElement => cy.contains('a', 'Save as PDF')
+
   backToTopLink = (): PageElement => cy.get('[data-module=hmpps-back-to-top] a')
 
   backToTopLinkHidden = (): PageElement => cy.get('.hmpps-back-to-top--hidden')
