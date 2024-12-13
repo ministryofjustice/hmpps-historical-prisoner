@@ -4,6 +4,7 @@ import auth from './integration_tests/mockApis/auth'
 import tokenVerification from './integration_tests/mockApis/tokenVerification'
 import historicalPrisoner from './integration_tests/mockApis/historicalPrisoner'
 import frontendComponents from './integration_tests/mockApis/frontendComponents'
+import gotenberg from './integration_tests/mockApis/gotenberg'
 
 export default defineConfig({
   chromeWebSecurity: false,
@@ -23,6 +24,7 @@ export default defineConfig({
         ...tokenVerification,
         ...historicalPrisoner,
         ...frontendComponents,
+        ...gotenberg,
       })
     },
     baseUrl: 'http://localhost:3007',

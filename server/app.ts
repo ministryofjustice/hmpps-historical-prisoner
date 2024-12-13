@@ -39,7 +39,7 @@ export default function createApp(services: Services): express.Application {
   app.use(setUpStaticResources())
   nunjucksSetup(app)
   app.use(setUpAuthentication())
-  app.use(pdfRenderer(new GotenbergClient(config.apis.gotenberg.apiUrl)))
+  app.use(pdfRenderer(new GotenbergClient(config.apis.gotenberg.url)))
   app.use(authorisationMiddleware(['ROLE_HPA_USER']))
   app.use(setUpCsrf())
 

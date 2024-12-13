@@ -4,6 +4,7 @@ import PrintController from './printController'
 import HistoricalPrisonerService from '../../services/historicalPrisonerService'
 import auditServiceMock from '../../testutils/auditServiceMock'
 import config from '../../config'
+import { PrisonerDetailDto } from '../../@types/historical-prisoner/historicalPrisonerApiTypes'
 
 jest.mock('../../services/historicalPrisonerService')
 const historicalPrisonerService = new HistoricalPrisonerService() as jest.Mocked<HistoricalPrisonerService>
@@ -13,7 +14,12 @@ describe('Print controller', () => {
   let req: Request
   let res: Response
 
-  const detail = { prisonNumber: 'AB12345', summary: { firstName: 'JOHN', lastName: 'SMITH' } }
+  const detail = {
+    prisonNumber: 'AB12345',
+    summary: { firstName: 'JOHN', lastName: 'SMITH' },
+    sentenceSummary: { establishment: 'HMP Wandsworth' },
+    hdcInfo: [{ reasons: 'reasons' }],
+  } as PrisonerDetailDto
 
   beforeEach(() => {
     jest.resetAllMocks()
@@ -21,6 +27,7 @@ describe('Print controller', () => {
       user: { token: 'token' },
       session: {},
       body: {},
+      query: {},
     } as unknown as Request
     res = {
       locals: { user: { username: 'user' } },
@@ -113,13 +120,31 @@ describe('Print controller', () => {
       })
     })
     describe('success', () => {
-      it('should redirect to detail page', async () => {
+      it('should redirect to detail page for one section', async () => {
         req.params = { prisonNo: 'AB12345' }
         req.body.section = 'summary'
 
         await controller.postPrintForm(req, res)
 
+        expect(res.redirect).toHaveBeenCalledWith('/print/AB12345/pdf?section=summary')
+      })
+
+      it('should redirect to detail page for all sections', async () => {
+        req.params = { prisonNo: 'AB12345' }
+        req.body.section = 'all'
+
+        await controller.postPrintForm(req, res)
+
         expect(res.redirect).toHaveBeenCalledWith('/print/AB12345/pdf')
+      })
+
+      it('should redirect to detail page for multiple sections', async () => {
+        req.params = { prisonNo: 'AB12345' }
+        req.body.section = ['one', 'two']
+
+        await controller.postPrintForm(req, res)
+
+        expect(res.redirect).toHaveBeenCalledWith('/print/AB12345/pdf?section=one&section=two')
       })
     })
   })
@@ -136,6 +161,47 @@ describe('Print controller', () => {
         { ...detail },
         'pages/pdfHeader',
         { ...detail },
+        'pages/pdfFooter',
+        {},
+        {
+          filename: 'print-AB12345.pdf',
+          pdfMargins: config.apis.gotenberg.pdfMargins,
+        },
+      )
+    })
+    it('should render PDF passing through relevant section', async () => {
+      historicalPrisonerService.getPrisonerDetail.mockResolvedValue(detail)
+      req.params = { prisonNo: 'AB12345' }
+      req.query = { section: 'summary' }
+
+      await controller.renderPdf(req, res)
+
+      expect(res.renderPdf).toHaveBeenCalledWith(
+        'pages/pdf',
+        { summary: detail.summary },
+        'pages/pdfHeader',
+        { summary: detail.summary },
+        'pages/pdfFooter',
+        {},
+        {
+          filename: 'print-AB12345.pdf',
+          pdfMargins: config.apis.gotenberg.pdfMargins,
+        },
+      )
+    })
+
+    it('should render PDF passing through multiple sections', async () => {
+      historicalPrisonerService.getPrisonerDetail.mockResolvedValue(detail)
+      req.params = { prisonNo: 'AB12345' }
+      req.query = { section: ['summary', 'sentenceSummary'] }
+
+      await controller.renderPdf(req, res)
+
+      expect(res.renderPdf).toHaveBeenCalledWith(
+        'pages/pdf',
+        { summary: detail.summary, sentenceSummary: detail.sentenceSummary },
+        'pages/pdfHeader',
+        { summary: detail.summary, sentenceSummary: detail.sentenceSummary },
         'pages/pdfFooter',
         {},
         {
