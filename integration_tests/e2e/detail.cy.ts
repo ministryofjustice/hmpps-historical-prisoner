@@ -1,6 +1,7 @@
 import Page from '../pages/page'
 import Disclaimer from '../pages/disclaimer'
 import DetailPage from '../pages/detail'
+import PrintPage from '../pages/print'
 
 context('Detail', () => {
   beforeEach(() => {
@@ -19,6 +20,12 @@ context('Detail', () => {
 
     it('Will show prisoner detail', () => {
       Page.verifyOnPageWithTitleParam(DetailPage, 'Firsta Middlea SURNAMEA')
+    })
+
+    it('Will provide a link to print page', () => {
+      const detailPage = Page.verifyOnPageWithTitleParam(DetailPage, 'Firsta Middlea SURNAMEA')
+      detailPage.printLink().click()
+      Page.verifyOnPageWithTitleParam(PrintPage, 'Firsta SURNAMEA')
     })
 
     it('Will show prisoner summary', () => {
