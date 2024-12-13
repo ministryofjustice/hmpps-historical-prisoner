@@ -51,6 +51,7 @@ generic-service:
     TOKEN_VERIFICATION_ENABLED: 'true'
     AUDIT_SQS_REGION: 'eu-west-2'
     AUDIT_SERVICE_NAME: 'hmpps-historical-prisoner'
+    GOTENBERG_API_URL: 'http://hmpps-historical-prisoner-gotenberg'
 
   namespace_secrets:
     application-insights:

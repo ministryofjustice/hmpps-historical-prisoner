@@ -58,7 +58,7 @@ services:
       - "--prometheus-disable-collect"
     restart: always
     healthcheck:
-      test: [ 'CMD', 'curl', '-f', 'http://localhost:3001/health' ]
+      test: [ 'CMD', 'curl', '-f', 'http://localhost:3000/health' ]
 
 networks:
   hmpps:

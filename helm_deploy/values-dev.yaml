@@ -26,3 +26,8 @@ generic-prometheus-alerts:
 
 gotenberg:
   replicaCount: 2
+
+  scheduledDowntime:
+    enabled: true
+    startup: '20 6 * * 1-5' # Start at 6.20am UTC Monday-Friday
+    shutdown: '54 21 * * 1-5' # Stop at 9.54pm UTC Monday-Friday

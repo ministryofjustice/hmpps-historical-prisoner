@@ -18,6 +18,7 @@ export default class GotenbergClient {
     html: string,
     headerHtml: string,
     footerHtml: string,
+    css: string,
     options: PdfMargins = {},
   ): Promise<Buffer> {
     const { marginBottom, marginLeft, marginRight, marginTop } = options
@@ -28,6 +29,7 @@ export default class GotenbergClient {
       .attach('files', Buffer.from(html), 'index.html')
       .attach('files', Buffer.from(headerHtml), 'header.html')
       .attach('files', Buffer.from(footerHtml), 'footer.html')
+      .attach('files', Buffer.from(css), 'app.css')
       .responseType('blob')
 
     // Gotenberg defaults to using A4 format. Page size and margins specified in inches
