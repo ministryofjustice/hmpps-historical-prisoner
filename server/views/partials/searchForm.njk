@@ -1,3 +1,19 @@
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/checkboxes/macro.njk" import govukCheckboxes %}
+{% from "govuk/components/date-input/macro.njk" import govukDateInput %}
+{%- from "govuk/components/error-summary/macro.njk" import govukErrorSummary -%}
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "govuk/components/radios/macro.njk" import govukRadios %}
+{% from "govuk/components/table/macro.njk" import govukTable %}
+{%- from "govuk/components/tag/macro.njk" import govukTag -%}
+{% from "govuk/components/select/macro.njk" import govukSelect %}
+{% from "moj/components/filter/macro.njk" import mojFilter %}
+{%- from "moj/components/pagination/macro.njk" import mojPagination -%}
+{% from "../partials/multiselectfilter/macro.njk" import multiSelectFilter %}
+
+{%- from "govuk/components/tag/macro.njk" import govukTag -%}
+{% from "govuk/components/select/macro.njk" import govukSelect %}
+
 {% set nameHtml %}
   {{ govukInput({
     id: "firstName",
@@ -7,7 +23,7 @@
     label: {
       text: "First name or initial"
     },
-    errorMessage: errors.forename
+    errorMessage: errors | findError('firstName')
   }) }}
   {{ govukInput({
     id: "lastName",
@@ -17,23 +33,47 @@
     label: {
       text: "Surname"
     },
-    errorMessage: errors.surname
+    errorMessage: errors | findError('lastName')
   }) }}
   {{ govukDateInput({
-    id: "dob",
-    namePrefix: "dob",
-    value: form.dob,
     fieldset: {
       legend: {
         text: "Date of birth",
         isPageHeading: false
       }
-    }
+    },
+    items: [
+      {
+        id: "dobDay",
+        name: "dobDay",
+        label: "Day",
+        value: form.dobDay,
+        classes: "govuk-input--width-2",
+        errorMessage: errors | findError('dobDay')
+      },
+      {
+        id: "dobMonth",
+        name: "dobMonth",
+        label: "Month",
+        value: form.dobMonth,
+        classes: "govuk-input--width-2",
+        errorMessage: errors | findError('dobMonth')
+      },
+      {
+        id: "dobYear",
+        name: "dobYear",
+        label: "Year",
+        classes: "govuk-input--width-4",
+        value: form.dobYear,
+        errorMessage: errors | findError('dobYear')
+      }
+    ]
   }) }}
   {{ govukInput({
     id: "age",
     name: "age",
     value: form.age,
+    errorMessage: errors | findError('age'),
     classes: "govuk-input",
     label: {
       text: "Or, enter an age or age range"
@@ -83,6 +123,7 @@
     id: "address",
     name: "address",
     value: form.address,
+    errorMessage: errors | findError('address'),
     classes: "govuk-input",
     label: {
       text: "Enter any combination of street, town, postcode, eg"
@@ -97,6 +138,7 @@
 
   {{ govukRadios({
     name: "searchType",
+    errorMessage: errors | findError('searchType'),
     items: [
       {
         value: "name",

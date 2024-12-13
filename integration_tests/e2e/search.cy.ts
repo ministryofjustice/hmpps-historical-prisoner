@@ -27,10 +27,9 @@ context('Search', () => {
     searchPage.searchButton().click()
     searchPage.firstName().should('have.value', 'John')
     searchPage.lastName().should('have.value', 'Smith')
-    // TODO fix
-    // searchPage.dobDay().should('have.value', '25')
-    // searchPage.dobMonth().should('have.value', '11')
-    // searchPage.dobYear().should('have.value', '1986')
+    searchPage.dobDay().should('have.value', '25')
+    searchPage.dobMonth().should('have.value', '11')
+    searchPage.dobYear().should('have.value', '1986')
   })
 
   it('Will display identifier search data entered when the search is performed', () => {
@@ -73,6 +72,7 @@ context('Search', () => {
   it('Will populate prisoners matched', () => {
     cy.task('stubPrisonerSearchByName')
     const searchPage = Page.verifyOnPage(Search)
+    searchPage.firstName().type('John')
     searchPage.searchButton().click()
     searchPage.searchResults().should('have.length', 2)
   })
@@ -80,6 +80,7 @@ context('Search', () => {
   it('Will populate prisoners matched with or without alias', () => {
     cy.task('stubPrisonerSearchByName')
     const searchPage = Page.verifyOnPage(Search)
+    searchPage.firstName().type('John')
     searchPage.searchButton().click()
     searchPage.searchResults().should('have.length', 2)
     searchPage.searchResults().eq(0).should('not.contain.text', 'Matched on alias')
@@ -89,6 +90,7 @@ context('Search', () => {
   it('Will show the Add to shortlist item for each row', () => {
     cy.task('stubPrisonerSearchByName')
     const searchPage = Page.verifyOnPage(Search)
+    searchPage.firstName().type('John')
     searchPage.searchButton().click()
     searchPage.searchResults().should('have.length', 2)
     searchPage.searchResults().eq(0).should('contain.text', 'Add to shortlist')
@@ -97,9 +99,114 @@ context('Search', () => {
   it('Will provide suggestions link to improve search', () => {
     cy.task('stubPrisonerSearchByName')
     const searchPage = Page.verifyOnPage(Search)
+    searchPage.firstName().type('John')
     searchPage.suggestions().should('not.exist')
     searchPage.searchButton().click()
     searchPage.suggestions().should('be.visible')
+  })
+})
+
+context('FormValidation', () => {
+  beforeEach(() => {
+    cy.task('reset')
+    cy.task('stubFrontendComponents')
+    cy.task('stubSignIn', { roles: ['ROLE_HPA_USER'] })
+    cy.signIn()
+    Page.verifyOnPage(Disclaimer).confirmDisclaimer()
+  })
+
+  it('Will show an error if attempt to submit the name/age form without any data', () => {
+    const searchPage = Page.verifyOnPage(Search)
+    searchPage.doSearch()
+    searchPage.errorBlock().should('exist')
+    searchPage.errorBlock().should('contain.text', 'Please enter a value for at least one Name/age field')
+  })
+
+  it('Will show an error if attempt to submit the identifier form without any data', () => {
+    const searchPage = Page.verifyOnPage(Search)
+    searchPage.searchSelectRadioButton('Unique identifier').click()
+    searchPage.doSearch()
+    searchPage.errorBlock().should('exist')
+    searchPage.errorBlock().should('contain.text', 'Please enter a value for at least one Identifier field')
+  })
+
+  it('Will show an error if attempt to submit the address form without any data', () => {
+    const searchPage = Page.verifyOnPage(Search)
+    searchPage.searchSelectRadioButton('Other').click()
+    searchPage.doSearch()
+    searchPage.errorBlock().should('exist')
+    searchPage.errorBlock().should('contain.text', 'Please enter a value for the address field')
+  })
+
+  it('Will show an error if attempt to submit the first name form with invalid characters', () => {
+    const searchPage = Page.verifyOnPage(Search)
+    searchPage.firstName().type('dfg4')
+    searchPage.doSearch()
+    searchPage.errorBlock().should('exist')
+    searchPage.errorBlock().should('contain.text', 'First Name must not contain space, numbers or special characters')
+  })
+
+  it('Will show an error if attempt to submit the last name form with invalid characters', () => {
+    const searchPage = Page.verifyOnPage(Search)
+    searchPage.lastName().type('dfg4')
+    searchPage.doSearch()
+    searchPage.errorBlock().should('exist')
+    searchPage.errorBlock().should('contain.text', 'Last Name must not contain space, numbers or special characters')
+  })
+
+  it('Will show an error if attempt to submit the dob with missing day', () => {
+    const searchPage = Page.verifyOnPage(Search)
+    searchPage.dobMonth().type('12')
+    searchPage.dobYear().type('1984')
+    searchPage.doSearch()
+    searchPage.errorBlock().should('exist')
+    searchPage.errorBlock().should('contain.text', 'Enter a valid date of birth in the format DD/MM/YYYY')
+  })
+
+  it('Will show an error if attempt to submit the dob with missing month', () => {
+    const searchPage = Page.verifyOnPage(Search)
+    searchPage.dobDay().type('25')
+    searchPage.dobYear().type('1984')
+    searchPage.doSearch()
+    searchPage.errorBlock().should('exist')
+    searchPage.errorBlock().should('contain.text', 'Enter a valid date of birth in the format DD/MM/YYYY')
+  })
+
+  it('Will show an error if attempt to submit the dob with missing year', () => {
+    const searchPage = Page.verifyOnPage(Search)
+    searchPage.dobDay().type('25')
+    searchPage.dobDay().type('12')
+    searchPage.doSearch()
+    searchPage.errorBlock().should('exist')
+    searchPage.errorBlock().should('contain.text', 'Enter a valid date of birth in the format DD/MM/YYYY')
+  })
+  it('Will show an error if attempt to submit the dob with invalid characters', () => {
+    const searchPage = Page.verifyOnPage(Search)
+    searchPage.dobDay().type('et')
+    searchPage.dobDay().type('12')
+    searchPage.dobYear().type('1984')
+    searchPage.doSearch()
+    searchPage.errorBlock().should('exist')
+    searchPage.errorBlock().should('contain.text', 'Enter a valid date of birth in the format DD/MM/YYYY')
+  })
+
+  it('Will show an error if attempt to submit the dob with an invalid date', () => {
+    const searchPage = Page.verifyOnPage(Search)
+    searchPage.dobDay().type('31')
+    searchPage.dobDay().type('11')
+    searchPage.dobYear().type('1984')
+    searchPage.doSearch()
+    searchPage.errorBlock().should('exist')
+    searchPage.errorBlock().should('contain.text', 'Enter a valid date of birth in the format DD/MM/YYYY')
+  })
+
+  it('Will show an error if attempt to submit an address with only one word', () => {
+    const searchPage = Page.verifyOnPage(Search)
+    searchPage.searchSelectRadioButton('Other').click()
+    searchPage.address().type('Hill')
+    searchPage.doSearch()
+    searchPage.errorBlock().should('exist')
+    searchPage.errorBlock().should('contain.text', 'Enter at least 2 address elements')
   })
 })
 

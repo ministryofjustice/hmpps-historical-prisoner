@@ -1,22 +1,10 @@
-{% from "govuk/components/button/macro.njk" import govukButton %}
-{% from "govuk/components/checkboxes/macro.njk" import govukCheckboxes %}
-{% from "govuk/components/date-input/macro.njk" import govukDateInput %}
-{%- from "govuk/components/error-summary/macro.njk" import govukErrorSummary -%}
-{% from "govuk/components/input/macro.njk" import govukInput %}
-{% from "govuk/components/radios/macro.njk" import govukRadios %}
-{% from "govuk/components/table/macro.njk" import govukTable %}
-{%- from "govuk/components/tag/macro.njk" import govukTag -%}
-{% from "govuk/components/select/macro.njk" import govukSelect %}
-{% from "moj/components/filter/macro.njk" import mojFilter %}
-{%- from "moj/components/pagination/macro.njk" import mojPagination -%}
-{% from "../partials/multiselectfilter/macro.njk" import multiSelectFilter %}
-
 {% extends "../partials/layout.njk" %}
 
 {% set pageTitle = "HPA Prisoner Search" %}
 {% set mainClasses = "app-container govuk-body" %}
 
 {% block content %}
+
   <div class="govuk-grid-row govuk-body">
     <div class="govuk-grid-column-full">
       <h1 class="govuk-heading-l">Prisoner search</h1>
@@ -30,56 +18,32 @@
         <div class="moj-filter-layout__content">
           <div>
             <div class="govuk-grid-column-full">
+
               <div class="moj-action-bar__filterTagsContainer govuk-!-margin-bottom-5">
+                ADD SOME STUFF HERE
               </div>
 
               {% if searchResults %}
-                <h2 class="govuk-heading-l" data-qa="search-results-count">{{ paginationParams.results.count }} Prisoners</h2>
+                <div class="govuk-grid-row">
+                  <div class="govuk-grid-column-one-quarter">
+                    <h2 class="govuk-heading-l" data-qa="search-results-count">{{ paginationParams.results.count }} Prisoners</h2>
+                  </div>
+
+                  {% if searchResults.length %}
+                  <div class="govuk-grid-column-three-quarters">
+
+                  </div>
+                  {% endif %}
+
+                </div>
                 {% if searchResults.length %}
-
-                  {{ mojPagination(paginationParams) }}
-
-                  {% set rows = [] %}
-                  {% for prisoner in searchResults %}
-                    {% set cellHtml %}
-                      <div class="govuk-grid-column-three-quarters">
-                        <div class="govuk-body-lead govuk-!-font-weight-bold govuk-!-margin-bottom-1">
-                          <a href = '/detail/{{ prisoner.prisonNumber }}'>{{ prisoner.firstName | capitalize }} {{ prisoner.lastName }}</a> &middot; {{ prisoner.dob | formatDate }}
-                        </div>
-                        <div class="govuk-body-m govuk-!-margin-bottom-1">Prison no. {{ prisoner.prisonNumber }} &middot;
-                          Reception {{ prisoner.receptionDate | formatDate }}
-                        </div>
-                        {% if prisoner.isAlias %}
-                          <div class="govuk-body govuk-!-margin-bottom-1" data-qa="alias">
-                            Matched on alias {{ prisoner.aliasFirst }} {{ prisoner.aliasLast }}
-                          </div>
-                        {% endif %}
-                        <div class="govuk-body govuk-!-margin-bottom-2">
-                          <a href="#" class="govuk-link">Add to shortlist</a>
-                        </div>
-                      </div>
-                    {% endset %}
-
-                    {% set rows = (rows.push([
-                      { html: cellHtml }
-                    ]), rows) %}
-
-                  {% endfor %}
-                  {{ govukTable({
-                    rows: rows,
-                    attributes: { "data-qa": "search-results" }
-                  }) }}
-
-                  {{ mojPagination(paginationParams) }}
-
+                  {% include "../partials/searchResults.njk" %}
                 {% endif %}
                 <p class="govuk-body" data-qa="no-results">
                   Not found what you're looking for? <a data-qa="suggestions" href="/search/suggestions" class="govuk-link">Try these alternatives</a>
                 </p>
               {% else %}
-                <img src="/assets/images/prison-cell.png"
-                     alt="Enter search detail to find prisoners.">
-                <p>
+                <p class="no-prisoners">
                   Can't see prisoners? Enter search details to find prisoners.
                 </p>
               {% endif %}

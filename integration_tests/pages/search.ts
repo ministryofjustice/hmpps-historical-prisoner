@@ -11,11 +11,11 @@ export default class Search extends Page {
 
   lastName = (): PageElement => cy.get('[id="lastName"]')
 
-  dobDay = (): PageElement => cy.get('[id="dob-day"]')
+  dobDay = (): PageElement => cy.get('[id="dobDay"]')
 
-  dobMonth = (): PageElement => cy.get('[id="dob-month"]')
+  dobMonth = (): PageElement => cy.get('[id="dobMonth"]')
 
-  dobYear = (): PageElement => cy.get('[id="dob-year"]')
+  dobYear = (): PageElement => cy.get('[id="dobYear"]')
 
   age = (): PageElement => cy.get('[id="age"]')
 
@@ -42,6 +42,8 @@ export default class Search extends Page {
   searchResultsCount = (): PageElement => cy.get('[data-qa="search-results-count"] ')
 
   getPaginationResults = (): PageElement => cy.get('.moj-pagination__results')
+
+  errorBlock = (): PageElement => cy.get('.govuk-error-summary')
 
   nextPage = (): PageElement => cy.get('.moj-pagination__item--next').first().click()
 

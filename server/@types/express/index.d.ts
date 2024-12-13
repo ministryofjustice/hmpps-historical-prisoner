@@ -6,9 +6,9 @@ export declare module 'express-session' {
     searchType: string
     firstName?: string
     lastName?: string
-    'dob-day'?: string
-    'dob-month'?: string
-    'dob-year'?: string
+    dobDay?: string
+    dobMonth?: string
+    dobYear?: string
     age?: string
 
     prisonNumber?: string
