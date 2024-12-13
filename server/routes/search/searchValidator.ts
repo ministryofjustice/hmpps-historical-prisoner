@@ -1,9 +1,10 @@
 import { PrisonerSearchForm } from 'express-session'
 import HmppsError from '../../interfaces/HmppsError'
 import dateOfBirthValidator from '../../utils/dateOfBirthValidator'
+import ageValidator from '../../utils/ageValidator'
 
-export function isAlphabetic(field: string) {
-  return /^[A-Za-z']*$/.test(field)
+export function isAlphabeticOrWildcard(field: string) {
+  return /^[A-Za-z'%*]*$/.test(field)
 }
 
 function validateNameData(form: PrisonerSearchForm, errors: HmppsError[]) {
@@ -13,21 +14,25 @@ function validateNameData(form: PrisonerSearchForm, errors: HmppsError[]) {
       text: 'Please enter a value for at least one Name/age field',
     })
   }
-  if (!isAlphabetic(form.firstName)) {
+  if (!isAlphabeticOrWildcard(form.firstName)) {
     errors.push({ href: '#firstName', text: 'First Name must not contain space, numbers or special characters' })
     return
   }
 
-  if (!isAlphabetic(form.lastName)) {
+  if (!isAlphabeticOrWildcard(form.lastName)) {
     errors.push({ href: '#lastName', text: 'Last Name must not contain space, numbers or special characters' })
     return
   }
   const dobError = dateOfBirthValidator(form.dobDay, form.dobMonth, form.dobYear)
   if (dobError) {
-    errors.push({ href: '#dobDay', text: dobError })
+    errors.push({ href: '#dateOfBirth', text: dobError })
+    return
   }
 
-  // TODO validate age
+  const ageError = ageValidator(form.age)
+  if (ageError != null) {
+    errors.push({ href: '#age', text: ageError })
+  }
 }
 
 function validateIdentifierData(form: PrisonerSearchForm, errors: HmppsError[]) {

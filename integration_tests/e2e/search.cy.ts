@@ -118,40 +118,44 @@ context('FormValidation', () => {
   it('Will show an error if attempt to submit the name/age form without any data', () => {
     const searchPage = Page.verifyOnPage(Search)
     searchPage.doSearch()
-    searchPage.errorBlock().should('exist')
-    searchPage.errorBlock().should('contain.text', 'Please enter a value for at least one Name/age field')
+    searchPage.errorSummaryList().should('exist')
+    searchPage.errorSummaryList().should('contain.text', 'Please enter a value for at least one Name/age field')
   })
 
   it('Will show an error if attempt to submit the identifier form without any data', () => {
     const searchPage = Page.verifyOnPage(Search)
     searchPage.searchSelectRadioButton('Unique identifier').click()
     searchPage.doSearch()
-    searchPage.errorBlock().should('exist')
-    searchPage.errorBlock().should('contain.text', 'Please enter a value for at least one Identifier field')
+    searchPage.errorSummaryList().should('exist')
+    searchPage.errorSummaryList().should('contain.text', 'Please enter a value for at least one Identifier field')
   })
 
   it('Will show an error if attempt to submit the address form without any data', () => {
     const searchPage = Page.verifyOnPage(Search)
     searchPage.searchSelectRadioButton('Other').click()
     searchPage.doSearch()
-    searchPage.errorBlock().should('exist')
-    searchPage.errorBlock().should('contain.text', 'Please enter a value for the address field')
+    searchPage.errorSummaryList().should('exist')
+    searchPage.errorSummaryList().should('contain.text', 'Please enter a value for the address field')
   })
 
   it('Will show an error if attempt to submit the first name form with invalid characters', () => {
     const searchPage = Page.verifyOnPage(Search)
     searchPage.firstName().type('dfg4')
     searchPage.doSearch()
-    searchPage.errorBlock().should('exist')
-    searchPage.errorBlock().should('contain.text', 'First Name must not contain space, numbers or special characters')
+    searchPage.errorSummaryList().should('exist')
+    searchPage
+      .errorSummaryList()
+      .should('contain.text', 'First Name must not contain space, numbers or special characters')
   })
 
   it('Will show an error if attempt to submit the last name form with invalid characters', () => {
     const searchPage = Page.verifyOnPage(Search)
     searchPage.lastName().type('dfg4')
     searchPage.doSearch()
-    searchPage.errorBlock().should('exist')
-    searchPage.errorBlock().should('contain.text', 'Last Name must not contain space, numbers or special characters')
+    searchPage.errorSummaryList().should('exist')
+    searchPage
+      .errorSummaryList()
+      .should('contain.text', 'Last Name must not contain space, numbers or special characters')
   })
 
   it('Will show an error if attempt to submit the dob with missing day', () => {
@@ -159,8 +163,8 @@ context('FormValidation', () => {
     searchPage.dobMonth().type('12')
     searchPage.dobYear().type('1984')
     searchPage.doSearch()
-    searchPage.errorBlock().should('exist')
-    searchPage.errorBlock().should('contain.text', 'Enter a valid date of birth in the format DD/MM/YYYY')
+    searchPage.errorSummaryList().should('exist')
+    searchPage.errorSummaryList().should('contain.text', 'Enter a valid date of birth in the format DD/MM/YYYY')
   })
 
   it('Will show an error if attempt to submit the dob with missing month', () => {
@@ -168,8 +172,8 @@ context('FormValidation', () => {
     searchPage.dobDay().type('25')
     searchPage.dobYear().type('1984')
     searchPage.doSearch()
-    searchPage.errorBlock().should('exist')
-    searchPage.errorBlock().should('contain.text', 'Enter a valid date of birth in the format DD/MM/YYYY')
+    searchPage.errorSummaryList().should('exist')
+    searchPage.errorSummaryList().should('contain.text', 'Enter a valid date of birth in the format DD/MM/YYYY')
   })
 
   it('Will show an error if attempt to submit the dob with missing year', () => {
@@ -177,8 +181,8 @@ context('FormValidation', () => {
     searchPage.dobDay().type('25')
     searchPage.dobDay().type('12')
     searchPage.doSearch()
-    searchPage.errorBlock().should('exist')
-    searchPage.errorBlock().should('contain.text', 'Enter a valid date of birth in the format DD/MM/YYYY')
+    searchPage.errorSummaryList().should('exist')
+    searchPage.errorSummaryList().should('contain.text', 'Enter a valid date of birth in the format DD/MM/YYYY')
   })
   it('Will show an error if attempt to submit the dob with invalid characters', () => {
     const searchPage = Page.verifyOnPage(Search)
@@ -186,8 +190,8 @@ context('FormValidation', () => {
     searchPage.dobDay().type('12')
     searchPage.dobYear().type('1984')
     searchPage.doSearch()
-    searchPage.errorBlock().should('exist')
-    searchPage.errorBlock().should('contain.text', 'Enter a valid date of birth in the format DD/MM/YYYY')
+    searchPage.errorSummaryList().should('exist')
+    searchPage.errorSummaryList().should('contain.text', 'Enter a valid date of birth in the format DD/MM/YYYY')
   })
 
   it('Will show an error if attempt to submit the dob with an invalid date', () => {
@@ -196,8 +200,51 @@ context('FormValidation', () => {
     searchPage.dobDay().type('11')
     searchPage.dobYear().type('1984')
     searchPage.doSearch()
-    searchPage.errorBlock().should('exist')
-    searchPage.errorBlock().should('contain.text', 'Enter a valid date of birth in the format DD/MM/YYYY')
+    searchPage.errorSummaryList().should('exist')
+    searchPage.errorSummaryList().should('contain.text', 'Enter a valid date of birth in the format DD/MM/YYYY')
+  })
+
+  it('Will show an error if attempt to submit the age/range with an age too small', () => {
+    const searchPage = Page.verifyOnPage(Search)
+    searchPage.age().type('9')
+    searchPage.doSearch()
+    searchPage.errorSummaryList().should('contain.text', 'Age must be a whole number')
+  })
+  it('Will show an error if attempt to submit the age/range with an age too big', () => {
+    const searchPage = Page.verifyOnPage(Search)
+    searchPage.age().type('200')
+    searchPage.doSearch()
+    searchPage.errorSummaryList().should('contain.text', 'Age must be a whole number')
+  })
+  it('Will show an error if attempt to submit the age/range with a non-numerical age', () => {
+    const searchPage = Page.verifyOnPage(Search)
+    searchPage.age().type('wr')
+    searchPage.doSearch()
+    searchPage.errorSummaryList().should('contain.text', 'Age must be a whole number')
+  })
+  it('Will show an error if attempt to submit the age/range with a negative age range', () => {
+    const searchPage = Page.verifyOnPage(Search)
+    searchPage.age().type('19-15')
+    searchPage.doSearch()
+    searchPage
+      .errorSummaryList()
+      .should('contain.text', 'Invalid age range. Age ranges should be be no larger than 10 years.')
+  })
+  it('Will show an error if attempt to submit the age/range with an age range more than 10 years', () => {
+    const searchPage = Page.verifyOnPage(Search)
+    searchPage.age().type('19-39')
+    searchPage.doSearch()
+    searchPage
+      .errorSummaryList()
+      .should('contain.text', 'Invalid age range. Age ranges should be be no larger than 10 years.')
+  })
+  it('Will show an error if attempt to submit the age/range with non-numerical age range', () => {
+    const searchPage = Page.verifyOnPage(Search)
+    searchPage.age().type('er-3245')
+    searchPage.doSearch()
+    searchPage
+      .errorSummaryList()
+      .should('contain.text', 'Invalid age range. Age ranges should be be no larger than 10 years.')
   })
 
   it('Will show an error if attempt to submit an address with only one word', () => {
@@ -205,8 +252,8 @@ context('FormValidation', () => {
     searchPage.searchSelectRadioButton('Other').click()
     searchPage.address().type('Hill')
     searchPage.doSearch()
-    searchPage.errorBlock().should('exist')
-    searchPage.errorBlock().should('contain.text', 'Enter at least 2 address elements')
+    searchPage.errorSummaryList().should('exist')
+    searchPage.errorSummaryList().should('contain.text', 'Enter at least 2 address elements')
   })
 })
 

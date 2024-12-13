@@ -14,6 +14,9 @@ export default function dateOfBirthValidator(day?: string, month?: string, year?
   if (!isValid(dobDate)) {
     return 'Enter a valid date of birth in the format DD/MM/YYYY'
   }
+  if (dobDate.getFullYear() < 1900) {
+    return 'Year must be greater than or equal to 1900'
+  }
   if (isAfter(dobDate, today)) {
     return 'The date of birth cannot be in the future'
   }

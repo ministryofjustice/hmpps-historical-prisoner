@@ -1,27 +1,35 @@
-import { isAlphabetic } from './searchValidator'
+import { isAlphabeticOrWildcard } from './searchValidator'
 
-describe('isString', () => {
+describe('isAlphabeticOrWildcard', () => {
   it('should return true for a valid string with only letters', () => {
-    expect(isAlphabetic('John')).toBe(true)
+    expect(isAlphabeticOrWildcard('John')).toBe(true)
   })
 
   it('should return true for a valid string with letters and apostrophes', () => {
-    expect(isAlphabetic("O'Connor")).toBe(true)
+    expect(isAlphabeticOrWildcard("O'Connor")).toBe(true)
   })
 
   it('should return false for a string with numbers', () => {
-    expect(isAlphabetic('John123')).toBe(false)
+    expect(isAlphabeticOrWildcard('John123')).toBe(false)
   })
 
   it('should return false for a string with special characters', () => {
-    expect(isAlphabetic('John@Doe')).toBe(false)
+    expect(isAlphabeticOrWildcard('John@Doe')).toBe(false)
   })
 
   it('should return false for a string with spaces', () => {
-    expect(isAlphabetic('John Doe')).toBe(false)
+    expect(isAlphabeticOrWildcard('John Doe')).toBe(false)
   })
 
   it('should return true for an empty string', () => {
-    expect(isAlphabetic('')).toBe(true)
+    expect(isAlphabeticOrWildcard('')).toBe(true)
+  })
+
+  it('should return true for a string with * wildcard', () => {
+    expect(isAlphabeticOrWildcard('sd*wew')).toBe(true)
+  })
+
+  it('should return true for a string with % wildcard', () => {
+    expect(isAlphabeticOrWildcard('sd%wew')).toBe(true)
   })
 })

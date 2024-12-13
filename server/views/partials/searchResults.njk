@@ -8,7 +8,7 @@
   {% set cellHtml %}
     <div class="govuk-grid-column-three-quarters">
       <div class="govuk-body-lead govuk-!-font-weight-bold govuk-!-margin-bottom-1">
-        <a href = '/detail/{{ prisoner.prisonNumber }}'>{{ prisoner.firstName | capitalize }} {{ prisoner.lastName }}</a> &middot; {{ prisoner.dob | formatDate }}
+        <a class="govuk-link" href="/detail/{{ prisoner.prisonNumber }}">{{ prisoner.firstName | capitalize }} {{ prisoner.lastName }}</a> &middot; {{ prisoner.dob | formatDate }}
       </div>
       <div class="govuk-body-m govuk-!-margin-bottom-1">Prison no. {{ prisoner.prisonNumber }} &middot;
         Reception {{ prisoner.receptionDate | formatDate }}
