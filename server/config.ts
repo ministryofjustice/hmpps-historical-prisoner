@@ -88,7 +88,7 @@ export default {
       agent: new AgentConfig(Number(get('HISTORICAL_PRISONER_API_TIMEOUT_RESPONSE', 20000))),
     },
     gotenberg: {
-      apiUrl: get('GOTENBERG_API_URL', 'http://localhost:3001', requiredInProduction),
+      url: get('GOTENBERG_API_URL', 'http://localhost:3001', requiredInProduction),
       pdfMargins: {
         marginTop: '1.0',
         marginBottom: '0.8',

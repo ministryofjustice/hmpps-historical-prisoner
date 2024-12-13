@@ -18,51 +18,69 @@
           {% include "../partials/detail/summary.njk" %}
         </div>
       </div>
-      <div class="govuk-grid-row">
-        <div class="govuk-grid-column-full">
-          {% include "../partials/detail/sentenceSummary.njk" %}
+      {% if sentenceSummary %}
+        <div class="govuk-grid-row">
+          <div class="govuk-grid-column-full">
+            {% include "../partials/detail/sentenceSummary.njk" %}
+          </div>
         </div>
-      </div>
-      <div class="govuk-grid-row">
-        <div class="govuk-grid-column-full">
-          {% include "../partials/detail/sentencing.njk" %}
+      {% endif %}
+      {% if sentencing %}
+        <div class="govuk-grid-row">
+          <div class="govuk-grid-column-full">
+            {% include "../partials/detail/sentencing.njk" %}
+          </div>
         </div>
-      </div>
-      <div class="govuk-grid-row">
-        <div class="govuk-grid-column-full">
-          {% include "../partials/detail/courtHearings.njk" %}
+      {% endif %}
+      {% if courtHearings %}
+        <div class="govuk-grid-row">
+          <div class="govuk-grid-column-full">
+            {% include "../partials/detail/courtHearings.njk" %}
+          </div>
         </div>
-      </div>
-      <div class="govuk-grid-row">
-        <div class="govuk-grid-column-full">
-          {% include "../partials/detail/movements.njk" %}
+      {% endif %}
+      {% if movements %}
+        <div class="govuk-grid-row">
+          <div class="govuk-grid-column-full">
+            {% include "../partials/detail/movements.njk" %}
+          </div>
         </div>
-      </div>
-      <div class="govuk-grid-row">
-        <div class="govuk-grid-column-full">
-          {% include "../partials/detail/hdc.njk" %}
+      {% endif %}
+      {% if (hdcInfo or hdcRecall) %}
+        <div class="govuk-grid-row">
+          <div class="govuk-grid-column-full">
+            {% include "../partials/detail/hdc.njk" %}
+          </div>
         </div>
-      </div>
-      <div class="govuk-grid-row">
-        <div class="govuk-grid-column-full">
-          {% include "../partials/detail/offences.njk" %}
+      {% endif %}
+      {% if offences %}
+        <div class="govuk-grid-row">
+          <div class="govuk-grid-column-full">
+            {% include "../partials/detail/offences.njk" %}
+          </div>
         </div>
-      </div>
-      <div class="govuk-grid-row">
-        <div class="govuk-grid-column-full">
-          {% include "../partials/detail/offencesInCustody.njk" %}
+      {% endif %}
+      {% if offencesInCustody %}
+        <div class="govuk-grid-row">
+          <div class="govuk-grid-column-full">
+            {% include "../partials/detail/offencesInCustody.njk" %}
+          </div>
         </div>
-      </div>
-      <div class="govuk-grid-row">
-        <div class="govuk-grid-column-full">
-          {% include "../partials/detail/aliases.njk" %}
+      {% endif %}
+      {% if aliases %}
+        <div class="govuk-grid-row">
+          <div class="govuk-grid-column-full">
+            {% include "../partials/detail/aliases.njk" %}
+          </div>
         </div>
-      </div>
-      <div class="govuk-grid-row">
-        <div class="govuk-grid-column-full">
-          {% include "../partials/detail/addresses.njk" %}
+      {% endif %}
+      {% if addresses %}
+        <div class="govuk-grid-row">
+          <div class="govuk-grid-column-full">
+            {% include "../partials/detail/addresses.njk" %}
+          </div>
         </div>
-      </div>
+      {% endif %}
     </div>
   </div>
 {% endblock %}

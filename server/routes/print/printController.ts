@@ -49,24 +49,38 @@ export default class PrintController extends AbstractDetailController {
       return this.renderView(req, res, { errors })
     }
     const { prisonNo } = req.params
-    // TODO: pass the selected sections to the pdf render service
-    return res.redirect(`/print/${prisonNo}/pdf`)
+    if (Array.isArray(section)) {
+      const sections = new URLSearchParams(section.map(s => ['section', s] as [string, string]))
+      return res.redirect(`/print/${prisonNo}/pdf?${sections.toString()}`)
+    }
+    return res.redirect(`/print/${prisonNo}/pdf${section === 'all' ? '' : `?section=${section}`}`)
   }
 
   async renderPdf(req: Request, res: Response): Promise<void> {
-    const prisonerDetail = await this.getPrisonerDetail(req)
+    const filteredPrisonerDetail = await this.getAndFilterPrisonerDetail(req)
     const { pdfMargins } = config.apis.gotenberg
     res.renderPdf(
       `pages/pdf`,
-      { ...prisonerDetail },
+      { ...filteredPrisonerDetail },
       `pages/pdfHeader`,
-      { ...prisonerDetail },
+      { ...filteredPrisonerDetail },
       `pages/pdfFooter`,
       {},
       {
-        filename: `print-${prisonerDetail.prisonNumber}.pdf`,
+        filename: `print-${req.params.prisonNo}.pdf`,
         pdfMargins,
       },
+    )
+  }
+
+  private async getAndFilterPrisonerDetail(req: Request) {
+    const prisonerDetail = await this.getPrisonerDetail(req)
+    const { section } = req.query
+    if (!section) return prisonerDetail
+    const sectionArray = Array.isArray(section) ? section : [section]
+    return Object.entries(prisonerDetail).reduce(
+      (acc, [key, value]) => (sectionArray.includes(key) ? { [key]: value, ...acc } : acc),
+      {},
     )
   }
 
