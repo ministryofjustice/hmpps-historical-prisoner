@@ -42,30 +42,28 @@
         isPageHeading: false
       }
     },
+    errorMessage: errors | findError('dateOfBirth'),
     items: [
       {
         id: "dobDay",
         name: "dobDay",
         label: "Day",
         value: form.dobDay,
-        classes: "govuk-input--width-2",
-        errorMessage: errors | findError('dobDay')
+        classes: "govuk-input--width-2"
       },
       {
         id: "dobMonth",
         name: "dobMonth",
         label: "Month",
         value: form.dobMonth,
-        classes: "govuk-input--width-2",
-        errorMessage: errors | findError('dobMonth')
+        classes: "govuk-input--width-2"
       },
       {
         id: "dobYear",
         name: "dobYear",
         label: "Year",
         classes: "govuk-input--width-4",
-        value: form.dobYear,
-        errorMessage: errors | findError('dobYear')
+        value: form.dobYear
       }
     ]
   }) }}
@@ -78,7 +76,6 @@
     label: {
       text: "Or, enter an age or age range"
     },
-    errorMessage: errors.age,
     hint: {
       text: "For example, 32-34"
     }

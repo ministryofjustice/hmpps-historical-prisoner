@@ -7,25 +7,25 @@ export default class Search extends Page {
 
   searchSelectRadioButton = text => cy.contains('label', text).prev()
 
-  firstName = (): PageElement => cy.get('[id="firstName"]')
+  firstName = (): PageElement => cy.get('#firstName')
 
-  lastName = (): PageElement => cy.get('[id="lastName"]')
+  lastName = (): PageElement => cy.get('#lastName')
 
-  dobDay = (): PageElement => cy.get('[id="dobDay"]')
+  dobDay = (): PageElement => cy.get('#dobDay')
 
-  dobMonth = (): PageElement => cy.get('[id="dobMonth"]')
+  dobMonth = (): PageElement => cy.get('#dobMonth')
 
-  dobYear = (): PageElement => cy.get('[id="dobYear"]')
+  dobYear = (): PageElement => cy.get('#dobYear')
 
-  age = (): PageElement => cy.get('[id="age"]')
+  age = (): PageElement => cy.get('#age')
 
-  prisonNumber = (): PageElement => cy.get('[id="prisonNumber"]')
+  prisonNumber = (): PageElement => cy.get('#prisonNumber')
 
-  pncNumber = (): PageElement => cy.get('[id="pncNumber"]')
+  pncNumber = (): PageElement => cy.get('#pncNumber')
 
-  croNumber = (): PageElement => cy.get('[id="croNumber"]')
+  croNumber = (): PageElement => cy.get('#croNumber')
 
-  address = (): PageElement => cy.get('[id="address"]')
+  address = (): PageElement => cy.get('#address')
 
   searchButton = (): PageElement => cy.get('button[type="submit"]')
 
@@ -42,8 +42,6 @@ export default class Search extends Page {
   searchResultsCount = (): PageElement => cy.get('[data-qa="search-results-count"] ')
 
   getPaginationResults = (): PageElement => cy.get('.moj-pagination__results')
-
-  errorBlock = (): PageElement => cy.get('.govuk-error-summary')
 
   nextPage = (): PageElement => cy.get('.moj-pagination__item--next').first().click()
 

@@ -13,12 +13,8 @@ describe('dateOfBirthValidator', () => {
     { day: 'X', month: 'X11', year: 'MMXXV' },
   ).forEach(dateValues => {
     it(`should validate given an invalid date - day: ${dateValues.day}, month: ${dateValues.month}, year: ${dateValues.year}`, () => {
-      // Given
-
-      // When
       const errors = validateTargetDate(dateValues.day, dateValues.month, dateValues.year)
 
-      // Then
       expect(errors).toStrictEqual('Enter a valid date of birth in the format DD/MM/YYYY')
     })
   })
@@ -26,26 +22,40 @@ describe('dateOfBirthValidator', () => {
   it('should ignore empty strings for all fields', () => {
     Array.of({ day: undefined, month: undefined, year: undefined }, { day: '', month: '', year: '' }).forEach(
       dateValues => {
-        // Given
-
-        // When
         const errors = validateTargetDate(dateValues.day, dateValues.month, dateValues.year)
 
-        // Then
         expect(errors).toStrictEqual(null)
       },
     )
   })
 
+  it('should not allow dates before 1900', () => {
+    const day = '31'
+    const month = '12'
+    const year = '1899'
+    const errors = validateTargetDate(day, month, year)
+
+    expect(errors).toStrictEqual('Year must be greater than or equal to 1900')
+  })
+
   it('should validate given a date in the future', () => {
-    // Given
     const day = '26'
     const month = '02'
     const year = '3007'
-    // When
     const errors = validateTargetDate(day, month, year)
 
-    // Then
     expect(errors).toStrictEqual('The date of birth cannot be in the future')
+  })
+
+  it('should successfully validate', () => {
+    Array.of(
+      { day: '01', month: '01', year: '1900' },
+      { day: '11', month: '11', year: '2024' },
+      { day: '12', month: '12', year: '2023' },
+    ).forEach(dateValues => {
+      const errors = validateTargetDate(dateValues.day, dateValues.month, dateValues.year)
+
+      expect(errors).toBeNull()
+    })
   })
 })
