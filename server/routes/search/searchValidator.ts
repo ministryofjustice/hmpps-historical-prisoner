@@ -4,7 +4,7 @@ import dateOfBirthValidator from '../../utils/dateOfBirthValidator'
 import ageValidator from '../../utils/ageValidator'
 
 export function isAlphabeticOrWildcard(field: string) {
-  return /^[A-Za-z'%*]*$/.test(field)
+  return /^[A-Za-z-'%*]*$/.test(field)
 }
 
 function validateNameData(form: PrisonerSearchForm, errors: HmppsError[]) {
@@ -20,7 +20,7 @@ function validateNameData(form: PrisonerSearchForm, errors: HmppsError[]) {
   }
 
   if (!isAlphabeticOrWildcard(form.lastName)) {
-    errors.push({ href: '#lastName', text: 'Last Name must not contain space, numbers or special characters' })
+    errors.push({ href: '#lastName', text: 'Surname must not contain space, numbers or special characters' })
     return
   }
   const dobError = dateOfBirthValidator(form.dobDay, form.dobMonth, form.dobYear)
