@@ -8,6 +8,9 @@ describe('isAlphabeticOrWildcard', () => {
   it('should return true for a valid string with letters and apostrophes', () => {
     expect(isAlphabeticOrWildcard("O'Connor")).toBe(true)
   })
+  it('should return true for a valid string with a hyphen', () => {
+    expect(isAlphabeticOrWildcard('smith-jones')).toBe(true)
+  })
 
   it('should return false for a string with numbers', () => {
     expect(isAlphabeticOrWildcard('John123')).toBe(false)

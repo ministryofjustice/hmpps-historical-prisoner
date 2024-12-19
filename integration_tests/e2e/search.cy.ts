@@ -32,6 +32,17 @@ context('Search', () => {
     searchPage.dobYear().should('have.value', '1986')
   })
 
+  it('Will allow certain non-alphabetic characters in first and last name', () => {
+    cy.task('stubPrisonerSearchByName')
+    const searchPage = Page.verifyOnPage(Search)
+    searchPage.firstName().type("John-James's%*")
+    searchPage.lastName().type("Smith-JonesO'Malley%*")
+    searchPage.searchButton().click()
+    searchPage.firstName().should('have.value', "John-James's%*")
+    searchPage.lastName().should('have.value', "Smith-JonesO'Malley%*")
+    searchPage.errorSummaryList().should('not.exist')
+  })
+
   it('Will display identifier search data entered when the search is performed', () => {
     cy.task('stubPrisonerSearchByIdentifiers')
     const searchPage = Page.verifyOnPage(Search)
@@ -155,7 +166,7 @@ context('FormValidation', () => {
     searchPage.errorSummaryList().should('exist')
     searchPage
       .errorSummaryList()
-      .should('contain.text', 'Last Name must not contain space, numbers or special characters')
+      .should('contain.text', 'Surname must not contain space, numbers or special characters')
   })
 
   it('Will show an error if attempt to submit the dob with missing day', () => {
