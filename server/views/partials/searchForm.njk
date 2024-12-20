@@ -9,10 +9,10 @@
 {% from "govuk/components/select/macro.njk" import govukSelect %}
 {% from "moj/components/filter/macro.njk" import mojFilter %}
 {%- from "moj/components/pagination/macro.njk" import mojPagination -%}
-{% from "../partials/multiselectfilter/macro.njk" import multiSelectFilter %}
 
 {%- from "govuk/components/tag/macro.njk" import govukTag -%}
 {% from "govuk/components/select/macro.njk" import govukSelect %}
+{% from "../macros/filter/searchFilterMacro.njk" import searchFilter %}
 
 {% set nameHtml %}
   {{ govukInput({
@@ -164,80 +164,14 @@
     ]
   }) }}
 
-  {% if searchResults.length >1 %}
-    {{ govukCheckboxes({
-      name: "lifer",
-      fieldset: {
-        legend: {
-          text: 'Life Imprisonment',
-          classes: 'govuk-label--s'
-        }
-      },
-      classes: 'govuk-checkboxes--small govuk-checkboxes--inline',
-      items: [
-        {
-          text: "Lifer",
-          value: true,
-          checked: form.lifer === true
-        }
-      ]
-    }) }}
-    {{ govukCheckboxes({
-      name: "hdc",
-      classes: 'govuk-checkboxes--small govuk-checkboxes--inline',
-      fieldset: {
-        legend: {
-          text: 'Home Detention Curfew',
-          classes: 'govuk-label--s'
-        }
-      },
-      items: [
-        {
-          text: "HDC",
-          value: true,
-          checked: form.hdc === true
-        }
-      ]
-    }) }}
-
-    {{ govukCheckboxes({
-      name: "male",
-      classes: 'govuk-checkboxes--small govuk-checkboxes--inline',
-      fieldset: {
-        legend: {
-          text: 'Gender',
-          classes: 'govuk-label--s'
-        }
-      },
-      items: [
-        {
-          text: "Male",
-          value: 'M',
-          checked: form.male === 'M'
-        },
-        {
-          text: "Female",
-          value: 'F',
-          checked: form.female === 'F'
-        }
-      ]
-    }) }}
-
-  {% endif %}
   <div>
-    <a data-qa="clear-search" href="/search" class="govuk-link">New Search</a>
+    <a data-qa="clear-search" href="/search" class="govuk-link">New search</a>
   </div>
 {% endset -%}
 
 <form action="/search" method="post" novalidate>
   <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
 
-  {{ mojFilter({
-    heading: {
-      text: 'Search'
-    },
-    selectedFilters: selectedFilters,
-    optionsHtml: filterOptionsHtml
-  }) }}
+  {{ searchFilter({ optionsHtml: filterOptionsHtml}) }}
 
 </form>

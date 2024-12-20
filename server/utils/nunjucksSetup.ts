@@ -48,4 +48,57 @@ export default function nunjucksSetup(app: express.Express): void {
   njkEnv.addFilter('acronymsToUpperCase', acronymsToUpperCase)
   njkEnv.addFilter('spaceHyphens', spaceHyphens)
   njkEnv.addFilter('assetMap', (url: string) => assetManifest[url] || url)
+  njkEnv.addFilter('categoryFilters', (searchFilters: string[]) => {
+    const hrefBase = '/search/results?page=1'
+    if (searchFilters === undefined) {
+      searchFilters = []
+    }
+    const categories = [
+      {
+        heading: {},
+        items: [
+          {
+            href: `${hrefBase}&${filterQuery(searchFilters, 'male')}`,
+            text: 'Male',
+            selected: searchFilters.includes('male'),
+          },
+          {
+            href: `${hrefBase}&${filterQuery(searchFilters, 'female')}`,
+            text: 'Female',
+            selected: searchFilters.includes('female'),
+          },
+          {
+            href: `${hrefBase}&${filterQuery(searchFilters, 'lifer')}`,
+            text: 'Lifer',
+            selected: searchFilters.includes('lifer'),
+          },
+          {
+            href: `${hrefBase}&${filterQuery(searchFilters, 'hdc')}`,
+            text: 'HDC',
+            selected: searchFilters.includes('hdc'),
+          },
+        ],
+      },
+    ]
+
+    return {
+      categories: categories.filter(category => category.items),
+    }
+  })
+}
+
+function filterQuery(currentFilters: string[], searchFilter: string): string {
+  const searchParams = new URLSearchParams()
+  let filters = Array.from(currentFilters)
+
+  if (currentFilters.includes(searchFilter)) {
+    // remove it
+    filters = filters.filter(item => item !== searchFilter)
+  } else {
+    filters.push(searchFilter)
+  }
+  filters.forEach(entry => {
+    searchParams.append('filters', entry)
+  })
+  return searchParams.toString()
 }

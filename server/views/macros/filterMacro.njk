@@ -1,0 +1,25 @@
+{% macro categoryFilter(params) %}
+
+  <div class="moj-filter__content">
+    <div class="moj-filter__selected">
+
+      <div class="moj-filter__selected-heading"></div>
+
+      {% for category in params.categories %}
+        <ul class="moj-filter-tags">
+          {% for item in category.items %}
+            <li>
+              {% if item.selected %}
+                <a class="moj-filter__tag selected" href="{{item.href}}">
+                  <span class="govuk-visually-hidden">Remove this filter</span> {{item.text}}
+                </a>
+              {% else %}
+                <a class="moj-filter__tag unselected" href="{{item.href}}">{{item.text}}</a>
+              {% endif %}
+            </li>
+          {% endfor %}
+        </ul>
+      {% endfor %}
+    </div>
+  </div>
+{% endmacro %}

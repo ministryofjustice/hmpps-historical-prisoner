@@ -34,3 +34,17 @@
   color: #6f777b;
   background: url(/assets/images/prison-cell.png) top center no-repeat;
 }
+
+.moj-filter__selected {
+  background-color: govuk-colour("white");
+  padding: 0;
+  box-shadow: none;
+}
+
+.moj-filter__tag.unselected:after {
+  background-image: none;
+}
+
+.moj-filter__tag.selected {
+  background-color: govuk-colour("blue");
+}

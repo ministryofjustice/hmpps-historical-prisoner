@@ -283,12 +283,12 @@ context('Paging', () => {
 
   it('Will show the total prisoners returned', () => {
     const searchWithResultsPage = Page.verifyOnPage(Search)
-    searchWithResultsPage.searchResultsCount().should('contain.text', '3 Prisoners')
+    searchWithResultsPage.searchResultsCount().should('contain.text', '3 prisoners')
   })
 
   it('Will show the total prisoners returned', () => {
     const searchWithResultsPage = Page.verifyOnPage(Search)
-    searchWithResultsPage.searchResultsCount().should('contain.text', '3 Prisoners')
+    searchWithResultsPage.searchResultsCount().should('contain.text', '3 prisoners')
   })
 
   it('Will show paging information', () => {

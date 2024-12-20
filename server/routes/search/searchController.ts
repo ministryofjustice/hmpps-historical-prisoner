@@ -22,7 +22,7 @@ export default class SearchController {
   ) {}
 
   async clearSearch(req: Request, res: Response): Promise<void> {
-    logger.debug('GET /search')
+    logger.debug('GET /search New Search')
     await this.auditService.logPageView(Page.SEARCH, { who: res.locals.user.username, correlationId: req.id })
     req.session.searchParams = {}
 
@@ -37,14 +37,14 @@ export default class SearchController {
       return res.render('pages/search', { form: { searchType: 'name' } })
     }
 
-    // const { page, filters } = req.query
     const { page } = req.query
+    req.session.searchParams.filters = this.getFiltersFromQuery(req)
 
     if (page) {
       req.session.searchParams.page = Number(page) - 1
     }
     const pagedResults: PagedModelPrisonerSearchDto = await this.doSearch(req, res)
-    const paginationParams = this.getPaginationParams(req, pagedResults.page)
+    const paginationParams = this.getPaginationParams(req, pagedResults.page, this.getSessionFilterString(req))
 
     if (req.session.prisonerSearchForm.searchType === undefined) {
       req.session.prisonerSearchForm = { searchType: 'name' }
@@ -53,6 +53,7 @@ export default class SearchController {
       searchResults: pagedResults.content,
       form: req.session.prisonerSearchForm,
       paginationParams,
+      filters: req.session.searchParams.filters,
     })
   }
 
@@ -64,7 +65,6 @@ export default class SearchController {
     logger.debug('search form is', req.session.prisonerSearchForm)
 
     const errors = searchValidator(req.session.prisonerSearchForm)
-
     if (errors.length) {
       return res.render('pages/search', {
         form: req.session.prisonerSearchForm,
@@ -72,12 +72,15 @@ export default class SearchController {
       })
     }
 
+    const filters = this.getSessionFilterString(req)
     const pagedResults: PagedModelPrisonerSearchDto = await this.doSearch(req, res)
-    const paginationParams = this.getPaginationParams(req, pagedResults.page)
+    const paginationParams = this.getPaginationParams(req, pagedResults.page, filters)
+
     return res.render('pages/search', {
       searchResults: pagedResults.content,
       form: req.session.prisonerSearchForm,
       paginationParams,
+      filters: req.session.searchParams.filters as string[],
       errors,
     })
   }
@@ -89,19 +92,19 @@ export default class SearchController {
       case 'name':
         return this.historicalPrisonerService.findPrisonersByName(
           req.user.token,
-          SearchController.toPrisonersByName(prisonerSearchForm),
+          SearchController.toPrisonersByName(prisonerSearchForm, req.session.searchParams.filters),
           req.session.searchParams.page,
         )
       case 'identifier':
         return this.historicalPrisonerService.findPrisonersByIdentifiers(
           req.user.token,
-          SearchController.toPrisonersByIdentifiers(prisonerSearchForm),
+          SearchController.toPrisonersByIdentifiers(prisonerSearchForm, req.session.searchParams.filters),
           req.session.searchParams.page,
         )
       case 'address':
         return this.historicalPrisonerService.findPrisonersByAddressTerms(
           req.user.token,
-          SearchController.toPrisonersByAddress(prisonerSearchForm),
+          SearchController.toPrisonersByAddress(prisonerSearchForm, req.session.searchParams.filters),
           req.session.searchParams.page,
         )
       default:
@@ -115,10 +118,31 @@ export default class SearchController {
     return res.render('pages/suggestion')
   }
 
-  getPaginationParams(req: Request, page: PageMetaData): LegacyPagination {
-    // const filters = req.session.searchParams.filters ? `&filters=${req.session.searchParams.filters}` : ''
-    // const paginationUrlPrefix = `/search/results?${filters}&`
-    const paginationUrlPrefix = `/search/results?`
+  getSessionFilterString(req: Request): string {
+    const searchParams = new URLSearchParams()
+
+    req.session.searchParams.filters?.forEach(entry => {
+      searchParams.append('filters', entry)
+    })
+    return searchParams ? '' : searchParams.toString()
+  }
+
+  getFiltersFromQuery(req: Request): string[] {
+    const { filters } = req.query
+    if (filters) {
+      if (Array.isArray(filters)) {
+        logger.debug('isarray')
+        return filters as string[]
+      }
+
+      logger.debug('string')
+      return [filters as string]
+    }
+    return []
+  }
+
+  getPaginationParams(req: Request, page: PageMetaData, filters: string): LegacyPagination {
+    const paginationUrlPrefix = filters === '' ? '/search/results?' : `/search/results?${filters}&`
 
     const paginationParams = pagination(
       page.number + 1,
@@ -132,8 +156,14 @@ export default class SearchController {
     return paginationParams
   }
 
-  private static toPrisonersByName(form: PrisonerSearchForm): FindPrisonersByName {
+  private static toPrisonersByName(form: PrisonerSearchForm, filters: string[]): FindPrisonersByName {
     const hasDateField = form.dobDay && form.dobMonth && form.dobYear
+    let gender: string
+    if (filters) {
+      if (filters.includes('male') && !filters.includes('female')) gender = 'M'
+      else if (!filters.includes('male') && filters.includes('female')) gender = 'F'
+    }
+
     return {
       forename: form.firstName,
       surname: form.lastName,
@@ -142,32 +172,31 @@ export default class SearchController {
         : undefined,
       ageFrom: Number(form.age?.split('-')[0]) || Number(form.age) || undefined,
       ageTo: Number(form.age?.split('-')[1]) || undefined,
-
-      gender: undefined,
-      hdc: form.hdc,
-      lifer: form.lifer,
+      gender,
+      hdc: filters?.includes('hdc') ? true : undefined,
+      lifer: filters?.includes('lifer') ? true : undefined,
     }
   }
 
-  private static toPrisonersByIdentifiers(form: PrisonerSearchForm): FindPrisonersByIdentifiers {
+  private static toPrisonersByIdentifiers(form: PrisonerSearchForm, filters: string[]): FindPrisonersByIdentifiers {
     return {
       prisonNumber: form.prisonNumber,
       pnc: form.pncNumber,
       cro: form.croNumber,
 
       gender: undefined,
-      hdc: form.hdc,
-      lifer: form.lifer,
+      hdc: filters?.includes('hdc') ? true : undefined,
+      lifer: filters?.includes('lifer') ? true : undefined,
     }
   }
 
-  private static toPrisonersByAddress(form: PrisonerSearchForm): FindPrisonersByAddress {
+  private static toPrisonersByAddress(form: PrisonerSearchForm, filters: string[]): FindPrisonersByAddress {
     return {
       addressTerms: form.address,
 
       gender: undefined,
-      hdc: form.hdc,
-      lifer: form.lifer,
+      hdc: filters?.includes('hdc') ? true : undefined,
+      lifer: filters?.includes('lifer') ? true : undefined,
     }
   }
 }
