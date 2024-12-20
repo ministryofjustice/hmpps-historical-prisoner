@@ -3,7 +3,6 @@ import HistoricalPrisonerService from '../../services/historicalPrisonerService'
 import AuditService from '../../services/auditService'
 import HmppsError from '../../interfaces/HmppsError'
 import AbstractDetailController from '../detail/abstractDetailController'
-import { PrisonerDetailDto } from '../../@types/historical-prisoner/historicalPrisonerApiTypes'
 
 type ItemType = { divider?: string; value?: string; text?: string; behaviour?: string }
 
@@ -58,26 +57,23 @@ export default class PrintController extends AbstractDetailController {
 
   async renderPdf(req: Request, res: Response): Promise<void> {
     const prisonerDetail = await this.getPrisonerDetail(req)
-    const filteredPrisonerDetail = this.filterPrisonerDetail(prisonerDetail, req)
+    const sections = this.getSections(req).reduce((acc: Record<string, boolean>, key: string) => {
+      acc[key] = true
+      return acc
+    }, {})
     res.renderPdf(
       `pages/pdf`,
       `pages/pdfHeader`,
       `pages/pdfFooter`,
-      { ...filteredPrisonerDetail, ...prisonerDetail.summary },
-      {
-        filename: `print-${req.params.prisonNo}.pdf`,
-      },
+      { sections, ...prisonerDetail },
+      { filename: `print-${req.params.prisonNo}.pdf` },
     )
   }
 
-  private filterPrisonerDetail(prisonerDetail: PrisonerDetailDto, req: Request) {
+  private getSections(req: Request) {
     const { section } = req.query
-    if (!section) return prisonerDetail
-    const sectionArray = Array.isArray(section) ? section : [section]
-    return Object.entries(prisonerDetail).reduce(
-      (acc, [key, value]) => (sectionArray.includes(key) ? { [key]: value, ...acc } : acc),
-      {},
-    )
+    if (!section) return items.map(({ value }) => value)
+    return Array.isArray(section) ? section : [section]
   }
 
   async renderView(req: Request, res: Response, pageData?: PageData): Promise<void> {

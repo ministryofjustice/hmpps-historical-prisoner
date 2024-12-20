@@ -159,7 +159,21 @@ describe('Print controller', () => {
         'pages/pdf',
         'pages/pdfHeader',
         'pages/pdfFooter',
-        { ...detail, firstName: 'JOHN', lastName: 'SMITH' },
+        {
+          ...detail,
+          sections: {
+            addresses: true,
+            aliases: true,
+            courtHearings: true,
+            hdc: true,
+            movements: true,
+            offences: true,
+            offencesInCustody: true,
+            sentenceSummary: true,
+            sentencing: true,
+            summary: true,
+          },
+        },
         { filename: 'print-AB12345.pdf' },
       )
     })
@@ -174,7 +188,7 @@ describe('Print controller', () => {
         'pages/pdf',
         'pages/pdfHeader',
         'pages/pdfFooter',
-        { summary: detail.summary, firstName: 'JOHN', lastName: 'SMITH' },
+        { ...detail, sections: { summary: true } },
         { filename: 'print-AB12345.pdf' },
       )
     })
@@ -190,7 +204,7 @@ describe('Print controller', () => {
         'pages/pdf',
         'pages/pdfHeader',
         'pages/pdfFooter',
-        { summary: detail.summary, sentenceSummary: detail.sentenceSummary, firstName: 'JOHN', lastName: 'SMITH' },
+        { ...detail, sections: { summary: true, sentenceSummary: true } },
         { filename: 'print-AB12345.pdf' },
       )
     })
