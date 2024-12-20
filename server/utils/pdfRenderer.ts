@@ -2,12 +2,10 @@ import { Request, Response, NextFunction } from 'express'
 import path from 'path'
 import fs from 'fs'
 
-import GotenbergClient, { PdfMargins } from '../data/gotenbergClient'
+import GotenbergClient from '../data/gotenbergClient'
 import logger from '../../logger'
 
 export type PdfPageData = { adjudicationsUrl: string } & Record<string, unknown>
-export type PdfHeaderData = Record<string, unknown>
-export type PdfFooterData = Record<string, unknown>
 
 export function pdfRenderer(client: GotenbergClient) {
   function readAssetCss() {
@@ -26,22 +24,19 @@ export function pdfRenderer(client: GotenbergClient) {
       return null
     }
   }
-
   return (_req: Request, res: Response, next: NextFunction) => {
     res.renderPdf = (
       pageView: string,
-      pageData: PdfPageData,
       headerView: string,
-      headerData: PdfHeaderData,
       footerView: string,
-      footerData: PdfFooterData,
-      options: { filename: string; pdfMargins: PdfMargins },
+      pageData: PdfPageData,
+      options: { filename: string },
     ) => {
-      res.render(headerView, headerData, (headerError: Error, headerHtml: string) => {
+      res.render(headerView, pageData, (headerError: Error, headerHtml: string) => {
         if (headerError) {
           throw headerError
         }
-        res.render(footerView, footerData, (footerError: Error, footerHtml: string) => {
+        res.render(footerView, pageData, (footerError: Error, footerHtml: string) => {
           if (footerError) {
             throw footerError
           }
@@ -51,7 +46,7 @@ export function pdfRenderer(client: GotenbergClient) {
             }
 
             client
-              .renderPdfFromHtml(pageHtml, headerHtml, footerHtml, readAssetCss(), options?.pdfMargins)
+              .renderPdfFromHtml(pageHtml, headerHtml, footerHtml, readAssetCss())
               .then(buffer => {
                 res.header('Content-Type', 'application/pdf')
                 res.header('Content-Transfer-Encoding', 'binary')

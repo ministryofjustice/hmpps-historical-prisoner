@@ -3,7 +3,7 @@ import HistoricalPrisonerService from '../../services/historicalPrisonerService'
 import AuditService from '../../services/auditService'
 import HmppsError from '../../interfaces/HmppsError'
 import AbstractDetailController from '../detail/abstractDetailController'
-import config from '../../config'
+import { PrisonerDetailDto } from '../../@types/historical-prisoner/historicalPrisonerApiTypes'
 
 type ItemType = { divider?: string; value?: string; text?: string; behaviour?: string }
 
@@ -57,24 +57,20 @@ export default class PrintController extends AbstractDetailController {
   }
 
   async renderPdf(req: Request, res: Response): Promise<void> {
-    const filteredPrisonerDetail = await this.getAndFilterPrisonerDetail(req)
-    const { pdfMargins } = config.apis.gotenberg
+    const prisonerDetail = await this.getPrisonerDetail(req)
+    const filteredPrisonerDetail = this.filterPrisonerDetail(prisonerDetail, req)
     res.renderPdf(
       `pages/pdf`,
-      { ...filteredPrisonerDetail },
       `pages/pdfHeader`,
-      { ...filteredPrisonerDetail },
       `pages/pdfFooter`,
-      {},
+      { ...filteredPrisonerDetail, ...prisonerDetail.summary },
       {
         filename: `print-${req.params.prisonNo}.pdf`,
-        pdfMargins,
       },
     )
   }
 
-  private async getAndFilterPrisonerDetail(req: Request) {
-    const prisonerDetail = await this.getPrisonerDetail(req)
+  private filterPrisonerDetail(prisonerDetail: PrisonerDetailDto, req: Request) {
     const { section } = req.query
     if (!section) return prisonerDetail
     const sectionArray = Array.isArray(section) ? section : [section]

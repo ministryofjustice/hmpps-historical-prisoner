@@ -3,7 +3,6 @@ import { Request, Response } from 'express'
 import PrintController from './printController'
 import HistoricalPrisonerService from '../../services/historicalPrisonerService'
 import auditServiceMock from '../../testutils/auditServiceMock'
-import config from '../../config'
 import { PrisonerDetailDto } from '../../@types/historical-prisoner/historicalPrisonerApiTypes'
 
 jest.mock('../../services/historicalPrisonerService')
@@ -158,15 +157,10 @@ describe('Print controller', () => {
 
       expect(res.renderPdf).toHaveBeenCalledWith(
         'pages/pdf',
-        { ...detail },
         'pages/pdfHeader',
-        { ...detail },
         'pages/pdfFooter',
-        {},
-        {
-          filename: 'print-AB12345.pdf',
-          pdfMargins: config.apis.gotenberg.pdfMargins,
-        },
+        { ...detail, firstName: 'JOHN', lastName: 'SMITH' },
+        { filename: 'print-AB12345.pdf' },
       )
     })
     it('should render PDF passing through relevant section', async () => {
@@ -178,15 +172,10 @@ describe('Print controller', () => {
 
       expect(res.renderPdf).toHaveBeenCalledWith(
         'pages/pdf',
-        { summary: detail.summary },
         'pages/pdfHeader',
-        { summary: detail.summary },
         'pages/pdfFooter',
-        {},
-        {
-          filename: 'print-AB12345.pdf',
-          pdfMargins: config.apis.gotenberg.pdfMargins,
-        },
+        { summary: detail.summary, firstName: 'JOHN', lastName: 'SMITH' },
+        { filename: 'print-AB12345.pdf' },
       )
     })
 
@@ -199,15 +188,10 @@ describe('Print controller', () => {
 
       expect(res.renderPdf).toHaveBeenCalledWith(
         'pages/pdf',
-        { summary: detail.summary, sentenceSummary: detail.sentenceSummary },
         'pages/pdfHeader',
-        { summary: detail.summary, sentenceSummary: detail.sentenceSummary },
         'pages/pdfFooter',
-        {},
-        {
-          filename: 'print-AB12345.pdf',
-          pdfMargins: config.apis.gotenberg.pdfMargins,
-        },
+        { summary: detail.summary, sentenceSummary: detail.sentenceSummary, firstName: 'JOHN', lastName: 'SMITH' },
+        { filename: 'print-AB12345.pdf' },
       )
     })
   })
