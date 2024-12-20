@@ -8,16 +8,18 @@
 {% block content %}
   <div class="govuk-grid-row govuk-body">
     <div class="govuk-grid-column-three-quarters">
-      <h1>{{ summary.firstName | title }} {{ summary.middleName | title }} {{ summary.lastName }}</h1>
+      <h1>{{ firstName | title }} {{ middleName | title }} {{ lastName }}</h1>
     </div>
   </div>
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-three-quarters hmpps-profile--personal-content hmpps-full-width-print">
-      <div class="govuk-grid-row">
-        <div class="govuk-grid-column-full">
-          {% include "../partials/detail/summary.njk" %}
+      {% if summary %}
+        <div class="govuk-grid-row">
+          <div class="govuk-grid-column-full">
+            {% include "../partials/detail/summary.njk" %}
+          </div>
         </div>
-      </div>
+      {% endif %}
       {% if sentenceSummary %}
         <div class="govuk-grid-row">
           <div class="govuk-grid-column-full">

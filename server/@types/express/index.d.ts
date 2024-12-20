@@ -1,5 +1,4 @@
 import { HmppsUser } from '../../interfaces/hmppsUser'
-import { PdfMargins } from '../../data/gotenbergClient'
 
 export declare module 'express-session' {
   export interface PrisonerSearchForm {
@@ -56,12 +55,10 @@ export declare global {
     interface Response {
       renderPdf(
         pageView: string,
-        pageData: PdfPageData,
         headerView: string,
-        headerData: PdfHeaderData,
         footerView: string,
-        footerData: PdfFooterData,
-        options: { filename: string; pdfMargins: PdfMargins },
+        pageData: PdfPageData,
+        options: { filename: string },
       ): void
     }
   }

@@ -89,13 +89,6 @@ export default {
     },
     gotenberg: {
       url: get('GOTENBERG_API_URL', 'http://localhost:3001', requiredInProduction),
-      pdfMargins: {
-        marginTop: '1.0',
-        marginBottom: '0.8',
-        marginLeft: '0.0',
-        marginRight: '0.0',
-        scale: '0.93',
-      },
     },
     tokenVerification: {
       url: get('TOKEN_VERIFICATION_API_URL', 'http://localhost:8100', requiredInProduction),
