@@ -25,8 +25,7 @@
                 {% if searchResults %}
                   <div class="govuk-grid-row">
                     <div class="govuk-grid-column-one-third">
-                      <h2 class="govuk-heading-l" data-qa="search-results-count">{{ paginationParams.results.count }}
-                        prisoner{% if searchResults.length != 1 %}s{% endif %}</h2>
+                      <h2 class="govuk-heading-l" data-qa="search-results-count">{{ paginationParams.results.count }} prisoner{% if searchResults.length != 1 %}s{% endif %}</h2>
                     </div>
                     <div class="govuk-grid-column-two-thirds">
                       {{ categoryFilter(filters | categoryFilters()) }}
