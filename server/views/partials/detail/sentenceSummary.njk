@@ -24,7 +24,7 @@
             "sentenceSummaryCourtHearingDate", {html: true}) }}
           {% endif %}
           {% if summary.receptionDate %}
-            {{ summaryListRow("Date of reception", summary.receptionDate | formatDate, "sentenceSummaryReceptionDate") }}
+            {{ summaryListRow("Date of first reception", summary.receptionDate | formatDate, "sentenceSummaryReceptionDate") }}
           {% endif %}
         {% else %}
           <p class="govuk-body" data-qa="noSentenceSummary">No sentence summary entered</p>
