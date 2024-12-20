@@ -1,0 +1,15 @@
+{% macro searchFilter(params) %}
+  {% from "govuk/components/button/macro.njk" import govukButton %}
+
+  <div class="moj-filter" {%- for attribute, value in params.attributes %} {{ attribute }}="{{ value }}"{% endfor %}>
+    <div class="moj-filter__content">
+      <div class="moj-filter__options">
+        {{ govukButton({
+          text: params.submit.text if params.submit.text else 'Search',
+          attributes: params.submit.attributes
+        }) }}
+        {{params.optionsHtml | safe}}
+      </div>
+    </div>
+  </div>
+{% endmacro %}
