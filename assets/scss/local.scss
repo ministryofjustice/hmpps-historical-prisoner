@@ -27,21 +27,6 @@
   float: right;
 }
 
-.filter-button-group {
-  float: right;
-}
-
-
-input.filter-button-active {
-  border-color: rgb(187.2, 212.1, 233.7);
-  background-color: rgb(187.2, 212.1, 233.7)
-
-}
-
-input.filter-button-active {
-  color: white;
-}
-
 .no-prisoners {
   text-align: center;
   margin-top: 100px;
@@ -59,6 +44,7 @@ input.filter-button-active {
 .moj-filter__tag.unselected:after {
   background-image: none;
 }
+
 .moj-filter__tag.selected {
   background-color: govuk-colour("blue");
 }
