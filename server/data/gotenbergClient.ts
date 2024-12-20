@@ -27,9 +27,9 @@ export default class GotenbergClient {
       .set('Content-Type', 'multi-part/form-data')
       .buffer(true)
       .attach('files', Buffer.from(html), 'index.html')
-      .attach('files', Buffer.from(headerHtml), 'header.html')
-      .attach('files', Buffer.from(footerHtml), 'footer.html')
-      .attach('files', Buffer.from(css), 'app.css')
+      .attach('files2', Buffer.from(headerHtml), 'header.html')
+      .attach('files3', Buffer.from(footerHtml), 'footer.html')
+      .attach('files4', Buffer.from(css), 'app.css')
       .responseType('blob')
 
     // Gotenberg defaults to using A4 format. Page size and margins specified in inches

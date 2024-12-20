@@ -1,6 +1,7 @@
 import Page from '../pages/page'
 import Disclaimer from '../pages/disclaimer'
 import PrintPage from '../pages/print'
+import prisonerDetail from '../mockApis/prisonerDetail.json'
 
 context('Print', () => {
   beforeEach(() => {
@@ -23,27 +24,41 @@ context('Print', () => {
   })
 
   it('Will allow user to select multiple sections', () => {
-    cy.task('stubPrisonerDetail')
+    cy.task('stubPrisonerDetail', {
+      ...prisonerDetail,
+      summary: { ...prisonerDetail.summary, prisonNumber: 'AB111112' },
+    })
 
     cy.visit('/print/A1234BC')
     const printPage = Page.verifyOnPageWithTitleParam(PrintPage, 'Firsta SURNAMEA')
     printPage.optionCheckbox('Subject').click()
     printPage.optionCheckbox('Court').click()
-    // TODO: add back in and change to pdf
-    // printPage.saveButton().click()
-    //
-    // Page.verifyOnPageWithTitleParam(DetailPage, 'Firsta Middlea SURNAMEA')
+
+    cy.task('stubCreatePdf')
+    printPage.saveButton().click()
+
+    cy.readFile(`${Cypress.config('downloadsFolder')}/print-AB111112.pdf`)
+
+    // Expect to still be on the print page
+    Page.verifyOnPageWithTitleParam(PrintPage, 'Firsta SURNAMEA')
   })
 
   it('Will allow user to select all sections', () => {
-    cy.task('stubPrisonerDetail')
+    cy.task('stubPrisonerDetail', {
+      ...prisonerDetail,
+      summary: { ...prisonerDetail.summary, prisonNumber: 'AB111113' },
+    })
 
     cy.visit('/print/A1234BC')
     const printPage = Page.verifyOnPageWithTitleParam(PrintPage, 'Firsta SURNAMEA')
     printPage.optionCheckbox('All, I would like all details').click()
-    // TODO: add back in and change to pdf
-    // printPage.saveButton().click()
-    //
-    // Page.verifyOnPageWithTitleParam(DetailPage, 'Firsta Middlea SURNAMEA')
+
+    cy.task('stubCreatePdf')
+    printPage.saveButton().click()
+
+    cy.readFile(`${Cypress.config('downloadsFolder')}/print-AB111113.pdf`)
+
+    // Expect to still be on the print page
+    Page.verifyOnPageWithTitleParam(PrintPage, 'Firsta SURNAMEA')
   })
 })
