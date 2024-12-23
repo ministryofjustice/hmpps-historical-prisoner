@@ -1,5 +1,5 @@
 {% extends "../partials/layout.njk" %}
-{% from "../macros/filterMacro.njk" import categoryFilter %}
+{% from "../macros/filter/categoryFilterMacro.njk" import categoryFilter %}
 
 {% set pageTitle = "HPA Prisoner Search" %}
 {% set mainClasses = "app-container govuk-body" %}
@@ -25,10 +25,10 @@
                 {% if searchResults %}
                   <div class="govuk-grid-row">
                     <div class="govuk-grid-column-one-third">
-                      <h2 class="govuk-heading-l" data-qa="search-results-count">{{ paginationParams.results.count }} prisoner{% if searchResults.length != 1 %}s{% endif %}</h2>
+                      <h2 class="govuk-heading-l" data-qa="search-results-count">{{ paginationParams.results.count }} {{ paginationParams.results.text }}</h2>
                     </div>
                     <div class="govuk-grid-column-two-thirds">
-                      {{ categoryFilter(filters | categoryFilters()) }}
+                      {{ categoryFilter(filters | filterCategories()) }}
                     </div>
                   </div>
 
@@ -49,6 +49,5 @@
         </div>
       </div>
     </div>
-  </div>
   </div>
 {% endblock %}

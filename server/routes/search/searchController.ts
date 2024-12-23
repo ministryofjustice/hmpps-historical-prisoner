@@ -62,7 +62,6 @@ export default class SearchController {
     req.session.searchParams ??= {}
 
     req.session.prisonerSearchForm = { ...trimForm(req.body) }
-    logger.debug('search form is', req.session.prisonerSearchForm)
 
     const errors = searchValidator(req.session.prisonerSearchForm)
     if (errors.length) {
@@ -72,20 +71,23 @@ export default class SearchController {
       })
     }
 
-    const filters = this.getSessionFilterString(req)
+    // Page and Search Filters are cleared on post
+    req.session.searchParams.filters = []
+    req.session.searchParams.page = 0
+
     const pagedResults: PagedModelPrisonerSearchDto = await this.doSearch(req, res)
-    const paginationParams = this.getPaginationParams(req, pagedResults.page, filters)
+    const paginationParams = this.getPaginationParams(req, pagedResults.page, '')
 
     return res.render('pages/search', {
       searchResults: pagedResults.content,
       form: req.session.prisonerSearchForm,
       paginationParams,
-      filters: req.session.searchParams.filters as string[],
+      filters: [],
       errors,
     })
   }
 
-  async doSearch(req: Request, res: Response): Promise<PagedModelPrisonerSearchDto> {
+  async doSearch(req: Request, _: Response): Promise<PagedModelPrisonerSearchDto> {
     const { prisonerSearchForm } = req.session
 
     switch (prisonerSearchForm.searchType) {
@@ -124,7 +126,7 @@ export default class SearchController {
     req.session.searchParams.filters?.forEach(entry => {
       searchParams.append('filters', entry)
     })
-    return searchParams ? '' : searchParams.toString()
+    return searchParams ? searchParams.toString() : ''
   }
 
   getFiltersFromQuery(req: Request): string[] {
@@ -152,7 +154,7 @@ export default class SearchController {
       page.totalElements,
       page.size,
     )
-    paginationParams.results.text = 'prisoners'
+    paginationParams.results.text = page.totalElements === 1 ? 'prisoner' : 'prisoners'
     return paginationParams
   }
 

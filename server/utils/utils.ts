@@ -21,3 +21,58 @@ export const initialiseName = (fullName?: string): string | null => {
   const array = fullName.split(' ')
   return `${array[0][0]}. ${array.reverse()[0]}`
 }
+
+export const filterSearch = (currentFilters: string[], searchFilter: string): string => {
+  const searchParams = new URLSearchParams()
+  let filters = Array.from(currentFilters)
+
+  if (filters.includes(searchFilter)) {
+    // remove it
+    filters = filters.filter(item => item !== searchFilter)
+  } else {
+    filters.push(searchFilter)
+  }
+  filters.forEach(entry => {
+    searchParams.append('filters', entry)
+  })
+  return searchParams.size > 0 ? `&${searchParams.toString()}` : ''
+}
+
+export const filterCategories = (searchFilters: string[]) => {
+  const hrefBase = '/search/results?page=1'
+  const filters = searchFilters === undefined ? [] : Array.from(searchFilters)
+
+  const categories = [
+    {
+      items: [
+        {
+          href: `${hrefBase}${filterSearch(filters, 'male')}`,
+          text: 'Male',
+          selected: filters.includes('male'),
+        },
+        {
+          href: `${hrefBase}${filterSearch(filters, 'female')}`,
+          text: 'Female',
+          selected: filters.includes('female'),
+        },
+        {
+          href: `${hrefBase}${filterSearch(filters, 'lifer')}`,
+          text: 'Lifer',
+          selected: filters.includes('lifer'),
+        },
+        {
+          href: `${hrefBase}${filterSearch(filters, 'hdc')}`,
+          text: 'HDC',
+          selected: filters.includes('hdc'),
+        },
+      ],
+    },
+  ]
+
+  return {
+    categories: categories.filter(category => category.items),
+  }
+}
+
+export const arrayToQueryString = (array: string[] | number[] | boolean[], key: string): string =>
+  array && array.map(item => `${key}=${encodeURIComponent(item)}`).join('&')
