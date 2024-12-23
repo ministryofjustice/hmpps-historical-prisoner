@@ -8,75 +8,75 @@
 {% block content %}
   <div class="govuk-grid-row govuk-body">
     <div class="govuk-grid-column-three-quarters">
-      <h1>{{ firstName | title }} {{ middleName | title }} {{ lastName }}</h1>
+      <h1>{{ summary.firstName | title }} {{  summary.middleName | title }} {{  summary.lastName }}</h1>
     </div>
   </div>
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-three-quarters hmpps-profile--personal-content hmpps-full-width-print">
-      {% if summary %}
+      {% if sections.summary %}
         <div class="govuk-grid-row">
           <div class="govuk-grid-column-full">
             {% include "../partials/detail/summary.njk" %}
           </div>
         </div>
       {% endif %}
-      {% if sentenceSummary %}
+      {% if sections.sentenceSummary %}
         <div class="govuk-grid-row">
           <div class="govuk-grid-column-full">
             {% include "../partials/detail/sentenceSummary.njk" %}
           </div>
         </div>
       {% endif %}
-      {% if sentencing %}
+      {% if sections.sentencing %}
         <div class="govuk-grid-row">
           <div class="govuk-grid-column-full">
             {% include "../partials/detail/sentencing.njk" %}
           </div>
         </div>
       {% endif %}
-      {% if courtHearings %}
+      {% if sections.courtHearings %}
         <div class="govuk-grid-row">
           <div class="govuk-grid-column-full">
             {% include "../partials/detail/courtHearings.njk" %}
           </div>
         </div>
       {% endif %}
-      {% if movements %}
+      {% if sections.movements %}
         <div class="govuk-grid-row">
           <div class="govuk-grid-column-full">
             {% include "../partials/detail/movements.njk" %}
           </div>
         </div>
       {% endif %}
-      {% if (hdcInfo or hdcRecall) %}
+      {% if sections.hdc %}
         <div class="govuk-grid-row">
           <div class="govuk-grid-column-full">
             {% include "../partials/detail/hdc.njk" %}
           </div>
         </div>
       {% endif %}
-      {% if offences %}
+      {% if sections.offences %}
         <div class="govuk-grid-row">
           <div class="govuk-grid-column-full">
             {% include "../partials/detail/offences.njk" %}
           </div>
         </div>
       {% endif %}
-      {% if offencesInCustody %}
+      {% if sections.offencesInCustody %}
         <div class="govuk-grid-row">
           <div class="govuk-grid-column-full">
             {% include "../partials/detail/offencesInCustody.njk" %}
           </div>
         </div>
       {% endif %}
-      {% if aliases %}
+      {% if sections.aliases %}
         <div class="govuk-grid-row">
           <div class="govuk-grid-column-full">
             {% include "../partials/detail/aliases.njk" %}
           </div>
         </div>
       {% endif %}
-      {% if addresses %}
+      {% if sections.addresses %}
         <div class="govuk-grid-row">
           <div class="govuk-grid-column-full">
             {% include "../partials/detail/addresses.njk" %}
