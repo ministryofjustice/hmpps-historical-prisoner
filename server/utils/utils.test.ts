@@ -1,4 +1,4 @@
-import { convertToTitleCase, initialiseName } from './utils'
+import { convertToTitleCase, initialiseName, filterSearch, filterCategories } from './utils'
 
 describe('convert to title case', () => {
   it.each([
@@ -26,5 +26,28 @@ describe('initialise name', () => {
     ['Double barrelled', 'Robert-John Smith-Jones-Wilson', 'R. Smith-Jones-Wilson'],
   ])('%s initialiseName(%s, %s)', (_: string, a: string, expected: string) => {
     expect(initialiseName(a)).toEqual(expected)
+  })
+})
+
+describe('filterSearch', () => {
+  it.each([
+    ['add filter', ['male'], 'female', '&filters=male&filters=female'],
+    ['remove filter', ['male', 'female'], 'female', '&filters=male'],
+    ['no filters', [], 'male', '&filters=male'],
+  ])('%s filterSearch(%s, %s, %s)', (_: string, currentFilters: string[], searchFilter: string, expected: string) => {
+    expect(filterSearch(currentFilters, searchFilter)).toEqual(expected)
+  })
+})
+
+describe('filterCategories', () => {
+  it('returns correct categories', () => {
+    const searchFilters = ['male', 'lifer']
+    const result = filterCategories(searchFilters)
+    expect(result.categories[0].items).toEqual([
+      { href: '/search/results?page=1&filters=lifer', text: 'Male', selected: true },
+      { href: '/search/results?page=1&filters=male&filters=lifer&filters=female', text: 'Female', selected: false },
+      { href: '/search/results?page=1&filters=male', text: 'Lifer', selected: true },
+      { href: '/search/results?page=1&filters=male&filters=lifer&filters=hdc', text: 'HDC', selected: false },
+    ])
   })
 })

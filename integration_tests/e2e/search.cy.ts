@@ -298,3 +298,85 @@ context('Paging', () => {
     Page.verifyOnPage(Search)
   })
 })
+
+context('Filtering', () => {
+  beforeEach(() => {
+    cy.task('reset')
+    cy.task('stubFrontendComponents')
+    cy.task('stubSignIn', { roles: ['ROLE_HPA_USER'] })
+    cy.task('stubPrisonerSearchByName')
+    cy.signIn()
+    Page.verifyOnPage(Disclaimer).confirmDisclaimer()
+    const searchPage = Page.verifyOnPage(Search)
+    searchPage.lastName().type('Wilson')
+    searchPage.doSearch()
+  })
+
+  it('Will show all filters as not selected', () => {
+    const searchWithResultsPage = Page.verifyOnPage(Search)
+    searchWithResultsPage.maleFilter().should('be.visible')
+    searchWithResultsPage.maleFilter().should('not.have.class', 'selected')
+    searchWithResultsPage.femaleFilter().should('be.visible')
+    searchWithResultsPage.femaleFilter().should('not.have.class', 'selected')
+    searchWithResultsPage.hdcFilter().should('be.visible')
+    searchWithResultsPage.hdcFilter().should('not.have.class', 'selected')
+    searchWithResultsPage.liferFilter().should('be.visible')
+    searchWithResultsPage.liferFilter().should('not.have.class', 'selected')
+  })
+
+  it('Will show the filter selected, if pressed', () => {
+    const searchWithResultsPage = Page.verifyOnPage(Search)
+    searchWithResultsPage.maleFilter().click()
+    searchWithResultsPage.maleFilter().should('be.visible')
+    searchWithResultsPage.maleFilter().should('have.class', 'selected')
+  })
+
+  it('Will deselect the filter if reselected', () => {
+    const searchWithResultsPage = Page.verifyOnPage(Search)
+    searchWithResultsPage.maleFilter().click()
+    searchWithResultsPage.maleFilter().should('be.visible')
+    searchWithResultsPage.maleFilter().should('have.class', 'selected')
+    searchWithResultsPage.maleFilter().should('not.have.class', 'unselected')
+    searchWithResultsPage.maleFilter().click()
+    searchWithResultsPage.maleFilter().should('have.class', 'unselected')
+    searchWithResultsPage.maleFilter().should('not.have.class', 'selected')
+  })
+
+  it('Will link to page 1 as part of filter when deselected', () => {
+    const searchWithResultsPage = Page.verifyOnPage(Search)
+    searchWithResultsPage.maleFilter().should('not.have.class', 'selected')
+    searchWithResultsPage.maleFilter().should('have.attr', 'href').and('include', 'page=1')
+  })
+
+  it('Will link to page 1 as part of filter when selected', () => {
+    const searchWithResultsPage = Page.verifyOnPage(Search)
+    searchWithResultsPage.maleFilter().click()
+    searchWithResultsPage.maleFilter().should('have.class', 'selected')
+    searchWithResultsPage.maleFilter().should('have.attr', 'href').and('include', 'page=1')
+  })
+
+  it('Will add previously selected filters to other filter links', () => {
+    const searchWithResultsPage = Page.verifyOnPage(Search)
+    searchWithResultsPage.maleFilter().click()
+    searchWithResultsPage.femaleFilter().should('have.attr', 'href').and('include', 'filters=male&page=1')
+    searchWithResultsPage.maleFilter().click()
+    searchWithResultsPage.maleFilter().should('have.class', 'selected')
+    searchWithResultsPage.maleFilter().should('have.attr', 'href').and('include', 'page=1')
+  })
+
+  it('Will not include filter in link if previously selected', () => {
+    const searchWithResultsPage = Page.verifyOnPage(Search)
+    searchWithResultsPage.maleFilter().click()
+    searchWithResultsPage.maleFilter().should('have.class', 'selected')
+    searchWithResultsPage.maleFilter().should('have.attr', 'href').and('not.include', 'filters=male')
+    searchWithResultsPage.maleFilter().should('have.attr', 'href').and('include', 'page=1')
+  })
+
+  it('Will show multiple selected filters', () => {
+    const searchWithResultsPage = Page.verifyOnPage(Search)
+    searchWithResultsPage.maleFilter().click()
+    searchWithResultsPage.femaleFilter().click()
+    searchWithResultsPage.maleFilter().should('have.class', 'selected')
+    searchWithResultsPage.femaleFilter().should('have.class', 'selected')
+  })
+})
