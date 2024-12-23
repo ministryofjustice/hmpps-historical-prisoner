@@ -23,6 +23,8 @@ generic-service:
       SecAction "id:900200,phase:1,nolog,pass,t:none,setvar:tx.allowed_methods=GET HEAD POST OPTIONS,setvar:tx.paranoia_level=3"
       # Searching for prisoners gives Invalid character in request (outside of printable chars below ascii 127) so remove
       SecRuleRemoveById 920272
+      # Allow multiple parameters of the same name to be passed through for HTTP Parameter Pollution
+      SecRuleUpdateTargetById 921180 "!TX:paramcounter_ARGS_NAMES:section"
       # Allow 1c in request cookie and csrf for SQL Injection Attack Detected via libinjection
       SecRuleUpdateTargetById 942100 "!ARGS:_csrf"
       SecRuleUpdateTargetById 942100 "!REQUEST_COOKIES:/connect.sid/"
