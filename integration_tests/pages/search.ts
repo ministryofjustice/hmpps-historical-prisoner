@@ -33,6 +33,16 @@ export default class Search extends Page {
     return this.searchButton().click()
   }
 
+  maleFilter = (): PageElement => cy.contains('.moj-filter__tag', 'Male')
+
+  femaleFilter = (): PageElement => cy.contains('.moj-filter__tag', 'Female')
+
+  hdcFilter = (): PageElement => cy.contains('.moj-filter__tag', 'HDC')
+
+  liferFilter = (): PageElement => cy.contains('.moj-filter__tag', 'Lifer')
+
+  filterButton = (text: string) => cy.contains('label', text).prev()
+
   newSearch = (): PageElement => cy.get('[data-qa="clear-search"]')
 
   suggestions = (): PageElement => cy.get('[data-qa="suggestions"]')
