@@ -345,7 +345,7 @@ context('Filtering', () => {
   it('Will link to page 1 as part of filter when deselected', () => {
     const searchWithResultsPage = Page.verifyOnPage(Search)
     searchWithResultsPage.maleFilter().should('not.have.class', 'selected')
-    searchWithResultsPage.maleFilter().should('have.attr', 'href').and('include', 'page=1')
+    searchWithResultsPage.maleFilter().should('have.attr', 'href').and('include', 'page=1&filters=male')
   })
 
   it('Will link to page 1 as part of filter when selected', () => {
@@ -358,10 +358,9 @@ context('Filtering', () => {
   it('Will add previously selected filters to other filter links', () => {
     const searchWithResultsPage = Page.verifyOnPage(Search)
     searchWithResultsPage.maleFilter().click()
-    searchWithResultsPage.femaleFilter().should('have.attr', 'href').and('include', 'filters=male&page=1')
-    searchWithResultsPage.maleFilter().click()
-    searchWithResultsPage.maleFilter().should('have.class', 'selected')
-    searchWithResultsPage.maleFilter().should('have.attr', 'href').and('include', 'page=1')
+    searchWithResultsPage.femaleFilter().should('have.attr', 'href').and('include', 'page=1')
+    searchWithResultsPage.femaleFilter().should('have.attr', 'href').and('include', 'filters=female')
+    searchWithResultsPage.femaleFilter().should('have.attr', 'href').and('include', 'filters=male')
   })
 
   it('Will not include filter in link if previously selected', () => {
