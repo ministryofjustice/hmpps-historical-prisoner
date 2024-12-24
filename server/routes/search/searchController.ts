@@ -1,7 +1,6 @@
 import { Request, Response } from 'express'
 import { PrisonerSearchForm } from 'express-session'
 import HistoricalPrisonerService from '../../services/historicalPrisonerService'
-import logger from '../../../logger'
 import AuditService, { Page } from '../../services/auditService'
 import trimForm from '../../utils/trim'
 import searchValidator from './searchValidator'
@@ -22,7 +21,6 @@ export default class SearchController {
   ) {}
 
   async clearSearch(req: Request, res: Response): Promise<void> {
-    logger.debug('GET /search New Search')
     await this.auditService.logPageView(Page.SEARCH, { who: res.locals.user.username, correlationId: req.id })
     req.session.searchParams = {}
 
@@ -30,7 +28,6 @@ export default class SearchController {
   }
 
   async getSearch(req: Request, res: Response): Promise<void> {
-    logger.debug('GET /search')
     await this.auditService.logPageView(Page.SEARCH, { who: res.locals.user.username, correlationId: req.id })
 
     if (!req.session.prisonerSearchForm) {
@@ -58,7 +55,6 @@ export default class SearchController {
   }
 
   async postSearch(req: Request, res: Response): Promise<void> {
-    logger.debug('post search /')
     req.session.searchParams ??= {}
 
     req.session.prisonerSearchForm = { ...trimForm(req.body) }
@@ -115,7 +111,6 @@ export default class SearchController {
   }
 
   getSuggestions(req: Request, res: Response) {
-    logger.debug('GET /search')
     // TODO
     return res.render('pages/suggestion')
   }
@@ -126,18 +121,15 @@ export default class SearchController {
     req.session.searchParams.filters?.forEach(entry => {
       searchParams.append('filters', entry)
     })
-    return searchParams ? searchParams.toString() : ''
+    return searchParams?.toString() ?? ''
   }
 
   getFiltersFromQuery(req: Request): string[] {
     const { filters } = req.query
     if (filters) {
       if (Array.isArray(filters)) {
-        logger.debug('isarray')
         return filters as string[]
       }
-
-      logger.debug('string')
       return [filters as string]
     }
     return []
