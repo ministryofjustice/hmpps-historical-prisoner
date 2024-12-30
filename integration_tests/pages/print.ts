@@ -8,4 +8,6 @@ export default class Print extends Page {
   optionCheckbox = text => cy.contains('label', text).prev()
 
   saveButton = (): PageElement => cy.get('button[type="submit"]')
+
+  backLink = (): PageElement => cy.get('.govuk-back-link')
 }

@@ -2,6 +2,7 @@ import Page from '../pages/page'
 import Disclaimer from '../pages/disclaimer'
 import PrintPage from '../pages/print'
 import prisonerDetail from '../mockApis/prisonerDetail.json'
+import DetailPage from '../pages/detail'
 
 context('Print', () => {
   beforeEach(() => {
@@ -60,5 +61,15 @@ context('Print', () => {
 
     // Expect to still be on the print page
     Page.verifyOnPageWithTitleParam(PrintPage, 'Firsta SURNAMEA')
+  })
+
+  it('Will include back link to detail page', () => {
+    cy.task('stubPrisonerDetail')
+
+    cy.visit('/print/A1234BC')
+    const printPage = Page.verifyOnPageWithTitleParam(PrintPage, 'Firsta SURNAMEA')
+    printPage.backLink().click()
+
+    Page.verifyOnPageWithTitleParam(DetailPage, 'Firsta Middlea SURNAMEA')
   })
 })
