@@ -1,5 +1,6 @@
 {% from "govuk/components/checkboxes/macro.njk" import govukCheckboxes %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/back-link/macro.njk" import govukBackLink %}
 
 {% extends "../partials/layout.njk" %}
 
@@ -7,6 +8,13 @@
 
 {% set mainClasses = "app-container govuk-body" %}
 {% set bodyAttributes = {'data-page': 'detail'} %}
+
+{% block beforeContent %}
+  {{ govukBackLink({
+    text: "Go back to search results",
+    href: "/search/results"
+  }) }}
+{% endblock %}
 
 {% block contentPostErrorSummary %}
   <div class="govuk-grid-row">

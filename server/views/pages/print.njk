@@ -1,10 +1,18 @@
 {% from "govuk/components/checkboxes/macro.njk" import govukCheckboxes %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/back-link/macro.njk" import govukBackLink %}
 
 {% extends "../partials/layout.njk" %}
 
 {% set pageTitle = "Print details" %}
 {% set mainClasses = "app-container govuk-body" %}
+
+{% block beforeContent %}
+  {{ govukBackLink({
+    text: "Go back to prisoner details",
+    href: "/detail/" + summary.prisonNumber
+  }) }}
+{% endblock %}
 
 {% block contentPostErrorSummary %}
   <div class="govuk-grid-row govuk-body">

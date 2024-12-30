@@ -2,6 +2,7 @@ import Page from '../pages/page'
 import Disclaimer from '../pages/disclaimer'
 import DetailPage from '../pages/detail'
 import PrintPage from '../pages/print'
+import SearchPage from '../pages/search'
 
 context('Detail', () => {
   beforeEach(() => {
@@ -10,6 +11,28 @@ context('Detail', () => {
     cy.task('stubSignIn', { roles: ['ROLE_HPA_USER'] })
     cy.signIn()
     Page.verifyOnPage(Disclaimer).confirmDisclaimer()
+  })
+
+  it('Will include back link to search results page', () => {
+    cy.task('stubPrisonerSearchByName')
+
+    // need to carry out a search to get the results into the session
+    const searchPage = Page.verifyOnPage(SearchPage)
+    searchPage.firstName().type('John')
+    searchPage.searchButton().click()
+    searchPage.searchResults().should('have.length', 2)
+
+    cy.task('stubPrisonerDetail')
+    cy.visit('/detail/A1234BC')
+
+    const detailPage = Page.verifyOnPageWithTitleParam(DetailPage, 'Firsta Middlea SURNAMEA')
+    detailPage.backLink().click()
+
+    const backLinkSearchPage = Page.verifyOnPage(SearchPage)
+
+    // also ensure that search results are still displayed
+    backLinkSearchPage.searchResults().should('exist')
+    searchPage.firstName().should('have.value', 'John')
   })
 
   describe('Will show all sections with data', () => {
