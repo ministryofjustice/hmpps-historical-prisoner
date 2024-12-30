@@ -12,6 +12,7 @@ context('Sign In', () => {
 
   it('Will show the disclaimer text', () => {
     Page.verifyOnPage(Disclaimer)
+    cy.title().should('eq', 'Usage')
   })
 
   it('Will provide a checkbox that is unchecked', () => {
@@ -29,6 +30,7 @@ context('Sign In', () => {
       .then($errors => {
         expect($errors.get(0).innerText).to.contain('You must confirm that you understand the disclaimer')
       })
+    cy.title().should('eq', 'Error: Usage')
   })
 
   it('Will successfully move to the search screen if disclaimer checkbox selected', () => {

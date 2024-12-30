@@ -8,7 +8,7 @@
 {% set mainClasses = "app-container govuk-body" %}
 {% set bodyAttributes = {'data-page': 'detail'} %}
 
-{% block content %}
+{% block contentPostErrorSummary %}
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-three-quarters">
       <h1>{{ summary.firstName | title }} {{ summary.middleName | title }} {{ summary.lastName }}</h1>

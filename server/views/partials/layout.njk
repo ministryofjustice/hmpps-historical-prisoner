@@ -12,24 +12,26 @@
   {%endfor%}
 {% endblock %}
 
-{% block pageTitle %}{{pageTitle | default(applicationName)}}{% endblock %}
+{% block pageTitle %}
+  {% if errorSummaryList | length %}Error: {% endif %}{{pageTitle | default(applicationName)}}
+{% endblock %}
 
 {% block header %}
   {{ feComponents.header | safe }}
 {% endblock %}
 
-{% block beforeContent %}
-  {% if errorSummaryList.length > 0 %}
+{% block content %}
+  {% if errorSummaryList | length %}
     <div class="govuk-grid-row">
       <div class="govuk-grid-column-two-thirds">
         {{ govukErrorSummary({
           titleText: "There is a problem",
-          errorList: errorSummaryList,
-          classes: 'govuk-!-margin-top-3 govuk-!-margin-bottom-0'
+          errorList: errorSummaryList
         }) }}
       </div>
     </div>
   {% endif %}
+  {% block contentPostErrorSummary %}{% endblock %}
 {% endblock %}
 
 {% block bodyStart %}
