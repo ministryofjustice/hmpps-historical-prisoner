@@ -75,6 +75,7 @@ generic-service:
 
 generic-prometheus-alerts:
   targetApplication: hmpps-historical-prisoner
+  alertSeverity: syscon
 
 gotenberg:
   nameOverride: gotenberg
