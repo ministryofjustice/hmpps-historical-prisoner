@@ -19,7 +19,17 @@
         </div>
       {% endif %}
       <div class="govuk-body govuk-!-margin-bottom-2">
-        <a href="#" class="govuk-link">Add to shortlist</a>
+        <form action="/search/addToShortlist" method="post" novalidate data-qa="shortlist-{{ prisoner.prisonNumber }}">
+          <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
+          <input type="hidden" name="prisoner" value="{{ prisoner.prisonNumber }}" />
+          {% if prisoner.shortlisted %}
+            <input type="submit" class="govuk-link shortlist-link" value="Remove from shortlist" name="remove">
+          {% elseif shortlist.length > 2 %}
+            <input type="submit" class="govuk-link shortlist-link" value="Shortlist full" name="view">
+          {% else %}
+            <input type="submit" class="govuk-link shortlist-link" value="Add to shortlist" name="add">
+          {% endif %}
+        </form>
       </div>
     </div>
   {% endset %}
