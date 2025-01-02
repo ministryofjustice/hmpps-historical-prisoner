@@ -36,9 +36,14 @@
 }
 
 .moj-filter__selected {
+  float: right;
   background-color: govuk-colour("white");
   padding: 0;
   box-shadow: none;
+}
+
+.moj-filter__tag:after {
+  background-image: url(#{$moj-images-path}icon-tag-remove-cross-white.svg);
 }
 
 .moj-filter__tag.unselected:after {
@@ -47,4 +52,9 @@
 
 .moj-filter__tag.selected {
   background-color: govuk-colour("blue");
+  color: govuk-colour("white");
+}
+
+.moj-filter__tag.selected:hover {
+  background-color: #2b8cc4;
 }
