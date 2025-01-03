@@ -1,17 +1,14 @@
 import { Request, Response } from 'express'
 import HistoricalPrisonerService from '../../services/historicalPrisonerService'
 import AuditService, { Page } from '../../services/auditService'
-import AbstractComparisonController from './abstractComparisonController'
 import { PrisonerDetailDto } from '../../@types/historical-prisoner/historicalPrisonerApiTypes'
 import logger from '../../../logger'
 
-export default class ComparisonController extends AbstractComparisonController {
+export default class ComparisonController {
   constructor(
-    historicalPrisonerService: HistoricalPrisonerService,
+    private readonly historicalPrisonerService: HistoricalPrisonerService,
     private readonly auditService: AuditService,
-  ) {
-    super(historicalPrisonerService)
-  }
+  ) {}
 
   async getComparisonDetail(req: Request, res: Response): Promise<void> {
     logger.debug('GET /comparison')
@@ -22,5 +19,18 @@ export default class ComparisonController extends AbstractComparisonController {
       correlationId: req.id,
     })
     res.render('pages/comparison', { prisoners })
+  }
+
+  async getPrisonerDetail(req: Request): Promise<PrisonerDetailDto[]> {
+    const { shortlist } = req.session
+    const results = []
+
+    if (shortlist && shortlist.length <= 3) {
+      const promises = shortlist.map(prisonerNo =>
+        this.historicalPrisonerService.getPrisonerDetail(req.user.token, prisonerNo),
+      )
+      results.push(...(await Promise.all(promises)))
+    }
+    return results
   }
 }

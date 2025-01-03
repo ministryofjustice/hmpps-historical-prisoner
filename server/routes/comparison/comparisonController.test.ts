@@ -46,7 +46,7 @@ describe('Comparison controller', () => {
       expect(historicalPrisonerService.getPrisonerDetail).toHaveBeenCalledWith('token', 'AB12345')
       expect(historicalPrisonerService.getPrisonerDetail).toHaveBeenCalledWith('token', 'ZZ54321')
       expect(historicalPrisonerService.getPrisonerDetail).toHaveBeenCalledWith('token', 'MC98765')
-      expectRenderComparisonContaining3PrisonersDetails()
+      expectRenderComparisonContainingDetail([prisoner1Detail, prisoner2Detail, prisoner3Detail])
     })
 
     it('should retrieve prisoner detail and render the comparison page', async () => {
@@ -58,6 +58,26 @@ describe('Comparison controller', () => {
       expect(historicalPrisonerService.getPrisonerDetail).toHaveBeenCalledWith('token', 'AB12345')
       expectRenderComparisonContainingDetail()
       expect(req.session.shortlist).toStrictEqual([prisoner1Detail.prisonNumber])
+    })
+
+    it('should return empty list if no prisoners to compare', async () => {
+      historicalPrisonerService.getPrisonerDetail.mockResolvedValue(prisoner1Detail)
+      req.session.shortlist = []
+
+      await controller.getComparisonDetail(req, res)
+
+      expect(historicalPrisonerService.getPrisonerDetail).not.toHaveBeenCalled()
+      expectRenderComparisonContainingDetail([])
+    })
+
+    it('should return empty list if >3 prisoners to compare', async () => {
+      historicalPrisonerService.getPrisonerDetail.mockResolvedValue(prisoner1Detail)
+      req.session.shortlist = ['AB12345', 'ZZ54321', 'MC98765', 'AA56789']
+
+      await controller.getComparisonDetail(req, res)
+
+      expect(historicalPrisonerService.getPrisonerDetail).not.toHaveBeenCalled()
+      expectRenderComparisonContainingDetail([])
     })
 
     it('should audit details viewed', async () => {
@@ -76,16 +96,7 @@ describe('Comparison controller', () => {
     })
   })
 
-  function expectRenderComparisonContainingDetail() {
-    expect(res.render).toHaveBeenCalledWith(
-      'pages/comparison',
-      expect.objectContaining({ prisoners: [prisoner1Detail] }),
-    )
-  }
-  function expectRenderComparisonContaining3PrisonersDetails() {
-    expect(res.render).toHaveBeenCalledWith(
-      'pages/comparison',
-      expect.objectContaining({ prisoners: [prisoner1Detail, prisoner2Detail, prisoner3Detail] }),
-    )
+  function expectRenderComparisonContainingDetail(prisonerDetails = [prisoner1Detail]) {
+    expect(res.render).toHaveBeenCalledWith('pages/comparison', expect.objectContaining({ prisoners: prisonerDetails }))
   }
 })

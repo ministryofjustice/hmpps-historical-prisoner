@@ -162,9 +162,7 @@ export default class SearchController {
       req.session.shortlist.push(req.body.prisoner)
     } else if (req.body.remove) {
       req.session.shortlist = req.session.shortlist.filter(item => item !== req.body.prisoner)
-    }
-    // TODO add in view functionality to show shortlist
-
+    } else return res.redirect('/comparison')
     // Need to add in MoJ banner too for success
 
     return res.redirect('/search/results')
