@@ -57,9 +57,7 @@ export default class SearchController {
     })
   }
 
-  async postSearch(req: Request, res: Response): Promise<void> {
-    req.session.searchParams ??= {}
-
+  postSearch(req: Request, res: Response) {
     req.session.prisonerSearchForm = { ...trimForm(req.body) }
 
     const errors = searchValidator(req.session.prisonerSearchForm)
@@ -70,20 +68,10 @@ export default class SearchController {
       })
     }
 
-    // Page and Search Filters are cleared on post
-    req.session.searchParams.filters = []
-    req.session.searchParams.page = 0
+    // Ensure that the searchParams are cleared
+    req.session.searchParams = { filters: [], page: 0 }
 
-    const pagedResults: PagedModelPrisonerSearchDto = await this.doSearch(req, res)
-    const paginationParams = this.getPaginationParams(req, pagedResults.page, '')
-
-    return res.render('pages/search', {
-      searchResults: pagedResults.content,
-      form: req.session.prisonerSearchForm,
-      paginationParams,
-      filters: [],
-      errors,
-    })
+    return res.redirect('/search/results')
   }
 
   async doSearch(req: Request, _: Response): Promise<PagedModelPrisonerSearchDto> {

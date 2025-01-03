@@ -72,79 +72,46 @@ describe('Search controller', () => {
   })
 
   describe('postSearch', () => {
-    it('should render search page with error if error returned if no search type set', async () => {
-      await controller.postSearch(req, res)
+    it('should render search page with error if error returned if no search type set', () => {
+      controller.postSearch(req, res)
 
-      expect(historicalPrisonerService.findPrisonersByName).not.toHaveBeenCalled()
       expect(res.render).toHaveBeenCalledWith('pages/search', {
         errors: [{ href: '#searchType', text: 'Enter a valid search type' }],
         form: {},
       })
     })
 
-    it('should render the search page with error if no data set', async () => {
+    it('should render the search page with error if no data set', () => {
       req.body = { searchType: 'name' }
-      await controller.postSearch(req, res)
+      controller.postSearch(req, res)
 
-      expect(historicalPrisonerService.findPrisonersByName).not.toHaveBeenCalled()
       expect(res.render).toHaveBeenCalledWith('pages/search', {
         errors: [{ href: '', text: 'Please enter a value for at least one Name/age field' }],
         form: { searchType: 'name' },
       })
     })
 
-    it('should have interaction with the prisoner service', async () => {
+    it('should call redirect to search results if validation passes', () => {
       req.body = { searchType: 'name', lastName: 'WILSON' }
-      historicalPrisonerService.findPrisonersByName.mockResolvedValue(results)
-      await controller.postSearch(req, res)
+      controller.postSearch(req, res)
 
-      expect(historicalPrisonerService.findPrisonersByName).toHaveBeenCalled()
+      expect(res.redirect).toHaveBeenCalledWith('/search/results')
     })
 
-    it('should render the search page with page parameters', async () => {
+    it('should add the prisonerSearchForm data to the session', () => {
       req.body = { searchType: 'name', lastName: 'WILSON' }
       historicalPrisonerService.findPrisonersByName.mockResolvedValue(results)
-      await controller.postSearch(req, res)
-
-      expect(res.render).toHaveBeenCalledWith(
-        'pages/search',
-        expect.objectContaining({
-          paginationParams: { items: [], results: { count: 2, from: 1, to: 2, text: 'prisoners' } },
-        }),
-      )
-    })
-
-    it('should clear filters', async () => {
-      req.body = { searchType: 'name', lastName: 'WILSON' }
-      req.query = { filters: 'female' }
-      historicalPrisonerService.findPrisonersByName.mockResolvedValue(results)
-      await controller.postSearch(req, res)
-
-      expect(res.render).toHaveBeenCalledWith(
-        'pages/search',
-        expect.objectContaining({
-          filters: [],
-        }),
-      )
-    })
-
-    it('should render the search page with results', async () => {
-      req.body = { searchType: 'name', lastName: 'WILSON' }
-      historicalPrisonerService.findPrisonersByName.mockResolvedValue(results)
-      await controller.postSearch(req, res)
-
-      expect(res.render).toHaveBeenCalledWith(
-        'pages/search',
-        expect.objectContaining({ searchResults: results.content }),
-      )
-    })
-
-    it('should add the prisonerSearchForm data to the session', async () => {
-      req.body = { searchType: 'name', lastName: 'WILSON' }
-      historicalPrisonerService.findPrisonersByName.mockResolvedValue(results)
-      await controller.postSearch(req, res)
+      controller.postSearch(req, res)
 
       expect(req.session.prisonerSearchForm).toEqual({ searchType: 'name', lastName: 'WILSON' })
+    })
+
+    it('should clear search params if validation passes', () => {
+      req.body = { searchType: 'name', lastName: 'WILSON' }
+      controller.postSearch(req, res)
+
+      expect(res.redirect).toHaveBeenCalledWith('/search/results')
+      expect(req.session.searchParams).toEqual({ filters: [], page: 0 })
     })
   })
 
