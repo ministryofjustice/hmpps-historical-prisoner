@@ -33,4 +33,22 @@ export default class ComparisonController {
     }
     return results
   }
+
+  addToShortlist(req: Request, res: Response) {
+    if (req.body.view) return res.redirect('/comparison')
+
+    req.session.shortlist ??= []
+    if (req.body.add) {
+      // already max items in shortlist - no more can be added
+      if (req.session.shortlist.length < 3) {
+        req.session.shortlist.push(req.body.prisoner)
+      } else {
+        // TODO: Need to add in MoJ basnner too for error
+      }
+    } else {
+      req.session.shortlist = req.session.shortlist.filter(item => item !== req.body.prisoner)
+    }
+    // TODO: Need to add in MoJ banner too for success
+    return res.redirect('/search/results')
+  }
 }

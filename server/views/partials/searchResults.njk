@@ -19,7 +19,7 @@
         </div>
       {% endif %}
       <div class="govuk-body govuk-!-margin-bottom-2">
-        <form action="/search/addToShortlist" method="post" novalidate data-qa="shortlist-{{ prisoner.prisonNumber }}">
+        <form action="/comparison/addToShortlist" method="post" novalidate data-qa="shortlist-{{ prisoner.prisonNumber }}">
           <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
           <input type="hidden" name="prisoner" value="{{ prisoner.prisonNumber }}" />
           {% if prisoner.shortlisted %}
