@@ -1,5 +1,5 @@
 import Page from '../pages/page'
-import Disclaimer from '../pages/disclaimer'
+import DisclaimerPage from '../pages/disclaimer'
 import DetailPage from '../pages/detail'
 import PrintPage from '../pages/print'
 import SearchPage from '../pages/search'
@@ -10,7 +10,7 @@ context('Detail', () => {
     cy.task('stubFrontendComponents')
     cy.task('stubSignIn', { roles: ['ROLE_HPA_USER'] })
     cy.signIn()
-    Page.verifyOnPage(Disclaimer).confirmDisclaimer()
+    Page.verifyOnPage(DisclaimerPage).confirmDisclaimer()
   })
 
   it('Will include back link to search results page', () => {

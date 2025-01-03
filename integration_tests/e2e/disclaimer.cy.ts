@@ -1,6 +1,6 @@
 import Page from '../pages/page'
-import Disclaimer from '../pages/disclaimer'
-import Search from '../pages/search'
+import DisclaimerPage from '../pages/disclaimer'
+import SearchPage from '../pages/search'
 
 context('Sign In', () => {
   beforeEach(() => {
@@ -11,19 +11,19 @@ context('Sign In', () => {
   })
 
   it('Will show the disclaimer text', () => {
-    Page.verifyOnPage(Disclaimer)
+    Page.verifyOnPage(DisclaimerPage)
     cy.title().should('eq', 'Usage')
   })
 
   it('Will provide a checkbox that is unchecked', () => {
-    const disclaimerPage = Page.verifyOnPage(Disclaimer)
+    const disclaimerPage = Page.verifyOnPage(DisclaimerPage)
     disclaimerPage.disclaimerCheckbox.should('not.be.checked')
   })
 
   it('Will return to disclaimer page and show an error if the disclaimer checkbox is not set', () => {
-    const disclaimerPage = Page.verifyOnPage(Disclaimer)
+    const disclaimerPage = Page.verifyOnPage(DisclaimerPage)
     disclaimerPage.confirmButton().click()
-    const disclaimerPageUpdate = Page.verifyOnPage(Disclaimer)
+    const disclaimerPageUpdate = Page.verifyOnPage(DisclaimerPage)
     disclaimerPageUpdate
       .errorSummaryList()
       .find('li')
@@ -34,26 +34,26 @@ context('Sign In', () => {
   })
 
   it('Will successfully move to the search screen if disclaimer checkbox selected', () => {
-    const disclaimerPage = Page.verifyOnPage(Disclaimer)
+    const disclaimerPage = Page.verifyOnPage(DisclaimerPage)
     disclaimerPage.confirmDisclaimer()
-    Page.verifyOnPage(Search)
+    Page.verifyOnPage(SearchPage)
   })
 
   it('Will bypass the disclaimer page if the user has already accepted the disclaimer', () => {
     cy.visit('/disclaimer')
-    const disclaimerPage = Page.verifyOnPage(Disclaimer)
+    const disclaimerPage = Page.verifyOnPage(DisclaimerPage)
     disclaimerPage.confirmDisclaimer()
 
-    Page.verifyOnPage(Search)
+    Page.verifyOnPage(SearchPage)
 
     cy.visit('/disclaimer')
-    Page.verifyOnPage(Search)
+    Page.verifyOnPage(SearchPage)
   })
 
   it('Will take user to disclaimer page if not accepted disclaimer', () => {
-    Page.verifyOnPage(Disclaimer)
+    Page.verifyOnPage(DisclaimerPage)
 
     cy.visit('/search')
-    Page.verifyOnPage(Disclaimer)
+    Page.verifyOnPage(DisclaimerPage)
   })
 })
