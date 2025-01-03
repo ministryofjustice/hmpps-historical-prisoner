@@ -7,6 +7,7 @@ export enum Page {
   SEARCH = 'SEARCH',
   VIEW = 'VIEW',
   DETAIL = 'DETAIL',
+  COMPARISON = 'COMPARISON',
 }
 
 export interface PageViewEventDetails {

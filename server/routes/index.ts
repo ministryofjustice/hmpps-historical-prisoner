@@ -6,6 +6,7 @@ import disclaimerRoutes from './disclaimer/disclaimerRouter'
 import searchRoutes from './search/searchRouter'
 import printRoutes from './print/printRouter'
 import detailRoutes from './detail/detailRouter'
+import comparisonRoutes from './comparison/comparisonRouter'
 
 export default function routes({ auditService, historicalPrisonerService }: Services): Router {
   const router = Router()
@@ -18,6 +19,7 @@ export default function routes({ auditService, historicalPrisonerService }: Serv
   disclaimerRoutes(router)
   searchRoutes(router, auditService, historicalPrisonerService)
   detailRoutes(router, auditService, historicalPrisonerService)
+  comparisonRoutes(router, auditService, historicalPrisonerService)
   printRoutes(router, auditService, historicalPrisonerService)
 
   return router

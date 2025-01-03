@@ -15,12 +15,6 @@ export declare module 'express-session' {
     croNumber?: string
 
     address?: string
-
-    female?: string
-    male?: string
-    gender?: string
-    hdc?: boolean
-    lifer?: boolean
   }
 
   // Declare that the session will potentially contain these additional fields
