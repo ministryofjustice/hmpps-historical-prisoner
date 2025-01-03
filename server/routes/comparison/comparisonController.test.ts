@@ -96,6 +96,56 @@ describe('Comparison controller', () => {
     })
   })
 
+  describe('addToShortlist', () => {
+    it('should initialize shortlist if undefined and add a prisoner', () => {
+      req.body = { add: true, prisoner: 'AB12345' }
+      req.session.shortlist = undefined
+
+      controller.addToShortlist(req, res)
+
+      expect(req.session.shortlist).toEqual(['AB12345'])
+      expect(res.redirect).toHaveBeenCalledWith('/search/results')
+    })
+
+    it('should add a prisoner to the shortlist if not already present', () => {
+      req.body = { add: true, prisoner: 'ZZ54321' }
+      req.session.shortlist = ['AB12345']
+
+      controller.addToShortlist(req, res)
+
+      expect(req.session.shortlist).toEqual(['AB12345', 'ZZ54321'])
+      expect(res.redirect).toHaveBeenCalledWith('/search/results')
+    })
+
+    it('should not add a prisoner if shortlist already has 3 items', () => {
+      req.body = { add: true, prisoner: 'MC98765' }
+      req.session.shortlist = ['AB12345', 'ZZ54321', 'XY12345']
+
+      controller.addToShortlist(req, res)
+
+      expect(req.session.shortlist).toEqual(['AB12345', 'ZZ54321', 'XY12345'])
+      expect(res.redirect).toHaveBeenCalledWith('/search/results')
+    })
+
+    it('should remove a prisoner from the shortlist', () => {
+      req.body = { remove: true, prisoner: 'ZZ54321' }
+      req.session.shortlist = ['AB12345', 'ZZ54321']
+
+      controller.addToShortlist(req, res)
+
+      expect(req.session.shortlist).toEqual(['AB12345'])
+      expect(res.redirect).toHaveBeenCalledWith('/search/results')
+    })
+
+    it('should redirect to /comparison if view is true', () => {
+      req.body = { view: true }
+
+      controller.addToShortlist(req, res)
+
+      expect(res.redirect).toHaveBeenCalledWith('/comparison')
+    })
+  })
+
   function expectRenderComparisonContainingDetail(prisonerDetails = [prisoner1Detail]) {
     expect(res.render).toHaveBeenCalledWith('pages/comparison', expect.objectContaining({ prisoners: prisonerDetails }))
   }
