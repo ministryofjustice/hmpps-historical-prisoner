@@ -2,6 +2,7 @@ import Page from '../pages/page'
 import DisclaimerPage from '../pages/disclaimer'
 import SearchPage from '../pages/search'
 import ComparisonPage from '../pages/comparison'
+import DetailPage from '../pages/detail'
 
 context('Search', () => {
   beforeEach(() => {
@@ -148,6 +149,20 @@ context('Search', () => {
     searchPage.suggestions().should('not.exist')
     searchPage.searchButton().click()
     searchPage.suggestions().should('be.visible')
+  })
+
+  it('Will provide link to prisoner details', () => {
+    cy.task('stubPrisonerSearchByName')
+    const searchPage = Page.verifyOnPage(SearchPage)
+    searchPage.firstName().type('John')
+    searchPage.searchButton().click()
+
+    const searchPageResults = Page.verifyOnPage(SearchPage)
+    searchPageResults.detailLink('BF123458').should('contain.text', 'Smith Middle WILSON')
+    cy.task('stubPrisonerDetail')
+
+    searchPageResults.detailLink('BF123458').click()
+    Page.verifyOnPageWithTitleParam(DetailPage, 'Firsta Middlea SURNAMEA')
   })
 })
 
