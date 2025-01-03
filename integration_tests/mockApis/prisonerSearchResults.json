@@ -13,9 +13,33 @@
       "dob": "1967-01-05"
     },
     {
-      "prisonNumber": "BF123455",
+      "prisonNumber": "BF123456",
       "lastName": "WILSON",
       "firstName": "MAYOR",
+      "middleName": "",
+      "isAlias": true,
+      "receptionDate": "1955-11-12",
+      "aliasLast": "WILSON",
+      "aliasFirst": "GOLDIE",
+      "aliasMiddle": "",
+      "dob": "1967-01-05"
+    },
+    {
+      "prisonNumber": "BF123457",
+      "lastName": "WILSON",
+      "firstName": "FRED",
+      "middleName": "",
+      "isAlias": true,
+      "receptionDate": "1955-11-12",
+      "aliasLast": "WILSON",
+      "aliasFirst": "GOLDIE",
+      "aliasMiddle": "",
+      "dob": "1967-01-05"
+    },
+    {
+      "prisonNumber": "BF123458",
+      "lastName": "WILSON",
+      "firstName": "SMITH",
       "middleName": "",
       "isAlias": true,
       "receptionDate": "1955-11-12",
@@ -26,9 +50,9 @@
     }
   ],
   "page": {
-    "size": 2,
+    "size": 4,
     "number": 0,
-    "totalElements": 3,
+    "totalElements": 6,
     "totalPages": 2
   }
 }
