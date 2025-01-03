@@ -104,7 +104,7 @@ context('Search', () => {
     searchPage.firstName().type('John')
     searchPage.searchButton().click()
     searchPage.searchResults().should('have.length', 2)
-    searchPage.searchResults().eq(0).should('contain.text', 'Add to shortlist')
+    searchPage.shortlistForm('BF123455').get('input[type="submit"]').should('have.value', 'Add to shortlist')
   })
 
   it('Will provide suggestions link to improve search', () => {

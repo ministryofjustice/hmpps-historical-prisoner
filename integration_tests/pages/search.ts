@@ -58,4 +58,6 @@ export default class Search extends Page {
   previousPage = (): PageElement => cy.get('.moj-pagination__item--prev').first().click()
 
   paginationLink = (pageNumber): PageElement => cy.get('a').contains(pageNumber).first()
+
+  shortlistForm = (prisonNumber: string): PageElement => cy.get(`[data-qa="shortlist-${prisonNumber}"]`)
 }

@@ -27,6 +27,16 @@
   float: right;
 }
 
+.shortlist-link {
+  background: none;
+  border: none;
+  text-decoration: underline;
+  cursor: pointer;
+  padding: 0;
+  color: $govuk-link-colour;
+  font-size: 16px;
+}
+
 .no-prisoners {
   text-align: center;
   margin-top: 100px;

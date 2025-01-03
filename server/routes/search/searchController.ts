@@ -47,10 +47,13 @@ export default class SearchController {
       req.session.prisonerSearchForm = { searchType: 'name' }
     }
     return res.render('pages/search', {
-      searchResults: pagedResults.content,
+      searchResults: pagedResults.content.map(prisoner => {
+        return { ...prisoner, shortlisted: req.session.shortlist?.includes(prisoner.prisonNumber) }
+      }),
       form: req.session.prisonerSearchForm,
       paginationParams,
       filters: req.session.searchParams.filters,
+      shortlist: req.session.shortlist,
     })
   }
 
@@ -148,6 +151,23 @@ export default class SearchController {
     )
     paginationParams.results.text = page.totalElements === 1 ? 'prisoner' : 'prisoners'
     return paginationParams
+  }
+
+  addToShortlist(req: Request, res: Response) {
+    req.session.shortlist ??= []
+    if (req.session.shortlist.length === 3) {
+      // already max items in shortlist - no more can be added
+    }
+    if (req.body.add) {
+      req.session.shortlist.push(req.body.prisoner)
+    } else if (req.body.remove) {
+      req.session.shortlist = req.session.shortlist.filter(item => item !== req.body.prisoner)
+    }
+    // TODO add in view functionality to show shortlist
+
+    // Need to add in MoJ banner too for success
+
+    return res.redirect('/search/results')
   }
 
   private static toPrisonersByName(form: PrisonerSearchForm, filters: string[]): FindPrisonersByName {

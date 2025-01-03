@@ -30,6 +30,7 @@ export declare module 'express-session' {
     disclaimerConfirmed: boolean
     prisonerSearchForm: PrisonerSearchForm
     searchParams: SearchParams
+    shortlist: string[] | null
     prisonerDetail: PrisonerDetailDto
   }
 }
