@@ -1,13 +1,11 @@
 {% from "govuk/components/back-link/macro.njk" import govukBackLink %}
 {% from "../macros/summaryCardMacro.njk" import summaryCard %}
 {% from "../macros/summaryListRow.njk" import summaryListRow %}
-
 {% from "govuk/components/table/macro.njk" import govukTable %}
 
 {% set pageTitle = "Prisoner comparison" %}
 
 {% extends "../partials/layout.njk" %}
-
 
 {% set mainClasses = "app-container govuk-body" %}
 {% set bodyAttributes = {'data-page': 'comparison'} %}
@@ -24,79 +22,102 @@
   <div class="govuk-body">
 
     {%- call summaryCard({title: "Summary", id: "summary"}) -%}
-      <div class="govuk-grid-row">
-        {% for prisoner in prisoners %}
-          {% set summary = prisoner.summary %}
-          <div class="govuk-grid-column-one{{ "-third" if prisoners.length >2  else "-half" }}">
-            {{ summary.firstName | title }} {{ summary.middleName | title }} {{ summary.lastName }}
-            {% if summary.dob %}
-              {{ summaryListRow("Date of birth", (summary.dob | formatDate) + " (" + summary.dob | getAge + " years)", "dob", { showKey: false }) }}
-            {% endif %}
-            {{ summaryListRow("Remove", summary.firstName , "removeFromList", { showKey: false }) }}
+      <dl>
+        <div class="govuk-grid-row">
+          {% for prisoner in prisoners %}
+            {% set loopIndex = loop.index0 %}
+            {% set summary = prisoner.summary %}
 
-          </div>
-        {% endfor %}
-      </div>
+            <div class="govuk-grid-column-one{{ "-third" if prisoners.length >2  else "-half" }}">
+              <div class="govuk-body-lead govuk-!-font-weight-bold govuk-!-margin-bottom-1">
+                <a class="govuk-link" href="/detail/{{ summary.prisonNumber }}" data-qa ="name{{loopIndex}}">
+                  {{ summary.firstName | capitalize + " " + summary.middleName | capitalize + " " + summary.lastName }}
+                </a>
+              </div>
+              {% if summary.dob %}
+                {{ summaryListRow("Date of birth", (summary.dob | formatDate) + " (" + summary.dob | getAge + " years)", "dob" + loopIndex, { showKey: false }) }}
+              {% endif %}
+              <form action="/comparison/addToShortlist" method="post" novalidate data-qa="shortlist-{{ summary.prisonNumber }}">
+                <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
+                <input type="hidden" name="prisoner" value="{{ summary.prisonNumber }}" />
+                <input type="submit" class="govuk-link shortlist-link" value="Remove from shortlist" data-qa ="remove-link{{ loopIndex }}" name="remove">
+              </form>
+            </div>
+
+          {% endfor %}
+        </div>
+      </dl>
     {%- endcall -%}
 
     {%- call summaryCard({title: "Background", id: "background"}) -%}
-      <div class="govuk-grid-row">
-        {% for prisoner in prisoners %}
-          {% set summary = prisoner.summary %}
-          <div class="govuk-grid-column-one{{ "-third" if prisoners.length >2  else "-half" }}">
-            {% if summary.sex === 'F' or summary.sex === 'M' %}
-              {{ summaryListRow("Gender", "Male" if summary.sex === 'M' else "Female", "gender", { showKey: false }) }}
-            {% endif %}
-            {% if summary.ethnicity and summary.ethnicity !== 'NOT STATED' and summary.ethnicity !== 'OTHER' and summary.ethnicity !== 'Other' %}
-              {{ summaryListRow("Ethnicity", summary.ethnicity | spaceHyphens | title, "ethnicity", { showKey: false }) }}
-            {% endif %}
-            {% if summary.birthCountry and summary.birthCountry !== 'UNKNOWN' and summary.birthCountry !== 'OTHER' and summary.birthCountry !== 'Other' %}
-              {{ summaryListRow("Born in ", "Born in " + summary.birthCountry | title, "birthCountry", { showKey: false }) }}
-            {% endif %}
-            {% if summary.nationality and summary.nationality !== 'UNAVAILABALE' %}
-              {{ summaryListRow("National of ", "National of " + summary.nationality | title, "nationality", { showKey: false }) }}
-            {% endif %}
-            {% if summary.religion and summary.religion !== 'NON PERMITTED RELIGIONS' and summary.religion !== 'OTHER NON PERMITTED RELIGION' %}
-              {{ summaryListRow("Religion", summary.religion | title, "religion", { showKey: false }) }}
-            {% endif %}
-          </div>
-        {% endfor %}
-      </div>
+      <dl>
+        <div class="govuk-grid-row">
+          {% for prisoner in prisoners %}
+            {% set loopIndex = loop.index0 %}
+            {% set summary = prisoner.summary %}
+            <div class="govuk-grid-column-one{{ "-third" if prisoners.length >2  else "-half" }}">
+              {% if summary.sex === 'F' or summary.sex === 'M' %}
+                {{ summaryListRow("Gender", "Male" if summary.sex === 'M' else "Female", "gender" + loopIndex, { showKey: false }) }}
+              {% endif %}
+              {% if summary.ethnicity and summary.ethnicity !== 'NOT STATED' and summary.ethnicity !== 'OTHER' and summary.ethnicity !== 'Other' %}
+                {{ summaryListRow("Ethnicity", summary.ethnicity | spaceHyphens | title, "ethnicity" + loopIndex, { showKey: false }) }}
+              {% endif %}
+              {% if summary.birthCountry and summary.birthCountry !== 'UNKNOWN' and summary.birthCountry !== 'OTHER' and summary.birthCountry !== 'Other' %}
+                {{ summaryListRow("Born in ", "Born in " + summary.birthCountry | title, "birthCountry" + loopIndex, { showKey: false }) }}
+              {% endif %}
+              {% if summary.nationality and summary.nationality !== 'UNAVAILABALE' %}
+                {{ summaryListRow("National of ", "National of " + summary.nationality | title, "nationality" +  + loopIndex, { showKey: false }) }}
+              {% endif %}
+              {% if summary.religion and summary.religion !== 'NON PERMITTED RELIGIONS' and summary.religion !== 'OTHER NON PERMITTED RELIGION' %}
+                {{ summaryListRow("Religion", summary.religion | title, "religion" +  loopIndex, { showKey: false }) }}
+              {% endif %}
+            </div>
+          {% endfor %}
+        </div>
+      </dl>
     {%- endcall -%}
 
     {%- call summaryCard({title: "Aliases", id: "aliases"}) -%}
-      <div class="govuk-grid-row">
-        {% for prisoner in prisoners %}
-          <div class="govuk-grid-column-one{{ "-third" if prisoners.length >2  else "-half" }}">
-            {% if prisoner.aliases.length > 0 %}
-              {% for alias in prisoner.aliases %}
-              {% set prisonerAlias = alias.first + " " + alias.last + ", " + alias.birthDate | formatDate %}
-                {{ summaryListRow("alias", prisonerAlias | title, "alias", { showKey: false }) }}
-                 {% endfor %}
-            {%  else %}
-              {{ summaryListRow("alias", "No aliases" | title, "alias", { showKey: false }) }}
-            {% endif %}
-          </div>
-        {% endfor %}
-      </div>
+      <dl>
+        <div class="govuk-grid-row">
+          {% for prisoner in prisoners %}
+            {% set prisonerNo = "prisoner" + loop.index0 %}
+            <div class="govuk-grid-column-one{{ "-third" if prisoners.length >2  else "-half" }}">
+              {% if prisoner.aliases %}
+                {% for alias in prisoner.aliases %}
+                  {% set aliasNo = "alias" + loop.index0 %}
+                  {% set prisonerAlias = alias.first + " " + alias.last + ", " + alias.birthDate | formatDate %}
+                  {{ summaryListRow("alias", prisonerAlias | title, prisonerNo + aliasNo, { showKey: false }) }}
+                {% endfor %}
+              {%  else %}
+                {{ summaryListRow("alias", "No aliases", prisonerNo + "alias0", { showKey: false }) }}
+              {% endif %}
+            </div>
+          {% endfor %}
+        </div>
+      </dl>
     {%- endcall -%}
 
     {%- call summaryCard({title: "Addresses", id: "addresses"}) -%}
-      <div class="govuk-grid-row">
-        {% for prisoner in prisoners %}
-          {% set addresses = prisoner.addresses %}
-          <div class="govuk-grid-column-one{{ "-third" if prisoners.length >2  else "-half" }}">
-            {% if prisoner.addresses.length > 0 %}
-              {% for address in addresses %}
-                {% set prisonerAddress = address.type | title + ": " + address.street | title | acronymsToUpperCase + ", " + address.town | title + ", " + address.county | title %}
-                {{ summaryListRow("address", prisonerAddress | title, "address", { showKey: false }) }}
-              {% endfor %}
-            {%  else %}
-              {{ summaryListRow("address", "No addresses" | title, "address", { showKey: false }) }}
-            {% endif %}
-          </div>
-        {% endfor %}
-      </div>
+      <dl>
+        <div class="govuk-grid-row">
+          {% for prisoner in prisoners %}
+            {% set addresses = prisoner.addresses %}
+            {% set prisonerNo = "prisoner" + loop.index0 %}
+            <div class="govuk-grid-column-one{{ "-third" if prisoners.length >2  else "-half" }}">
+              {% if prisoner.addresses %}
+                {% for address in addresses %}
+                  {% set addressNo = "address" + loop.index0 %}
+                  {% set prisonerAddress = address.type | title + ": " + address.street | title | acronymsToUpperCase + (", " if address.street else "" ) + address.town | title + ", " + address.county | title %}
+                  {{ summaryListRow("address", prisonerAddress | title, prisonerNo + addressNo, { showKey: false }) }}
+                {% endfor %}
+              {%  else %}
+                {{ summaryListRow("address", "No addresses", prisonerNo + "address0", { showKey: false }) }}
+              {% endif %}
+            </div>
+          {% endfor %}
+        </div>
+      </dl>
     {%- endcall -%}
 
   </div>
