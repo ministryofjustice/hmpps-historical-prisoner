@@ -20,7 +20,7 @@ context('Detail', () => {
     const searchPage = Page.verifyOnPage(SearchPage)
     searchPage.firstName().type('John')
     searchPage.searchButton().click()
-    searchPage.searchResults().should('have.length', 2)
+    searchPage.searchResults().should('have.length', 4)
 
     cy.task('stubPrisonerDetail')
     cy.visit('/detail/A1234BC')
