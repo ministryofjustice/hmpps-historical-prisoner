@@ -1,6 +1,7 @@
 import Page from '../pages/page'
 import DisclaimerPage from '../pages/disclaimer'
 import SearchPage from '../pages/search'
+import ComparisonPage from '../pages/comparison'
 
 context('Search', () => {
   beforeEach(() => {
@@ -85,7 +86,7 @@ context('Search', () => {
     const searchPage = Page.verifyOnPage(SearchPage)
     searchPage.firstName().type('John')
     searchPage.searchButton().click()
-    searchPage.searchResults().should('have.length', 2)
+    searchPage.searchResults().should('have.length', 4)
   })
 
   it('Will populate prisoners matched with or without alias', () => {
@@ -93,7 +94,7 @@ context('Search', () => {
     const searchPage = Page.verifyOnPage(SearchPage)
     searchPage.firstName().type('John')
     searchPage.searchButton().click()
-    searchPage.searchResults().should('have.length', 2)
+    searchPage.searchResults().should('have.length', 4)
     searchPage.searchResults().eq(0).should('not.contain.text', 'Matched on alias')
     searchPage.searchResults().eq(1).should('contain.text', 'Matched on alias GOLDIE WILSON')
   })
@@ -103,8 +104,41 @@ context('Search', () => {
     const searchPage = Page.verifyOnPage(SearchPage)
     searchPage.firstName().type('John')
     searchPage.searchButton().click()
-    searchPage.searchResults().should('have.length', 2)
-    searchPage.shortlistForm('BF123455').get('input[type="submit"]').should('have.value', 'Add to shortlist')
+    searchPage.shortlistFormSubmit('BF123455').should('have.value', 'Add to shortlist')
+    searchPage.shortlistFormSubmit('BF123456').should('have.value', 'Add to shortlist')
+  })
+
+  it('Can add and remove items from the shortlist', () => {
+    cy.task('stubPrisonerSearchByName')
+    const searchPage = Page.verifyOnPage(SearchPage)
+    searchPage.firstName().type('John')
+    searchPage.searchButton().click()
+    searchPage.shortlistFormSubmit('BF123455').should('have.value', 'Add to shortlist')
+    searchPage.shortlistFormSubmit('BF123455').click()
+
+    const searchPageWithRemove = Page.verifyOnPage(SearchPage)
+    searchPageWithRemove.shortlistFormSubmit('BF123455').should('have.value', 'Remove from shortlist')
+    searchPage.shortlistFormSubmit('BF123455').click()
+
+    const searchPageWithAdd = Page.verifyOnPage(SearchPage)
+    searchPageWithAdd.shortlistFormSubmit('BF123455').should('have.value', 'Add to shortlist')
+  })
+
+  it('Will show shortlist full when 3 prisoners added', () => {
+    cy.task('stubPrisonerSearchByName')
+    const searchPage = Page.verifyOnPage(SearchPage)
+    searchPage.firstName().type('John')
+    searchPage.searchButton().click()
+    searchPage.shortlistFormSubmit('BF123455').click()
+    searchPage.shortlistFormSubmit('BF123456').click()
+    searchPage.shortlistFormSubmit('BF123457').click()
+
+    const searchPageFull = Page.verifyOnPage(SearchPage)
+    searchPageFull.shortlistFormSubmit('BF123458').should('have.value', 'Shortlist full - compare 3 prisoners')
+    cy.task('stubPrisonerDetail')
+    searchPageFull.shortlistFormSubmit('BF123458').click()
+
+    Page.verifyOnPage(ComparisonPage)
   })
 
   it('Will provide suggestions link to improve search', () => {
@@ -283,17 +317,12 @@ context('Paging', () => {
 
   it('Will show the total prisoners returned', () => {
     const searchWithResultsPage = Page.verifyOnPage(SearchPage)
-    searchWithResultsPage.searchResultsCount().should('contain.text', '3 prisoners')
-  })
-
-  it('Will show the total prisoners returned', () => {
-    const searchWithResultsPage = Page.verifyOnPage(SearchPage)
-    searchWithResultsPage.searchResultsCount().should('contain.text', '3 prisoners')
+    searchWithResultsPage.searchResultsCount().should('contain.text', '6 prisoners')
   })
 
   it('Will show paging information', () => {
     const searchWithResultsPage = Page.verifyOnPage(SearchPage)
-    searchWithResultsPage.getPaginationResults().should('contain.text', 'Showing 1 to 2 of 3 prisoners')
+    searchWithResultsPage.getPaginationResults().should('contain.text', 'Showing 1 to 4 of 6 prisoners')
     searchWithResultsPage.nextPage()
     Page.verifyOnPage(SearchPage)
   })
