@@ -34,13 +34,15 @@
                   {{ summary.firstName | capitalize + " " + summary.middleName | capitalize + " " + summary.lastName }}
                 </a>
               </div>
+              {{ summaryListRow("PrisonNumber", summary.prisonNumber, "prisonNumber" + loopIndex, { showKey: false }) }}
               {% if summary.dob %}
                 {{ summaryListRow("Date of birth", (summary.dob | formatDate) + " (" + summary.dob | getAge + " years)", "dob" + loopIndex, { showKey: false }) }}
               {% endif %}
               <form action="/comparison/addToShortlist" method="post" novalidate data-qa="shortlist-{{ summary.prisonNumber }}">
                 <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
+                <input type="hidden" name="comparison" value="true" />
                 <input type="hidden" name="prisoner" value="{{ summary.prisonNumber }}" />
-                <input type="submit" class="govuk-link shortlist-link" value="Remove from shortlist" data-qa ="remove-link{{ loopIndex }}" name="remove">
+                <input type="submit" class="govuk-link shortlist-link comparison" value="Remove from shortlist" data-qa ="remove-link{{ loopIndex }}" name="remove">
               </form>
             </div>
 

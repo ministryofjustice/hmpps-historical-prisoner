@@ -73,10 +73,29 @@ const stubPrisonerDetail = (detail = prisonerDetail) =>
     },
   })
 
+const stubComparisonPrisonerDetail = (detail: { prisonNumber: string; lastName: string }) =>
+  stubFor({
+    request: {
+      method: 'GET',
+      urlPattern: `/historical-prisoner-api/detail/${detail.prisonNumber}`,
+    },
+    response: {
+      status: 200,
+      headers: {
+        'Content-Type': 'application/json;charset=UTF-8',
+      },
+      jsonBody: {
+        ...prisonerDetail,
+        summary: { ...prisonerDetail.summary, prisonNumber: detail.prisonNumber, lastName: detail.lastName },
+      },
+    },
+  })
+
 export default {
   stubHistoricalPrisonerPing: ping,
   stubPrisonerSearchByName,
   stubPrisonerSearchByIdentifiers,
   stubPrisonerSearchByAddress,
   stubPrisonerDetail,
+  stubComparisonPrisonerDetail,
 }

@@ -67,7 +67,7 @@ describe('Comparison controller', () => {
       await controller.getComparisonDetail(req, res)
 
       expect(historicalPrisonerService.getPrisonerDetail).not.toHaveBeenCalled()
-      expectRenderComparisonContainingDetail([])
+      expect(res.redirect).toHaveBeenCalledWith('/search/results')
     })
 
     it('should return empty list if >3 prisoners to compare', async () => {
@@ -77,7 +77,7 @@ describe('Comparison controller', () => {
       await controller.getComparisonDetail(req, res)
 
       expect(historicalPrisonerService.getPrisonerDetail).not.toHaveBeenCalled()
-      expectRenderComparisonContainingDetail([])
+      expect(res.redirect).toHaveBeenCalledWith('/search/results')
     })
 
     it('should audit details viewed', async () => {
