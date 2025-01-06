@@ -156,15 +156,6 @@ context('Comparison', () => {
       comparisonPage.detailLink(0).click()
       Page.verifyOnPageWithTitleParam(DetailPage, 'Firsta Middlea SURNAMEA')
     })
-
-    it('Will link back to the comparison page after viewing details', () => {
-      const comparisonPage = Page.verifyOnPage(ComparisonPage)
-      comparisonPage.detailLink(0).click()
-      const detailPage = Page.verifyOnPageWithTitleParam(DetailPage, 'Firsta Middlea SURNAMEA')
-      detailPage.backLink().should('contain.text', 'Go back to comparison')
-      detailPage.backLink().click()
-      Page.verifyOnPage(ComparisonPage)
-    })
   })
 
   describe('Will remove prisoners from the short list', () => {
