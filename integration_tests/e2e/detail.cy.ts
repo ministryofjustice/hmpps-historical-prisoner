@@ -3,6 +3,7 @@ import DisclaimerPage from '../pages/disclaimer'
 import DetailPage from '../pages/detail'
 import PrintPage from '../pages/print'
 import SearchPage from '../pages/search'
+import ComparisonPage from '../pages/comparison'
 
 context('Detail', () => {
   beforeEach(() => {
@@ -26,6 +27,7 @@ context('Detail', () => {
     cy.visit('/detail/A1234BC')
 
     const detailPage = Page.verifyOnPageWithTitleParam(DetailPage, 'Firsta Middlea SURNAMEA')
+    detailPage.backLink().should('contain.text', 'Go back to search results')
     detailPage.backLink().click()
 
     const backLinkSearchPage = Page.verifyOnPage(SearchPage)
@@ -33,6 +35,30 @@ context('Detail', () => {
     // also ensure that search results are still displayed
     backLinkSearchPage.searchResults().should('exist')
     searchPage.firstName().should('have.value', 'John')
+  })
+
+  it('Will include back link to the comparison page', () => {
+    cy.task('stubPrisonerSearchByName')
+
+    // need to carry out a search to get the results into the session
+    const searchPage = Page.verifyOnPage(SearchPage)
+    searchPage.firstName().type('John')
+    searchPage.searchButton().click()
+    searchPage.searchResults().should('have.length', 4)
+
+    searchPage.shortlistFormSubmit('BF123455').click()
+
+    cy.task('stubPrisonerDetail')
+    searchPage.viewShortlistLink().click()
+
+    Page.verifyOnPage(ComparisonPage).detailLink(0).click()
+    const detailPage = Page.verifyOnPageWithTitleParam(DetailPage, 'Firsta Middlea SURNAMEA')
+    detailPage.backLink().should('contain.text', 'Go back to shortlist')
+    detailPage.backLink().click()
+
+    Page.verifyOnPage(ComparisonPage)
+    // also ensure that comparison results are still displayed
+    cy.get(`[data-qa="name${0}"]`).should('contain.text', 'Firsta Middlea SURNAMEA')
   })
 
   describe('Will show all sections with data', () => {

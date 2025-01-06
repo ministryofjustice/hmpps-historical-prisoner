@@ -11,7 +11,7 @@
 
 {% block beforeContent %}
   {{ govukBackLink({
-    text: "Go back to " + returnTo | default("search results"),
+    text: "Go back to " + ("shortlist" if returnTo == 'comparison' else  "search results"),
     href: "/" + returnTo | default("search/results")
   }) }}
 {% endblock %}
