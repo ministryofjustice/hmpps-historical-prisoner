@@ -1,7 +1,6 @@
 import Page from '../pages/page'
 import DisclaimerPage from '../pages/disclaimer'
 import SearchPage from '../pages/search'
-import ComparisonPage from '../pages/comparison'
 import DetailPage from '../pages/detail'
 
 context('Search', () => {
@@ -125,7 +124,7 @@ context('Search', () => {
     searchPageWithAdd.shortlistFormSubmit('BF123455').should('have.value', 'Add to shortlist')
   })
 
-  it('Will show shortlist full when 3 prisoners added', () => {
+  it('Will not show shortlist when 3 prisoners added', () => {
     cy.task('stubPrisonerSearchByName')
     const searchPage = Page.verifyOnPage(SearchPage)
     searchPage.firstName().type('John')
@@ -135,11 +134,26 @@ context('Search', () => {
     searchPage.shortlistFormSubmit('BF123457').click()
 
     const searchPageFull = Page.verifyOnPage(SearchPage)
-    searchPageFull.shortlistFormSubmit('BF123458').should('have.value', 'Shortlist full - compare 3 prisoners')
-    cy.task('stubPrisonerDetail')
-    searchPageFull.shortlistFormSubmit('BF123458').click()
+    searchPageFull.shortlistFormSubmit('BF123458').should('not.exist')
+  })
 
-    Page.verifyOnPage(ComparisonPage)
+  it('Will dynamically change view shortlist based on shortlist size', () => {
+    cy.task('stubPrisonerSearchByName')
+    const searchPage = Page.verifyOnPage(SearchPage)
+    searchPage.firstName().type('John')
+    searchPage.searchButton().click()
+    searchPage.viewShortlistLink().should('not.exist')
+
+    searchPage.shortlistFormSubmit('BF123455').click()
+    searchPage.viewShortlistLink().should('contain.text', 'View shortlist')
+
+    searchPage.shortlistFormSubmit('BF123456').click()
+    searchPage.viewShortlistLink().should('contain.text', 'Compare 2 prisoners')
+
+    searchPage.shortlistFormSubmit('BF123457').click()
+    searchPage.viewShortlistLink().should('contain.text', 'Compare 3 prisoners')
+
+    searchPage.shortlistFormSubmit('BF123458').should('not.exist')
   })
 
   it('Will provide suggestions link to improve search', () => {

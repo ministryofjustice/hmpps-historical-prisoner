@@ -26,9 +26,8 @@ context('Comparison', () => {
 
   it('Will include back link to search results page', () => {
     const searchPageFull = Page.verifyOnPage(SearchPage)
-    searchPageFull.shortlistFormSubmit('BF123458').should('have.value', 'Shortlist full - compare 3 prisoners')
     cy.task('stubPrisonerDetail')
-    searchPageFull.shortlistFormSubmit('BF123458').click()
+    searchPageFull.viewShortlistLink().click()
 
     const comparisonPage = Page.verifyOnPage(ComparisonPage)
     comparisonPage.backLink().click()
@@ -43,9 +42,8 @@ context('Comparison', () => {
   describe('Will show all sections with data', () => {
     beforeEach(() => {
       const searchPageFull = Page.verifyOnPage(SearchPage)
-      searchPageFull.shortlistFormSubmit('BF123458').should('have.value', 'Shortlist full - compare 3 prisoners')
       cy.task('stubPrisonerDetail')
-      searchPageFull.shortlistFormSubmit('BF123458').click()
+      searchPageFull.viewShortlistLink().click()
 
       Page.verifyOnPage(ComparisonPage)
     })
@@ -90,9 +88,8 @@ context('Comparison', () => {
   describe('Will show all sections with no data', () => {
     beforeEach(() => {
       const searchPageFull = Page.verifyOnPage(SearchPage)
-      searchPageFull.shortlistFormSubmit('BF123458').should('have.value', 'Shortlist full - compare 3 prisoners')
       cy.task('stubPrisonerDetail', { summary: { prisonNumber: 'AB111111', lastName: 'SURNAMEA' } })
-      searchPageFull.shortlistFormSubmit('BF123458').click()
+      searchPageFull.viewShortlistLink().click()
 
       Page.verifyOnPage(ComparisonPage)
     })
@@ -143,9 +140,8 @@ context('Comparison', () => {
   describe('Will provide a link through to the detail page', () => {
     beforeEach(() => {
       const searchPageFull = Page.verifyOnPage(SearchPage)
-      searchPageFull.shortlistFormSubmit('BF123458').should('have.value', 'Shortlist full - compare 3 prisoners')
       cy.task('stubPrisonerDetail')
-      searchPageFull.shortlistFormSubmit('BF123458').click()
+      searchPageFull.viewShortlistLink().click()
     })
 
     it('Will link successfully to the details page', () => {
@@ -165,9 +161,8 @@ context('Comparison', () => {
   describe('Will Remove prisoners from the short list', () => {
     beforeEach(() => {
       const searchPageFull = Page.verifyOnPage(SearchPage)
-      searchPageFull.shortlistFormSubmit('BF123458').should('have.value', 'Shortlist full - compare 3 prisoners')
       cy.task('stubPrisonerDetail')
-      searchPageFull.shortlistFormSubmit('BF123458').click()
+      searchPageFull.viewShortlistLink().click()
     })
 
     it('Will remove an item from the shortlist and stay on the comparison page', () => {
