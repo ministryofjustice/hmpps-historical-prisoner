@@ -1,6 +1,7 @@
 import Page from '../pages/page'
 import DisclaimerPage from '../pages/disclaimer'
 import SearchPage from '../pages/search'
+import SuggestionsPage from '../pages/suggestions'
 import DetailPage from '../pages/detail'
 import ComparisonPage from '../pages/comparison'
 
@@ -38,6 +39,8 @@ context('Search Results', () => {
     searchPage.suggestions().should('not.exist')
     searchPage.searchButton().click()
     searchPage.suggestions().should('be.visible')
+    searchPage.suggestions().click()
+    Page.verifyOnPage(SuggestionsPage)
   })
 
   it('Will provide link to prisoner details', () => {
