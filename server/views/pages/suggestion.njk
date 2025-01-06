@@ -2,12 +2,12 @@
 
 {% extends "../partials/layout.njk" %}
 
-{% set pageTitle = "Suggestions & tips" %}
+{% set pageTitle = "Suggestions and tips" %}
 
 {% block beforeContent %}
   {{ govukBackLink({
     text: "Back to prisoners",
-    href: '/search'
+    href: '/search/results'
   }) }}
 {% endblock %}
 
@@ -15,22 +15,62 @@
 
   <div class="govuk-grid-row govuk-body">
     <div class="govuk-grid-column-full">
-      <h1 class="govuk-heading-l">Suggestions & tips</h1>
+      <h1 class="govuk-heading-l">Suggestions and tips</h1>
 
       <div class="govuk-grid-column-two-thirds">
-        <div class="govuk-body-l">Add a wildcard to the surname: TODO ADD IN
-          <p class="govuk-body">Reason: Some establishments when using LIDS added more information after a surname - e.g. alerts.
+        <div class="govuk-body-l">
+          Add a wildcard to the surname: TODO ADD IN
+          <p class="govuk-body">
+            Reason: Some establishments when using LIDS added more information after a surname - e.g. alerts.
             An exact surname match may not pick up these records
           </p>
         </div>
         <div class="govuk-body-l">
           Shorten the surname by 2 characters and add a wildcard: TODO ADD IN
           <p class="govuk-body">
-            Reason: An exact surname search for example for STEELE will miss and records where the surname has been incorrectly recorded as STEEL
+            Reason: An exact surname search for example for STEELE will miss and records where the surname has been
+            incorrectly recorded as STEEL
+          </p>
+        </div>
+        <div class="govuk-body-l">
+          Search using an initial only in first name:: TODO ADD IN
+          <p class="govuk-body">
+            Reason: An exact forename search for names which can be shortened could miss records e.g.
+            recorded forenames for Evelyn have included Eve, Eva, Evalyn, Evaline
+          </p>
+        </div>
+        <div class="govuk-body-l">
+          Shorten the forename by 2 characters and add a wildcard: TODO ADD IN
+          <p class="govuk-body">
+            Reason: An exact forename search for example for JOHN will miss and records where the forename has been
+            incorrectly recorded as JON
+          </p>
+        </div>
+        <div class="govuk-body-l">
+          Swap surname and forename: TODO ADD IN
+          <p class="govuk-body">
+            Reason: Where a prisoner has a forename and surname which could be interchangeable - e.g.
+            Lewis George/George Lewis - these may have been recorded incorrectly
+          </p>
+        </div>
+        <div class="govuk-body-l">
+          Change the date of birth to an age range: TODO ADD IN
+          <p class="govuk-body">
+            Reason: A common way to create an alias is to change the date of birth by 1 day or 1 year.
+            If this is not a known recorded alias, any records with a slightly different date of birth will not be
+            displayed
+          </p>
+        </div>
+        <div class="govuk-body-l">
+          Change the age to an age range: TODO ADD IN
+          <p class="govuk-body">
+            Reason: A common way to create an alias is to change the date of birth by 1 day or 1 year.
+            If this is not a known recorded alias, any records with a slightly different date of birth will not be
+            displayed
           </p>
         </div>
         <div>
-          <a data-qa="clear-search" href="/search" class="govuk-link">New Search</a>
+          <a data-qa="clear-search" href="/search" class="govuk-link">New search</a>
         </div>
       </div>
     </div>
