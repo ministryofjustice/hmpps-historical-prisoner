@@ -8,6 +8,12 @@
 
   <div class="govuk-grid-row govuk-body">
     <div class="govuk-grid-column-full">
+      {% if shortlist.length > 1 %}
+        <a href="/comparison" class="govuk-link comparison-link" data-qa="view-shortlist">Compare {{ shortlist.length}} prisoners</a>
+      {% elseif shortlist.length > 0 %}
+        <a href="/comparison" class="govuk-link comparison-link" data-qa="view-shortlist">View shortlist</a>
+      {% endif %}
+
       <h1 class="govuk-heading-l">Prisoner search</h1>
 
       <div class="moj-filter-layout">

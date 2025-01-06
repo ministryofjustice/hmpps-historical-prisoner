@@ -53,4 +53,6 @@ export default class Search extends Page {
 
   shortlistFormSubmit = (prisonNumber: string): PageElement =>
     cy.get(`form[data-qa="shortlist-${prisonNumber}"] input[type="submit"]`)
+
+  viewShortlistLink = (): PageElement => cy.get('[data-qa="view-shortlist"]')
 }
