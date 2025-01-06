@@ -42,15 +42,22 @@ context('Comparison', () => {
   describe('Will show all sections with data', () => {
     beforeEach(() => {
       const searchPageFull = Page.verifyOnPage(SearchPage)
-      cy.task('stubPrisonerDetail')
+      cy.task('stubComparisonPrisonerDetail', { prisonNumber: 'BF123455', lastName: 'SURNAMEA' })
+      cy.task('stubComparisonPrisonerDetail', { prisonNumber: 'BF123456', lastName: 'SURNAMEB' })
+      cy.task('stubComparisonPrisonerDetail', { prisonNumber: 'BF123457', lastName: 'SURNAMEC' })
       searchPageFull.viewShortlistLink().click()
 
       Page.verifyOnPage(ComparisonPage)
     })
 
     it('Will show prisoner summary', () => {
+      cy.get(`[data-qa="name${0}"]`).should('contain.text', 'Firsta Middlea SURNAMEA')
+      cy.get(`[data-qa="name${1}"]`).should('contain.text', 'Firsta Middlea SURNAMEB')
+      cy.get(`[data-qa="name${2}"]`).should('contain.text', 'Firsta Middlea SURNAMEC')
+      cy.get(`[data-qa="prisonNumber${0}"]`).should('have.text', 'BF123455')
+      cy.get(`[data-qa="prisonNumber${1}"]`).should('have.text', 'BF123456')
+      cy.get(`[data-qa="prisonNumber${2}"]`).should('have.text', 'BF123457')
       for (let i = 0; i < 3; i += 1) {
-        cy.get(`[data-qa="name${i}"]`).should('contain.text', 'Firsta Middlea SURNAMEA')
         cy.get(`[data-qa="dob${i}"]`).should('contain.text', '01/01/1980')
         cy.get(`[data-qa="remove-link${i}"]`).should('contain.value', 'Remove from shortlist')
       }
@@ -158,24 +165,49 @@ context('Comparison', () => {
     })
   })
 
-  describe('Will Remove prisoners from the short list', () => {
+  describe('Will remove prisoners from the short list', () => {
     beforeEach(() => {
       const searchPageFull = Page.verifyOnPage(SearchPage)
-      cy.task('stubPrisonerDetail')
+      cy.task('stubComparisonPrisonerDetail', { prisonNumber: 'BF123455', lastName: 'SURNAMEA' })
+      cy.task('stubComparisonPrisonerDetail', { prisonNumber: 'BF123456', lastName: 'SURNAMEB' })
+      cy.task('stubComparisonPrisonerDetail', { prisonNumber: 'BF123457', lastName: 'SURNAMEC' })
       searchPageFull.viewShortlistLink().click()
     })
 
     it('Will remove an item from the shortlist and stay on the comparison page', () => {
       const comparisonPage = Page.verifyOnPage(ComparisonPage)
+      comparisonPage.removeFromShortlist(0).should('exist')
+      comparisonPage.removeFromShortlist(1).should('exist')
+      comparisonPage.removeFromShortlist(2).should('exist')
       comparisonPage.removeFromShortlist(0).click()
-      // Page.verifyOnPage(ComparisonPage)
-      // TODO check item removed
+      Page.verifyOnPage(ComparisonPage)
+      comparisonPage.removeFromShortlist(0).should('exist')
+      comparisonPage.removeFromShortlist(1).should('exist')
+      comparisonPage.removeFromShortlist(2).should('not.exist')
     })
+
     it('Will return to the search page if all shortlist prisoners are removed', () => {
       const comparisonPage = Page.verifyOnPage(ComparisonPage)
+      comparisonPage.removeFromShortlist(2).click()
+      comparisonPage.removeFromShortlist(1).click()
       comparisonPage.removeFromShortlist(0).click()
-      // Page.verifyOnPage(ComparisonPage)
-      // TODO check item removed AND remove others
+      Page.verifyOnPage(SearchPage)
     })
+  })
+
+  it('Will return to the search page if attempt to reach comparison page with no prisoners to compare', () => {
+    cy.task('stubComparisonPrisonerDetail', { prisonNumber: 'BF123455', lastName: 'SURNAMEA' })
+    cy.task('stubComparisonPrisonerDetail', { prisonNumber: 'BF123456', lastName: 'SURNAMEB' })
+    cy.task('stubComparisonPrisonerDetail', { prisonNumber: 'BF123457', lastName: 'SURNAMEC' })
+    const searchPageFull = Page.verifyOnPage(SearchPage)
+    searchPageFull.viewShortlistLink().click()
+    const comparisonPage = Page.verifyOnPage(ComparisonPage)
+    comparisonPage.removeFromShortlist(2).click()
+    comparisonPage.removeFromShortlist(1).click()
+    comparisonPage.removeFromShortlist(0).click()
+
+    Page.verifyOnPage(SearchPage)
+    cy.visit('/comparison')
+    Page.verifyOnPage(SearchPage)
   })
 })

@@ -10,7 +10,7 @@ export default class ComparisonController {
     private readonly auditService: AuditService,
   ) {}
 
-  async getComparisonDetail(req: Request, res: Response): Promise<void> {
+  async getComparisonDetail(req: Request, res: Response) {
     logger.debug('GET /comparison')
     const prisoners: PrisonerDetailDto[] = await this.getPrisonerDetail(req)
     await this.auditService.logPageView(Page.COMPARISON, {
@@ -18,7 +18,10 @@ export default class ComparisonController {
       subjectId: prisoners.map(({ prisonNumber }) => prisonNumber).join(','),
       correlationId: req.id,
     })
-    res.render('pages/comparison', { prisoners })
+    if (prisoners.length === 0) {
+      return res.redirect('/search/results')
+    }
+    return res.render('pages/comparison', { prisoners })
   }
 
   async getPrisonerDetail(req: Request): Promise<PrisonerDetailDto[]> {
@@ -47,7 +50,11 @@ export default class ComparisonController {
       }
     } else {
       req.session.shortlist = req.session.shortlist.filter(item => item !== req.body.prisoner)
+      if (req.body.comparison) {
+        return res.redirect('/comparison')
+      }
     }
+
     // TODO: Need to add in MoJ banner too for success
     return res.redirect('/search/results')
   }
