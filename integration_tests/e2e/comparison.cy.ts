@@ -160,8 +160,10 @@ context('Comparison', () => {
     it('Will link back to the comparison page after viewing details', () => {
       const comparisonPage = Page.verifyOnPage(ComparisonPage)
       comparisonPage.detailLink(0).click()
-      Page.verifyOnPageWithTitleParam(DetailPage, 'Firsta Middlea SURNAMEA')
-      // TODO - need to add a back link to the comparison page
+      const detailPage = Page.verifyOnPageWithTitleParam(DetailPage, 'Firsta Middlea SURNAMEA')
+      detailPage.backLink().should('contain.text', 'Go back to comparison')
+      detailPage.backLink().click()
+      Page.verifyOnPage(ComparisonPage)
     })
   })
 

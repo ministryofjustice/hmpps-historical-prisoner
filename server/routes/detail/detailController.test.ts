@@ -21,6 +21,7 @@ describe('Detail controller', () => {
       user: { token: 'token' },
       session: {},
       body: {},
+      query: jest.fn(),
     } as unknown as Request
     res = {
       locals: { user: { username: 'user' } },
