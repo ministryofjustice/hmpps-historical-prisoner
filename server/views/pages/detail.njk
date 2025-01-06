@@ -11,8 +11,8 @@
 
 {% block beforeContent %}
   {{ govukBackLink({
-    text: "Go back to search results",
-    href: "/search/results"
+    text: "Go back to " + returnTo | default("search results"),
+    href: "/" + returnTo | default("search/results")
   }) }}
 {% endblock %}
 

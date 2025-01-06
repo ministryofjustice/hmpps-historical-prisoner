@@ -30,7 +30,7 @@
 
             <div class="govuk-grid-column-one{{ "-third" if prisoners.length >2  else "-half" }}">
               <div class="govuk-body-lead govuk-!-font-weight-bold govuk-!-margin-bottom-1">
-                <a class="govuk-link" href="/detail/{{ summary.prisonNumber }}" data-qa ="name{{loopIndex}}">
+                <a class="govuk-link" href="/detail/{{ summary.prisonNumber }}?returnTo=comparison" data-qa ="name{{loopIndex}}">
                   {{ summary.firstName | capitalize + " " + summary.middleName | capitalize + " " + summary.lastName }}
                 </a>
               </div>

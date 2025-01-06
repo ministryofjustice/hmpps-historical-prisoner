@@ -18,6 +18,6 @@ export default class DetailController extends AbstractDetailController {
       subjectId: prisonerDetail.prisonNumber,
       correlationId: req.id,
     })
-    res.render('pages/detail', { ...prisonerDetail })
+    res.render('pages/detail', { ...prisonerDetail, returnTo: req.query.returnTo })
   }
 }
