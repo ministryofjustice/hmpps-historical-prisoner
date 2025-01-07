@@ -4,7 +4,6 @@ import HistoricalPrisonerService from '../../services/historicalPrisonerService'
 import AuditService, { Page } from '../../services/auditService'
 import trimForm from '../../utils/trim'
 import searchValidator from './searchValidator'
-import getSearchSuggestions from '../../utils/suggestionHelpers'
 
 import {
   FindPrisonersByAddress,
@@ -14,6 +13,7 @@ import {
   PageMetaData,
 } from '../../@types/historical-prisoner/historicalPrisonerApiTypes'
 import { LegacyPagination, pagination } from '../../utils/pagination'
+import getSearchSuggestions from '../../utils/suggestionHelpers'
 
 export default class SearchController {
   constructor(
@@ -55,6 +55,7 @@ export default class SearchController {
       paginationParams,
       filters: req.session.searchParams.filters,
       shortlist: req.session.shortlist,
+      suggestions: getSearchSuggestions(req.session.prisonerSearchForm),
     })
   }
 
@@ -100,10 +101,6 @@ export default class SearchController {
       default:
         throw new Error(`Unknown search type: ${prisonerSearchForm.searchType}`)
     }
-  }
-
-  getSuggestions(req: Request, res: Response) {
-    return res.render('pages/suggestion', { suggestions: getSearchSuggestions(req.session.prisonerSearchForm) })
   }
 
   getSessionFilterString(req: Request): string {

@@ -120,6 +120,23 @@ context('Suggestions', () => {
     searchPage.firstName().should('have.value', 'Smith')
   })
 
+  it('Will suggest adding swapping forename and surname when one is empty', () => {
+    cy.task('stubPrisonerSearchByName')
+    const searchPage = Page.verifyOnPage(SearchPage)
+    searchPage.lastName().type('Smith')
+    searchPage.searchButton().click()
+    searchPage.suggestions().click()
+
+    const suggestionsPage = Page.verifyOnPage(SuggestionsPage)
+    suggestionsPage.swap().within(() => {
+      cy.get('span').should('have.text', 'Smith ')
+      cy.get('a').click()
+    })
+
+    Page.verifyOnPage(SearchPage).lastName().should('have.value', '')
+    searchPage.firstName().should('have.value', 'Smith')
+  })
+
   it('Will suggest adding changing dob to age range', () => {
     cy.task('stubPrisonerSearchByName')
     const searchPage = Page.verifyOnPage(SearchPage)
