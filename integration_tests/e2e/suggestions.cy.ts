@@ -38,6 +38,38 @@ context('Suggestions', () => {
     backToSearchPage.firstName().should('have.value', '')
   })
 
+  it('Will suggest using initial for forename', () => {
+    cy.task('stubPrisonerSearchByName')
+    const searchPage = Page.verifyOnPage(SearchPage)
+    searchPage.firstName().type('John')
+    searchPage.searchButton().click()
+    searchPage.suggestions().click()
+
+    const suggestionsPage = Page.verifyOnPage(SuggestionsPage)
+    suggestionsPage.useInitial().within(() => {
+      cy.get('span').should('have.text', 'J')
+      cy.get('a').click()
+    })
+
+    Page.verifyOnPage(SearchPage).firstName().should('have.value', 'J')
+  })
+
+  it('Will suggest adding wildcard to forename', () => {
+    cy.task('stubPrisonerSearchByName')
+    const searchPage = Page.verifyOnPage(SearchPage)
+    searchPage.firstName().type('Alex')
+    searchPage.searchButton().click()
+    searchPage.suggestions().click()
+
+    const suggestionsPage = Page.verifyOnPage(SuggestionsPage)
+    suggestionsPage.forenameWildcard().within(() => {
+      cy.get('span').should('have.text', 'Alex*')
+      cy.get('a').click()
+    })
+
+    Page.verifyOnPage(SearchPage).firstName().should('have.value', 'Alex*')
+  })
+
   it('Will suggest adding wildcard to surname', () => {
     cy.task('stubPrisonerSearchByName')
     const searchPage = Page.verifyOnPage(SearchPage)
@@ -46,9 +78,12 @@ context('Suggestions', () => {
     searchPage.suggestions().click()
 
     const suggestionsPage = Page.verifyOnPage(SuggestionsPage)
-    suggestionsPage.surnameWildcard().should('contain.text', 'Smith*')
+    suggestionsPage.surnameWildcard().within(() => {
+      cy.get('span').should('have.text', 'Smith*')
+      cy.get('a').click()
+    })
 
-    // TODO - click link and check search changed
+    Page.verifyOnPage(SearchPage).lastName().should('have.value', 'Smith*')
   })
 
   it('Will suggest adding shorter wildcard to surname', () => {
@@ -59,8 +94,11 @@ context('Suggestions', () => {
     searchPage.suggestions().click()
 
     const suggestionsPage = Page.verifyOnPage(SuggestionsPage)
-    suggestionsPage.surnameShorterWildcard().should('contain.text', 'Smi*')
+    suggestionsPage.surnameShorterWildcard().within(() => {
+      cy.get('span').should('have.text', 'Smi*')
+      cy.get('a').click()
+    })
 
-    // TODO - click link and check search changed
+    Page.verifyOnPage(SearchPage).lastName().should('have.value', 'Smi*')
   })
 })
