@@ -101,4 +101,62 @@ context('Suggestions', () => {
 
     Page.verifyOnPage(SearchPage).lastName().should('have.value', 'Smi*')
   })
+
+  it('Will suggest adding swapping forename and surname', () => {
+    cy.task('stubPrisonerSearchByName')
+    const searchPage = Page.verifyOnPage(SearchPage)
+    searchPage.firstName().type('John')
+    searchPage.lastName().type('Smith')
+    searchPage.searchButton().click()
+    searchPage.suggestions().click()
+
+    const suggestionsPage = Page.verifyOnPage(SuggestionsPage)
+    suggestionsPage.swap().within(() => {
+      cy.get('span').should('have.text', 'Smith John')
+      cy.get('a').click()
+    })
+
+    Page.verifyOnPage(SearchPage).lastName().should('have.value', 'John')
+    searchPage.firstName().should('have.value', 'Smith')
+  })
+
+  it('Will suggest adding changing dob to age range', () => {
+    cy.task('stubPrisonerSearchByName')
+    const searchPage = Page.verifyOnPage(SearchPage)
+    searchPage.dobYear().type(`${new Date().getFullYear() - 15}`)
+    searchPage.dobMonth().type('10')
+    searchPage.dobDay().type('12')
+    searchPage.searchButton().click()
+    searchPage.suggestions().click()
+
+    const suggestionsPage = Page.verifyOnPage(SuggestionsPage)
+    suggestionsPage.dob().within(() => {
+      cy.get('span').should('have.text', '13-17')
+      cy.get('a').click()
+    })
+
+    Page.verifyOnPage(SearchPage).dobYear().should('have.value', '')
+    searchPage.dobMonth().should('have.value', '')
+    searchPage.dobDay().should('have.value', '')
+    searchPage.age().should('have.value', '13-17')
+  })
+
+  it('Will suggest adding changing age to age range', () => {
+    cy.task('stubPrisonerSearchByName')
+    const searchPage = Page.verifyOnPage(SearchPage)
+    searchPage.age().type('15')
+    searchPage.searchButton().click()
+    searchPage.suggestions().click()
+
+    const suggestionsPage = Page.verifyOnPage(SuggestionsPage)
+    suggestionsPage.age().within(() => {
+      cy.get('span').should('have.text', '13-17')
+      cy.get('a').click()
+    })
+
+    Page.verifyOnPage(SearchPage).dobYear().should('have.value', '')
+    searchPage.dobMonth().should('have.value', '')
+    searchPage.dobDay().should('have.value', '')
+    searchPage.age().should('have.value', '13-17')
+  })
 })
