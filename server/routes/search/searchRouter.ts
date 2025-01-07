@@ -18,7 +18,6 @@ export default function routes(
   get('/search', async (req, res, next) => searchController.clearSearch(req, res))
   get('/search/results', async (req, res, next) => searchController.getSearch(req, res))
   post('/search', async (req, res) => searchController.postSearch(req, res))
-  get('/search/suggestions', async (req, res, next) => searchController.getSuggestions(req, res))
 
   return router
 }
