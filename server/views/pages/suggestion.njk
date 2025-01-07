@@ -18,20 +18,32 @@
       <h1 class="govuk-heading-l">Suggestions and tips</h1>
 
       <div class="govuk-grid-column-two-thirds">
-        <div class="govuk-body-l">
-          Add a wildcard to the surname: TODO ADD IN
-          <p class="govuk-body">
-            Reason: Some establishments when using LIDS added more information after a surname - e.g. alerts.
-            An exact surname match may not pick up these records
-          </p>
-        </div>
-        <div class="govuk-body-l">
-          Shorten the surname by 2 characters and add a wildcard: TODO ADD IN
-          <p class="govuk-body">
-            Reason: An exact surname search for example for STEELE will miss and records where the surname has been
-            incorrectly recorded as STEEL
-          </p>
-        </div>
+        {% for suggestion in suggestions.lastName %}
+          {% if suggestion.type == 'addWildcard' %}
+            <div class="govuk-body-l">
+              <a class="govuk-link" href="/search/suggestion?lastName={{ suggestion.val }}">
+                Add a wildcard to the surname
+              </a>:
+              <span data-qa="surname-wildcard">{{ suggestion.val }}</span>
+              <p class="govuk-body">
+                Reason: Some establishments when using LIDS added more information after a surname - e.g. alerts.
+                An exact surname match may not pick up these records
+              </p>
+            </div>
+          {% endif %}
+          {% if suggestion.type == 'addShorterWildcard' %}
+            <div class="govuk-body-l">
+              <a class="govuk-link" href="/search/suggestion?lastName={{ suggestion.val }}">
+                Shorten the surname by 2 characters and add a wildcard
+              </a>:
+              <span data-qa="surname-shorterwildcard">{{ suggestion.val }}</span>
+              <p class="govuk-body">
+                Reason: An exact surname search for example for STEELE will miss and records where the surname has been
+                incorrectly recorded as STEEL
+              </p>
+            </div>
+          {% endif %}
+        {% endfor %}
         <div class="govuk-body-l">
           Search using an initial only in first name:: TODO ADD IN
           <p class="govuk-body">
@@ -69,9 +81,9 @@
             displayed
           </p>
         </div>
-        <div>
-          <a data-qa="clear-search" href="/search" class="govuk-link">New search</a>
-        </div>
+      </div>
+      <div>
+        <a data-qa="clear-search" href="/search" class="govuk-link">New search</a>
       </div>
     </div>
   </div>

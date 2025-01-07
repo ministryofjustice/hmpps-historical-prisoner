@@ -8,4 +8,8 @@ export default class Suggestions extends Page {
   backLink = (): PageElement => cy.get('.govuk-back-link')
 
   newSearch = (): PageElement => cy.get('[data-qa="clear-search"]')
+
+  surnameWildcard = (): PageElement => cy.get('[data-qa="surname-wildcard"]')
+
+  surnameShorterWildcard = (): PageElement => cy.get('[data-qa="surname-shorterwildcard"]')
 }
