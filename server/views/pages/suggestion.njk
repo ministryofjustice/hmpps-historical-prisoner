@@ -6,7 +6,7 @@
 
 {% block beforeContent %}
   {{ govukBackLink({
-    text: "Back to prisoners",
+    text: "Go back to search results",
     href: '/search/results'
   }) }}
 {% endblock %}
@@ -18,28 +18,28 @@
       <h1 class="govuk-heading-l">Suggestions and tips</h1>
 
       <div class="govuk-grid-column-two-thirds">
-        {% for suggestion in suggestions.lastName %}
-          {% if suggestion.type == 'addWildcard' %}
+        {% for suggestion in suggestions %}
+          {% if suggestion.type == 'addSurnameWildcard' %}
             <div class="govuk-body-l">
-              <a class="govuk-link" href="/suggestion?lastName={{ suggestion.val }}">
-                Add a wildcard to the surname
+              <a class="govuk-link" href="/suggestion?{{ suggestion.query }}">
+                Add a wildcard to the last name
               </a>:
               <span data-qa="surname-wildcard">{{ suggestion.val }}</span>
               <p class="govuk-body">
-                Reason: Some establishments when using LIDS added more information after a surname - e.g. alerts.
-                An exact surname match may not pick up these records
+                Reason: Some establishments when using LIDS added more information after a last name - e.g. alerts.
+                An exact last name match may not pick up these records
               </p>
             </div>
           {% endif %}
           {% if suggestion.type == 'addShorterWildcard' %}
             <div class="govuk-body-l">
-              <a class="govuk-link" href="/suggestion?lastName={{ suggestion.val }}">
-                Shorten the surname by 2 characters and add a wildcard
+              <a class="govuk-link" href="/suggestion?{{ suggestion.query }}">
+                Shorten the last name by 2 characters and add a wildcard
               </a>:
               <span data-qa="surname-shorterwildcard">{{ suggestion.val }}</span>
               <p class="govuk-body">
-                Reason: An exact surname search for example for STEELE will miss and records where the surname has been
-                incorrectly recorded as STEEL
+                Reason: An exact last name search for example for STEELE will miss and records where the last name has
+                been incorrectly recorded as STEEL
               </p>
             </div>
           {% endif %}
@@ -47,21 +47,21 @@
         <div class="govuk-body-l">
           Search using an initial only in first name:: TODO ADD IN
           <p class="govuk-body">
-            Reason: An exact forename search for names which can be shortened could miss records e.g.
-            recorded forenames for Evelyn have included Eve, Eva, Evalyn, Evaline
+            Reason: An exact first name search for names which can be shortened could miss records e.g.
+            recorded first names for Evelyn have included Eve, Eva, Evalyn, Evaline
           </p>
         </div>
         <div class="govuk-body-l">
-          Shorten the forename by 2 characters and add a wildcard: TODO ADD IN
+          Shorten the first name by 2 characters and add a wildcard: TODO ADD IN
           <p class="govuk-body">
-            Reason: An exact forename search for example for JOHN will miss and records where the forename has been
+            Reason: An exact first name search for example for JOHN will miss and records where the first name has been
             incorrectly recorded as JON
           </p>
         </div>
         <div class="govuk-body-l">
-          Swap surname and forename: TODO ADD IN
+          Swap last name and first name: TODO ADD IN
           <p class="govuk-body">
-            Reason: Where a prisoner has a forename and surname which could be interchangeable - e.g.
+            Reason: Where a prisoner has a first name and last name which could be interchangeable - e.g.
             Lewis George/George Lewis - these may have been recorded incorrectly
           </p>
         </div>

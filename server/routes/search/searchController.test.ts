@@ -3,7 +3,6 @@ import { Request, Response } from 'express'
 import HistoricalPrisonerService from '../../services/historicalPrisonerService'
 import auditServiceMock from '../../testutils/auditServiceMock'
 import SearchController from './searchController'
-import { SuggestionFields } from '../../utils/suggestionHelpers'
 
 jest.mock('../../services/historicalPrisonerService')
 const historicalPrisonerService = new HistoricalPrisonerService() as jest.Mocked<HistoricalPrisonerService>
@@ -155,14 +154,12 @@ describe('Search controller', () => {
   })
 
   describe('getSuggestions', () => {
-    const noSuggestions: SuggestionFields = { firstName: [], lastName: [], age: [] }
-
     it('should render the suggestions page', () => {
       // TODO: add more tests and cope with no search form in session
       req.session.prisonerSearchForm = { searchType: 'name' }
       controller.getSuggestions(req, res)
 
-      expect(res.render).toHaveBeenCalledWith('pages/suggestion', { suggestions: noSuggestions })
+      expect(res.render).toHaveBeenCalledWith('pages/suggestion', { suggestions: [] })
     })
   })
 })

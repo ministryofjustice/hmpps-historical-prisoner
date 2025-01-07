@@ -1,7 +1,6 @@
 import { Request, Response } from 'express'
 
 import SuggestionsController from './suggestionsController'
-import { SuggestionFields } from '../../utils/suggestionHelpers'
 
 const controller = new SuggestionsController()
 
@@ -25,14 +24,12 @@ describe('Suggestions controller', () => {
   })
 
   describe('getSuggestions', () => {
-    const noSuggestions: SuggestionFields = { firstName: [], lastName: [], age: [] }
-
     it('should render the suggestions page', () => {
       // TODO: add more tests and cope with no search form in session
       req.session.prisonerSearchForm = { searchType: 'name' }
       controller.getSuggestions(req, res)
 
-      expect(res.render).toHaveBeenCalledWith('pages/suggestion', { suggestions: noSuggestions })
+      expect(res.render).toHaveBeenCalledWith('pages/suggestion', { suggestions: [] })
     })
   })
 })
