@@ -21,7 +21,7 @@
         {% for suggestion in suggestions.lastName %}
           {% if suggestion.type == 'addWildcard' %}
             <div class="govuk-body-l">
-              <a class="govuk-link" href="/search/suggestion?lastName={{ suggestion.val }}">
+              <a class="govuk-link" href="/suggestion?lastName={{ suggestion.val }}">
                 Add a wildcard to the surname
               </a>:
               <span data-qa="surname-wildcard">{{ suggestion.val }}</span>
@@ -33,7 +33,7 @@
           {% endif %}
           {% if suggestion.type == 'addShorterWildcard' %}
             <div class="govuk-body-l">
-              <a class="govuk-link" href="/search/suggestion?lastName={{ suggestion.val }}">
+              <a class="govuk-link" href="/suggestion?lastName={{ suggestion.val }}">
                 Shorten the surname by 2 characters and add a wildcard
               </a>:
               <span data-qa="surname-shorterwildcard">{{ suggestion.val }}</span>
