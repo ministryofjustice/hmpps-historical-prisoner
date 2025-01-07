@@ -9,10 +9,9 @@
           <div class="section-divider{{ "-bottom" if loop.last else "" }}">
             {% set sentenceNo = "sentence" + loop.index0 %}
             {% set effectiveSentenceHtml %}
-              <span class="govuk-body"
-                    data-qa="{{ sentenceNo }}ChangeDate">{{ sentence.changeDate | formatDate }}</span>
+              <span data-qa="{{ sentenceNo }}ChangeDate">{{ sentence.changeDate | formatDate }}</span>
               <br>
-              <span class="govuk-body" data-qa="{{ sentenceNo }}SentenceLength">{{ sentence.lengthDays }} days</span>
+              <span data-qa="{{ sentenceNo }}SentenceLength">{{ sentence.lengthDays }} days</span>
             {% endset %}
             {{ summaryListRow("Effective sentence", effectiveSentenceHtml, sentenceNo + "EffectiveSentence", { html: true }) }}
             {{ summaryListRow("SED", sentence.SED | formatDate, sentenceNo + "SED", { hideIfEmpty: "true" }) }}
