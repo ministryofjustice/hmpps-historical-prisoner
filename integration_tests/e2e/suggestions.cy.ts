@@ -46,7 +46,7 @@ context('Suggestions', () => {
     searchPage.suggestions().click()
 
     const suggestionsPage = Page.verifyOnPage(SuggestionsPage)
-    suggestionsPage.surnameWildcard().should('contain.text', 'Smith%')
+    suggestionsPage.surnameWildcard().should('contain.text', 'Smith*')
 
     // TODO - click link and check search changed
   })
@@ -59,7 +59,7 @@ context('Suggestions', () => {
     searchPage.suggestions().click()
 
     const suggestionsPage = Page.verifyOnPage(SuggestionsPage)
-    suggestionsPage.surnameShorterWildcard().should('contain.text', 'Smi%')
+    suggestionsPage.surnameShorterWildcard().should('contain.text', 'Smi*')
 
     // TODO - click link and check search changed
   })
