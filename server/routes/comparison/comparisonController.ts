@@ -45,8 +45,6 @@ export default class ComparisonController {
       // already max items in shortlist - no more can be added
       if (req.session.shortlist.length < 3) {
         req.session.shortlist.push(req.body.prisoner)
-      } else {
-        // TODO: Need to add in MoJ basnner too for error
       }
     } else {
       req.session.shortlist = req.session.shortlist.filter(item => item !== req.body.prisoner)
@@ -55,7 +53,6 @@ export default class ComparisonController {
       }
     }
 
-    // TODO: Need to add in MoJ banner too for success
     return res.redirect('/search/results')
   }
 }

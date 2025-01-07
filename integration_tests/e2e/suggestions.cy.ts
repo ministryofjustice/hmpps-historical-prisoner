@@ -37,4 +37,30 @@ context('Suggestions', () => {
     const backToSearchPage = Page.verifyOnPage(SearchPage)
     backToSearchPage.firstName().should('have.value', '')
   })
+
+  it('Will suggest adding wildcard to surname', () => {
+    cy.task('stubPrisonerSearchByName')
+    const searchPage = Page.verifyOnPage(SearchPage)
+    searchPage.lastName().type('Smith')
+    searchPage.searchButton().click()
+    searchPage.suggestions().click()
+
+    const suggestionsPage = Page.verifyOnPage(SuggestionsPage)
+    suggestionsPage.surnameWildcard().should('contain.text', 'Smith%')
+
+    // TODO - click link and check search changed
+  })
+
+  it('Will suggest adding shorter wildcard to surname', () => {
+    cy.task('stubPrisonerSearchByName')
+    const searchPage = Page.verifyOnPage(SearchPage)
+    searchPage.lastName().type('Smith')
+    searchPage.searchButton().click()
+    searchPage.suggestions().click()
+
+    const suggestionsPage = Page.verifyOnPage(SuggestionsPage)
+    suggestionsPage.surnameShorterWildcard().should('contain.text', 'Smi%')
+
+    // TODO - click link and check search changed
+  })
 })

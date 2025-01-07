@@ -4,6 +4,7 @@ import HistoricalPrisonerService from '../../services/historicalPrisonerService'
 import AuditService, { Page } from '../../services/auditService'
 import trimForm from '../../utils/trim'
 import searchValidator from './searchValidator'
+import getSearchSuggestions from '../../utils/suggestionHelpers'
 
 import {
   FindPrisonersByAddress,
@@ -102,8 +103,7 @@ export default class SearchController {
   }
 
   getSuggestions(req: Request, res: Response) {
-    // TODO
-    return res.render('pages/suggestion')
+    return res.render('pages/suggestion', { suggestions: getSearchSuggestions(req.session.prisonerSearchForm) })
   }
 
   getSessionFilterString(req: Request): string {
