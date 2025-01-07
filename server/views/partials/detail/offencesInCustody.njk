@@ -11,16 +11,14 @@
           {{ summaryListRow("Prison", offence.establishment | title | acronymsToUpperCase, offenceNo + "Prison", { hideIfEmpty: "true" }) }}
           {{ summaryListRow("Outcome", offence.outcome | capitalize, offenceNo + "Outcome", { hideIfEmpty: "true" }) }}
           {% set offenceHtml %}
-            <span class="govuk-body"
-                  data-qa="{{ offenceNo }}Charge">{{ offence.charge | capitalize | acronymsToUpperCase }}</span>
+            <span data-qa="{{ offenceNo }}Charge">{{ offence.charge | capitalize | acronymsToUpperCase }}</span>
             {% if offence.punishments %}
-              <ul class="govuk-body">
+              <ul>
                 {% for punishment in offence.punishments %}
                   <li>
                     {% set punishmentNo = offenceNo + "Punishment" + loop.index0 %}
-                    <span class="govuk-body" data-qa="{{ punishmentNo }}Punishment">{{ punishment.punishment | capitalize }}</span>
-                    <span class="govuk-body"
-                          data-qa="{{ punishmentNo }}Duration">({{ punishment.duration }} days)</span>
+                    <span data-qa="{{ punishmentNo }}Punishment">{{ punishment.punishment | capitalize }}</span>
+                    <span data-qa="{{ punishmentNo }}Duration">({{ punishment.duration }} days)</span>
                   </li>
                 {% endfor %}
               </ul>

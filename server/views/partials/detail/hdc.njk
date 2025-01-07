@@ -19,8 +19,8 @@
           <div class="section-divider{{ "-bottom" if loop.last else "" }}">
             {% set infoNo = "info" + loop.index0 %}
             {% set stageHtml %}
-              <span class="govuk-body" data-qa="{{ infoNo }}Status">{{ info.status | capitalize | acronymsToUpperCase }}</span>,
-              <span class="govuk-body" data-qa="{{ infoNo }}Date">{{ info.date | formatDate }}</span>
+              <span data-qa="{{ infoNo }}Status">{{ info.status | capitalize | acronymsToUpperCase }}</span>,
+              <span data-qa="{{ infoNo }}Date">{{ info.date | formatDate }}</span>
             {% endset %}
             {{ summaryListRow(info.stage | capitalize | acronymsToUpperCase, stageHtml, infoNo + "Stage", { html: true }) }}
             {{ summaryListRow("Reasons", info.reasons | capitalize | acronymsToUpperCase, infoNo + "Reasons", { hideIfEmpty: "true" }) }}
