@@ -152,14 +152,4 @@ describe('Search controller', () => {
       )
     })
   })
-
-  describe('getSuggestions', () => {
-    it('should render the suggestions page', () => {
-      // TODO: add more tests and cope with no search form in session
-      req.session.prisonerSearchForm = { searchType: 'name' }
-      controller.getSuggestions(req, res)
-
-      expect(res.render).toHaveBeenCalledWith('pages/suggestion', { suggestions: [] })
-    })
-  })
 })

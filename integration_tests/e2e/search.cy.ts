@@ -81,14 +81,37 @@ context('Search', () => {
   })
 
   describe('Will show/hide the suggestion link', () => {
-    it('Will will show the suggestion link if searching by name', () => {
+    it('Will show the suggestion link if searching by first name', () => {
       cy.task('stubPrisonerSearchByName')
       const searchPage = Page.verifyOnPage(SearchPage)
       searchPage.firstName().type('John')
       searchPage.doSearch()
       searchPage.suggestions().should('exist')
     })
-    it('Will will not show the suggestion link if searching by id', () => {
+    it('Will show the suggestion link if searching by last name', () => {
+      cy.task('stubPrisonerSearchByName')
+      const searchPage = Page.verifyOnPage(SearchPage)
+      searchPage.lastName().type('Smith')
+      searchPage.doSearch()
+      searchPage.suggestions().should('exist')
+    })
+    it('Will show the suggestion link if searching by date of birth', () => {
+      cy.task('stubPrisonerSearchByName')
+      const searchPage = Page.verifyOnPage(SearchPage)
+      searchPage.dobDay().type('25')
+      searchPage.dobMonth().type('12')
+      searchPage.dobYear().type('2000')
+      searchPage.doSearch()
+      searchPage.suggestions().should('exist')
+    })
+    it('Will not show the suggestion link if searching by name with age range', () => {
+      cy.task('stubPrisonerSearchByName')
+      const searchPage = Page.verifyOnPage(SearchPage)
+      searchPage.age().type('19-25')
+      searchPage.doSearch()
+      searchPage.suggestions().should('not.exist')
+    })
+    it('Will not show the suggestion link if searching by id', () => {
       cy.task('stubPrisonerSearchByIdentifiers')
       const searchPage = Page.verifyOnPage(SearchPage)
       searchPage.searchSelectRadioButton('Unique identifier').click()
@@ -96,7 +119,7 @@ context('Search', () => {
       searchPage.doSearch()
       searchPage.suggestions().should('not.exist')
     })
-    it('Will will not show the suggestion link if searching by address', () => {
+    it('Will not show the suggestion link if searching by address', () => {
       cy.task('stubPrisonerSearchByAddress')
       const searchPage = Page.verifyOnPage(SearchPage)
       searchPage.searchSelectRadioButton('Other').click()
