@@ -79,6 +79,32 @@ context('Search', () => {
     searchPage.firstName().should('be.empty')
     searchPage.lastName().should('be.empty')
   })
+
+  describe('Will show/hide the suggestion link', () => {
+    it('Will will show the suggestion link if searching by name', () => {
+      cy.task('stubPrisonerSearchByName')
+      const searchPage = Page.verifyOnPage(SearchPage)
+      searchPage.firstName().type('John')
+      searchPage.doSearch()
+      searchPage.suggestions().should('exist')
+    })
+    it('Will will not show the suggestion link if searching by id', () => {
+      cy.task('stubPrisonerSearchByIdentifiers')
+      const searchPage = Page.verifyOnPage(SearchPage)
+      searchPage.searchSelectRadioButton('Unique identifier').click()
+      searchPage.prisonNumber().type('A1234BC')
+      searchPage.doSearch()
+      searchPage.suggestions().should('not.exist')
+    })
+    it('Will will not show the suggestion link if searching by address', () => {
+      cy.task('stubPrisonerSearchByAddress')
+      const searchPage = Page.verifyOnPage(SearchPage)
+      searchPage.searchSelectRadioButton('Other').click()
+      searchPage.address().type('Hill')
+      searchPage.doSearch()
+      searchPage.suggestions().should('not.exist')
+    })
+  })
 })
 
 context('FormValidation', () => {
@@ -130,7 +156,7 @@ context('FormValidation', () => {
     searchPage.errorSummaryList().should('exist')
     searchPage
       .errorSummaryList()
-      .should('contain.text', 'Surname must not contain space, numbers or special characters')
+      .should('contain.text', 'Last name must not contain space, numbers or special characters')
   })
 
   it('Will show an error if attempt to submit the dob with missing day', () => {

@@ -41,9 +41,11 @@
                   {% if searchResults.length %}
                     {% include "../partials/searchResults.njk" %}
                   {% endif %}
-                  <p class="govuk-body" data-qa="no-results">
-                    Not found what you're looking for? <a data-qa="suggestions" href="/search/suggestions" class="govuk-link">Try these alternatives</a>
-                  </p>
+                  {% if form.searchType == "name" %}
+                    <p class="govuk-body" data-qa="no-results">
+                      Not found what you're looking for? <a data-qa="suggestions" href="/search/suggestions" class="govuk-link">Try these alternatives</a>
+                    </p>
+                  {% endif %}
                 {% else %}
                   <p class="no-prisoners">
                     Can't see prisoners? Enter search details to find prisoners.

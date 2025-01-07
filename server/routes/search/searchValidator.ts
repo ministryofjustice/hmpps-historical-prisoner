@@ -20,7 +20,7 @@ function validateNameData(form: PrisonerSearchForm, errors: HmppsError[]) {
   }
 
   if (!isAlphabeticOrWildcard(form.lastName)) {
-    errors.push({ href: '#lastName', text: 'Surname must not contain space, numbers or special characters' })
+    errors.push({ href: '#lastName', text: 'Last name must not contain space, numbers or special characters' })
     return
   }
   const dobError = dateOfBirthValidator(form.dobDay, form.dobMonth, form.dobYear)
