@@ -16,4 +16,10 @@ export default class Suggestions extends Page {
   surnameWildcard = (): PageElement => cy.get('[data-qa="surname-wildcard"]')
 
   surnameShorterWildcard = (): PageElement => cy.get('[data-qa="surname-shorterwildcard"]')
+
+  swap = (): PageElement => cy.get('[data-qa="swap"]')
+
+  dob = (): PageElement => cy.get('[data-qa="dob"]')
+
+  age = (): PageElement => cy.get('[data-qa="age"]')
 }

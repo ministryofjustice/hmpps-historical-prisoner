@@ -39,7 +39,7 @@
               <span>{{ suggestion.val }}</span>
               <p class="govuk-body">
                 Reason: An exact first name search for names could miss longer variations e.g. searching for Alex will
-                miss Alexander.  Using a wildcard instead of an initial will also then greatly reduce the possible
+                miss Alexander. Using a wildcard instead of an initial will also then greatly reduce the possible
                 matches.
               </p>
             </div>
@@ -68,32 +68,47 @@
               </p>
             </div>
           {% endif %}
+          {% if suggestion.type == 'swap' %}
+            <div class="govuk-body-l" data-qa="swap">
+              <a class="govuk-link" href="/suggestion?{{ suggestion.query }}">
+                Swap last name and first name
+              </a>:
+              <span>{{ suggestion.val }}</span>
+              <p class="govuk-body">
+                Reason: Where a prisoner has a first name and last name which could be interchangeable - e.g.
+                Lewis George/George Lewis - these may have been recorded incorrectly
+              </p>
+            </div>
+          {% endif %}
+          {% if suggestion.type == 'convertToAgeRange' %}
+            <div class="govuk-body-l" data-qa="dob">
+              <a class="govuk-link" href="/suggestion?{{ suggestion.query }}">
+                Change the date of birth to an age range
+              </a>:
+              <span>{{ suggestion.val }}</span>
+              <p class="govuk-body">
+                Reason: A common way to create an alias is to change the date of birth by 1 day or 1 year.
+                If this is not a known recorded alias, any records with a slightly different date of birth will not be
+                displayed
+              </p>
+            </div>
+          {% endif %}
+          {% if suggestion.type == 'widenAgeRange' %}
+            <div class="govuk-body-l" data-qa="age">
+              <a class="govuk-link" href="/suggestion?{{ suggestion.query }}">
+                Change the age to an age range
+              </a>:
+              <span>{{ suggestion.val }}</span>
+              <p class="govuk-body">
+                Reason: A common way to create an alias is to change the date of birth by 1 day or 1 year.
+                If this is not a known recorded alias, any records with a slightly different date of birth will not be
+                displayed
+              </p>
+            </div>
+          {% endif %}
         {% endfor %}
-        <div class="govuk-body-l">
-          Swap last name and first name: TODO ADD IN
-          <p class="govuk-body">
-            Reason: Where a prisoner has a first name and last name which could be interchangeable - e.g.
-            Lewis George/George Lewis - these may have been recorded incorrectly
-          </p>
-        </div>
-        <div class="govuk-body-l">
-          Change the date of birth to an age range: TODO ADD IN
-          <p class="govuk-body">
-            Reason: A common way to create an alias is to change the date of birth by 1 day or 1 year.
-            If this is not a known recorded alias, any records with a slightly different date of birth will not be
-            displayed
-          </p>
-        </div>
-        <div class="govuk-body-l">
-          Change the age to an age range: TODO ADD IN
-          <p class="govuk-body">
-            Reason: A common way to create an alias is to change the date of birth by 1 day or 1 year.
-            If this is not a known recorded alias, any records with a slightly different date of birth will not be
-            displayed
-          </p>
-        </div>
       </div>
-      <div>
+      <div class="govuk-grid-column-two-thirds">
         <a data-qa="clear-search" href="/search" class="govuk-link">New search</a>
       </div>
     </div>
