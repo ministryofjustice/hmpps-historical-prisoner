@@ -19,12 +19,37 @@
 
       <div class="govuk-grid-column-two-thirds">
         {% for suggestion in suggestions %}
+          {% if suggestion.type == 'useInitial' %}
+            <div class="govuk-body-l" data-qa="use-initial">
+              <a class="govuk-link" href="/suggestion?{{ suggestion.query }}">
+                Search using an initial only in first name
+              </a>:
+              <span>{{ suggestion.val }}</span>
+              <p class="govuk-body">
+                Reason: An exact first name search for names which can be shortened could miss records e.g.
+                recorded first names for Evelyn have included Eve, Eva, Evalyn, Evaline
+              </p>
+            </div>
+          {% endif %}
+          {% if suggestion.type == 'addForenameWildcard' %}
+            <div class="govuk-body-l" data-qa="forename-wildcard">
+              <a class="govuk-link" href="/suggestion?{{ suggestion.query }}">
+                Add a wildcard to the first name
+              </a>:
+              <span>{{ suggestion.val }}</span>
+              <p class="govuk-body">
+                Reason: An exact first name search for names could miss longer variations e.g. searching for Alex will
+                miss Alexander.  Using a wildcard instead of an initial will also then greatly reduce the possible
+                matches.
+              </p>
+            </div>
+          {% endif %}
           {% if suggestion.type == 'addSurnameWildcard' %}
-            <div class="govuk-body-l">
+            <div class="govuk-body-l" data-qa="surname-wildcard">
               <a class="govuk-link" href="/suggestion?{{ suggestion.query }}">
                 Add a wildcard to the last name
               </a>:
-              <span data-qa="surname-wildcard">{{ suggestion.val }}</span>
+              <span>{{ suggestion.val }}</span>
               <p class="govuk-body">
                 Reason: Some establishments when using LIDS added more information after a last name - e.g. alerts.
                 An exact last name match may not pick up these records
@@ -32,11 +57,11 @@
             </div>
           {% endif %}
           {% if suggestion.type == 'addShorterWildcard' %}
-            <div class="govuk-body-l">
+            <div class="govuk-body-l" data-qa="surname-shorterwildcard">
               <a class="govuk-link" href="/suggestion?{{ suggestion.query }}">
                 Shorten the last name by 2 characters and add a wildcard
               </a>:
-              <span data-qa="surname-shorterwildcard">{{ suggestion.val }}</span>
+              <span>{{ suggestion.val }}</span>
               <p class="govuk-body">
                 Reason: An exact last name search for example for STEELE will miss and records where the last name has
                 been incorrectly recorded as STEEL
@@ -44,20 +69,6 @@
             </div>
           {% endif %}
         {% endfor %}
-        <div class="govuk-body-l">
-          Search using an initial only in first name:: TODO ADD IN
-          <p class="govuk-body">
-            Reason: An exact first name search for names which can be shortened could miss records e.g.
-            recorded first names for Evelyn have included Eve, Eva, Evalyn, Evaline
-          </p>
-        </div>
-        <div class="govuk-body-l">
-          Shorten the first name by 2 characters and add a wildcard: TODO ADD IN
-          <p class="govuk-body">
-            Reason: An exact first name search for example for JOHN will miss and records where the first name has been
-            incorrectly recorded as JON
-          </p>
-        </div>
         <div class="govuk-body-l">
           Swap last name and first name: TODO ADD IN
           <p class="govuk-body">
