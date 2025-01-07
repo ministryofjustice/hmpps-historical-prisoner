@@ -9,12 +9,8 @@ export default class SuggestionsController {
   }
 
   applySuggestions(req: Request, res: Response) {
-    if (req.query.firstName) {
-      req.session.prisonerSearchForm.firstName = req.query.firstName as string
-    }
-    if (req.query.lastName) {
-      req.session.prisonerSearchForm.lastName = req.query.lastName as string
-    }
+    req.session.prisonerSearchForm.firstName = req.query.firstName as string
+    req.session.prisonerSearchForm.lastName = req.query.lastName as string
     if (req.query.age) {
       req.session.prisonerSearchForm.age = req.query.age as string
       req.session.prisonerSearchForm.dobDay = null

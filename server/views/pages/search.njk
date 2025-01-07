@@ -41,7 +41,7 @@
                   {% if searchResults.length %}
                     {% include "../partials/searchResults.njk" %}
                   {% endif %}
-                  {% if form.searchType == "name" %}
+                  {% if suggestions.length %}
                     <p class="govuk-body" data-qa="no-results">
                       Not found what you're looking for? <a data-qa="suggestions" href="/suggestions" class="govuk-link">Try these alternatives</a>
                     </p>
