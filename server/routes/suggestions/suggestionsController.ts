@@ -9,13 +9,17 @@ export default class SuggestionsController {
   }
 
   applySuggestions(req: Request, res: Response) {
-    req.session.prisonerSearchForm.firstName = req.query.firstName as string
-    req.session.prisonerSearchForm.lastName = req.query.lastName as string
-    if (req.query.age) {
+    if (req.query.firstName !== undefined) {
+      req.session.prisonerSearchForm.firstName = req.query.firstName as string
+    }
+    if (req.query.lastName !== undefined) {
+      req.session.prisonerSearchForm.lastName = req.query.lastName as string
+    }
+    if (req.query.age !== undefined) {
       req.session.prisonerSearchForm.age = req.query.age as string
-      req.session.prisonerSearchForm.dobDay = null
-      req.session.prisonerSearchForm.dobMonth = null
-      req.session.prisonerSearchForm.dobYear = null
+      req.session.prisonerSearchForm.dobDay = undefined
+      req.session.prisonerSearchForm.dobMonth = undefined
+      req.session.prisonerSearchForm.dobYear = undefined
     }
     return res.redirect('/search/results')
   }
