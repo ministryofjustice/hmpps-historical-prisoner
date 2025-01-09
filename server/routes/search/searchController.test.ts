@@ -161,7 +161,7 @@ describe('Search controller', () => {
     it('should audit details viewed', async () => {
       req.body = { searchType: 'name', lastName: 'WILSON' }
       req.session.searchParams = {}
-      req.session.prisonerSearchForm = { searchType: 'name' }
+      req.session.prisonerSearchForm = { searchType: 'name', firstName: 'GOLDIE', lastName: 'WILSON' }
       req.query = { filters: 'female' }
       req.id = 'COR_ID'
       historicalPrisonerService.findPrisonersByName.mockResolvedValue(results)
@@ -169,7 +169,8 @@ describe('Search controller', () => {
 
       expect(auditService.logPageView).toHaveBeenCalledWith('SEARCH_RESULTS', {
         who: 'user',
-        subjectId: 'name',
+        subjectId:
+          '{"prisonerSearchForm":{"searchType":"name","firstName":"GOLDIE","lastName":"WILSON"},"filters":["female"]}',
         correlationId: 'COR_ID',
       })
     })
