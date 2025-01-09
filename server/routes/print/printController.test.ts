@@ -7,7 +7,8 @@ import { PrisonerDetailDto } from '../../@types/historical-prisoner/historicalPr
 
 jest.mock('../../services/historicalPrisonerService')
 const historicalPrisonerService = new HistoricalPrisonerService() as jest.Mocked<HistoricalPrisonerService>
-const controller = new PrintController(historicalPrisonerService, auditServiceMock())
+const auditService = auditServiceMock()
+const controller = new PrintController(historicalPrisonerService, auditService)
 
 describe('Print controller', () => {
   let req: Request
@@ -118,6 +119,7 @@ describe('Print controller', () => {
         expect(res.status).toHaveBeenCalledWith(400)
       })
     })
+
     describe('success', () => {
       it('should redirect to detail page for one section', async () => {
         req.params = { prisonNo: 'AB12345' }
@@ -200,6 +202,27 @@ describe('Print controller', () => {
 
       await controller.renderPdf(req, res)
 
+      expect(res.renderPdf).toHaveBeenCalledWith(
+        'pages/pdf',
+        'pages/pdfHeader',
+        'pages/pdfFooter',
+        { ...detail, sections: { summary: true, sentenceSummary: true } },
+        { filename: 'print-AB12345.pdf' },
+      )
+    })
+    it('should audit details viewed', async () => {
+      historicalPrisonerService.getPrisonerDetail.mockResolvedValue(detail)
+      req.params = { prisonNo: 'AB12345' }
+      req.query = { section: ['summary', 'sentenceSummary'] }
+      req.id = 'COR_ID'
+
+      await controller.renderPdf(req, res)
+
+      expect(auditService.logPageView).toHaveBeenCalledWith('PRINT', {
+        who: 'user',
+        subjectId: 'AB12345',
+        correlationId: 'COR_ID',
+      })
       expect(res.renderPdf).toHaveBeenCalledWith(
         'pages/pdf',
         'pages/pdfHeader',
