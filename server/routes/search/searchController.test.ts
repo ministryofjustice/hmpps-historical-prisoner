@@ -6,7 +6,8 @@ import SearchController from './searchController'
 
 jest.mock('../../services/historicalPrisonerService')
 const historicalPrisonerService = new HistoricalPrisonerService() as jest.Mocked<HistoricalPrisonerService>
-const controller = new SearchController(historicalPrisonerService, auditServiceMock())
+const auditService = auditServiceMock()
+const controller = new SearchController(historicalPrisonerService, auditService)
 
 describe('Search controller', () => {
   let req: Request
@@ -68,6 +69,12 @@ describe('Search controller', () => {
 
       expect(historicalPrisonerService.findPrisonersByName).not.toHaveBeenCalled()
       expect(res.render).toHaveBeenCalledWith('pages/search', { form: { searchType: 'name' } })
+    })
+    it('should not audit search', async () => {
+      req.body = { searchType: 'name', lastName: 'WILSON' }
+      controller.postSearch(req, res)
+
+      expect(auditService.logPageView).not.toHaveBeenCalled()
     })
   })
 
@@ -150,6 +157,21 @@ describe('Search controller', () => {
           paginationParams: { items: [], results: { count: 2, from: 1, to: 2, text: 'prisoners' } },
         }),
       )
+    })
+    it('should audit details viewed', async () => {
+      req.body = { searchType: 'name', lastName: 'WILSON' }
+      req.session.searchParams = {}
+      req.session.prisonerSearchForm = { searchType: 'name' }
+      req.query = { filters: 'female' }
+      req.id = 'COR_ID'
+      historicalPrisonerService.findPrisonersByName.mockResolvedValue(results)
+      await controller.getSearch(req, res)
+
+      expect(auditService.logPageView).toHaveBeenCalledWith('SEARCH_RESULTS', {
+        who: 'user',
+        subjectId: 'name',
+        correlationId: 'COR_ID',
+      })
     })
   })
 })

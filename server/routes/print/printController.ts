@@ -1,6 +1,6 @@
 import { Request, Response } from 'express'
 import HistoricalPrisonerService from '../../services/historicalPrisonerService'
-import AuditService from '../../services/auditService'
+import AuditService, { Page } from '../../services/auditService'
 import HmppsError from '../../interfaces/HmppsError'
 import AbstractDetailController from '../detail/abstractDetailController'
 
@@ -57,6 +57,11 @@ export default class PrintController extends AbstractDetailController {
 
   async renderPdf(req: Request, res: Response): Promise<void> {
     const prisonerDetail = await this.getPrisonerDetail(req)
+    await this.auditService.logPageView(Page.PRINT, {
+      who: res.locals.user.username,
+      subjectId: prisonerDetail.prisonNumber,
+      correlationId: req.id,
+    })
     const sections = this.getSections(req).reduce((acc: Record<string, boolean>, key: string) => {
       acc[key] = true
       return acc
