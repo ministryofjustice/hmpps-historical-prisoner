@@ -169,8 +169,7 @@ describe('Search controller', () => {
 
       expect(auditService.logPageView).toHaveBeenCalledWith('SEARCH_RESULTS', {
         who: 'user',
-        subjectId:
-          '{"prisonerSearchForm":{"searchType":"name","firstName":"GOLDIE","lastName":"WILSON"},"filters":["female"]}',
+        subjectId: 'BF123455,BF123455',
         correlationId: 'COR_ID',
       })
     })
