@@ -41,7 +41,8 @@ export default class SearchController {
     const pagedResults: PagedModelPrisonerSearchDto = await this.doSearch(req, res)
     await this.auditService.logPageView(Page.SEARCH_RESULTS, {
       who: res.locals.user.username,
-      subjectId: pagedResults.content.map(prisoner => prisoner.prisonNumber).join(','),
+      subjectId: `Search by ${req.session.prisonerSearchForm.searchType}`,
+      details: { prisonNumbers: pagedResults.content.map(prisoner => prisoner.prisonNumber) },
       correlationId: req.id,
     })
     const paginationParams = this.getPaginationParams(req, pagedResults.page, this.getSessionFilterString(req))
