@@ -4,7 +4,7 @@ import {
   DistributedTracingModes,
   getCorrelationContext,
   setup,
-  TelemetryClient,
+  type TelemetryClient,
 } from 'applicationinsights'
 import { EnvelopeTelemetry } from 'applicationinsights/out/Declarations/Contracts'
 import { RequestHandler } from 'express'

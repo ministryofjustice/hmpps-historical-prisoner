@@ -40,6 +40,7 @@ export default function nunjucksSetup(app: express.Express): void {
       express: app,
     },
   )
+
   njkEnv.addFilter('buildErrorSummaryList', buildErrorSummaryList)
   njkEnv.addFilter('findError', findError)
   njkEnv.addFilter('formatDate', formatDate)
