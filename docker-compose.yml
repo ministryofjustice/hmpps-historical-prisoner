@@ -41,7 +41,7 @@ services:
       - NO_HTTPS=true
 
   gotenberg:
-    image: gotenberg/gotenberg:8.14.1
+    image: gotenberg/gotenberg:8.17
     networks:
       - hmpps
     container_name: gotenberg
