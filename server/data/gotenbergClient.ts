@@ -13,6 +13,8 @@ export default class GotenbergClient {
       .set('Content-Type', 'multi-part/form-data')
       .field('marginTop', '1.5')
       .field('marginBottom', '0.5')
+      // needed to avoid blank PDFs - see https://gotenberg.dev/docs/troubleshooting#blank-pdfs
+      .field('skipNetworkIdleEvent', false)
       .buffer(true)
       .attach('files', Buffer.from(html), 'index.html')
       .attach('files2', Buffer.from(headerHtml), 'header.html')

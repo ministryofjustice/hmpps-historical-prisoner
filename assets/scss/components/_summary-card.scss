@@ -38,4 +38,8 @@
   .card-subheading {
     font-size: 21px;
   }
+
+  @media print {
+    page-break-inside: avoid;
+  }
 }
