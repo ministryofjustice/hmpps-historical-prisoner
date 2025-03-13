@@ -58,7 +58,10 @@ function addUserDataToRequests(envelope: EnvelopeTelemetry, contextObjects: Cont
 function parameterisePaths(envelope: EnvelopeTelemetry, contextObjects: ContextObject) {
   const operationNameOverride = contextObjects.correlationContext?.customProperties?.getProperty('operationName')
   if (operationNameOverride) {
-    envelope.tags['ai.operation.name'] = envelope.data.baseData.name = operationNameOverride // eslint-disable-line no-param-reassign,no-multi-assign
+    /*  eslint-disable no-param-reassign */
+    envelope.tags['ai.operation.name'] = operationNameOverride
+    envelope.data.baseData.name = operationNameOverride
+    /*  eslint-enable no-param-reassign */
   }
   return true
 }
@@ -79,7 +82,9 @@ export function appInsightsMiddleware(): RequestHandler {
     res.prependOnceListener('finish', () => {
       const context = getCorrelationContext()
       if (context && req.route) {
-        context.customProperties.setProperty('operationName', `${req.method} ${req.route?.path}`)
+        const path = req.route?.path
+        const pathToReport = Array.isArray(path) ? `"${path.join('" | "')}"` : path
+        context.customProperties.setProperty('operationName', `${req.method} ${pathToReport}`)
       }
     })
     next()
