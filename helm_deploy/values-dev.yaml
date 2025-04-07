@@ -4,6 +4,7 @@ generic-service:
 
   ingress:
     host: historical-prisoner-dev.prison.service.justice.gov.uk
+    className: modsec-non-prod
 
   env:
     INGRESS_URL: "https://historical-prisoner-dev.prison.service.justice.gov.uk"
