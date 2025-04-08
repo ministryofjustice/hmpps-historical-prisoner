@@ -13,7 +13,7 @@ export function pdfRenderer(client: GotenbergClient) {
       // have to go to the manifest to translate to the real path of the css file e.g. /assets/css/app.ESCUP4HF.css
       const assetMetadataPath = path.resolve(__dirname, '../../assets/manifest.json')
       const assetManifest: Record<string, string> = JSON.parse(fs.readFileSync(assetMetadataPath, 'utf8'))
-      const cssPath = '/assets/css/app.css'
+      const cssPath = '/assets/css/index.css'
       const realCssPath = assetManifest[cssPath] || cssPath
       // and then read the file. This saves gotenberg then having to fetch the css file from the node instance
       return fs.readFileSync(path.resolve(__dirname, `../../${realCssPath}`), 'utf8')
