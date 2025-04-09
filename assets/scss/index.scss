@@ -14,4 +14,4 @@ $govuk-page-width: $moj-page-width;
 @import './components/hmpps-back-to-top';
 @import './components/sidebar';
 @import './components/summary-card';
-@import './local';
+@import './overrides/local';

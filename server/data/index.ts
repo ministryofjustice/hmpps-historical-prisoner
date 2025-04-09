@@ -13,8 +13,6 @@ buildAppInsightsClient(applicationInfo)
 import config from '../config'
 import HmppsAuditClient from './hmppsAuditClient'
 
-type RestClientBuilder<T> = (token: string) => T
-
 export const dataAccess = () => ({
   applicationInfo,
   hmppsAuditClient: new HmppsAuditClient(config.sqs.audit),
@@ -22,4 +20,4 @@ export const dataAccess = () => ({
 
 export type DataAccess = ReturnType<typeof dataAccess>
 
-export { RestClientBuilder, HmppsAuditClient }
+export { HmppsAuditClient }
