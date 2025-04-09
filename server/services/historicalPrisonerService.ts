@@ -1,4 +1,3 @@
-import querystring from 'querystring'
 import {
   FindPrisonersByAddress,
   FindPrisonersByIdentifiers,
@@ -6,25 +5,17 @@ import {
   PagedModelPrisonerSearchDto,
   PrisonerDetailDto,
 } from '../@types/historical-prisoner/historicalPrisonerApiTypes'
-import RestClient from '../data/restClient'
-import config from '../config'
+import HistoricalPrisonerApiClient from '../data/historicalPrisonerApiClient'
 
 export default class HistoricalPrisonerService {
-  constructor() {}
-
-  private static restClient(token: string): RestClient {
-    return new RestClient('Historical Prisoner Api Client', config.apis.historicalPrisonerApi, token)
-  }
+  constructor(private readonly apiClient: HistoricalPrisonerApiClient) {}
 
   async findPrisonersByName(
     token: string,
     prisonersByNameForm: FindPrisonersByName,
     page: number = undefined,
   ): Promise<PagedModelPrisonerSearchDto> {
-    return HistoricalPrisonerService.restClient(token).get<PagedModelPrisonerSearchDto>({
-      path: '/search',
-      query: querystring.stringify({ ...prisonersByNameForm, page }),
-    })
+    return this.apiClient.findPrisonersByName(token, prisonersByNameForm, page)
   }
 
   async findPrisonersByIdentifiers(
@@ -32,10 +23,7 @@ export default class HistoricalPrisonerService {
     prisonersByIdentifiersForm: FindPrisonersByIdentifiers,
     page: number = undefined,
   ): Promise<PagedModelPrisonerSearchDto> {
-    return HistoricalPrisonerService.restClient(token).get<PagedModelPrisonerSearchDto>({
-      path: '/identifiers',
-      query: querystring.stringify({ ...prisonersByIdentifiersForm, page }),
-    })
+    return this.apiClient.findPrisonersByIdentifiers(token, prisonersByIdentifiersForm, page)
   }
 
   async findPrisonersByAddressTerms(
@@ -43,15 +31,10 @@ export default class HistoricalPrisonerService {
     prisonersByAddress: FindPrisonersByAddress,
     page: number = undefined,
   ): Promise<PagedModelPrisonerSearchDto> {
-    return HistoricalPrisonerService.restClient(token).get<PagedModelPrisonerSearchDto>({
-      path: '/address-lookup',
-      query: querystring.stringify({ ...prisonersByAddress, page }),
-    })
+    return this.apiClient.findPrisonersByAddressTerms(token, prisonersByAddress, page)
   }
 
   async getPrisonerDetail(token: string, prisonNumber: string): Promise<PrisonerDetailDto> {
-    return HistoricalPrisonerService.restClient(token).get<PrisonerDetailDto>({
-      path: `/detail/${prisonNumber}`,
-    })
+    return this.apiClient.getPrisonerDetail(token, prisonNumber)
   }
 }

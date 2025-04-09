@@ -5,7 +5,7 @@ import HistoricalPrisonerService from '../../services/historicalPrisonerService'
 import auditServiceMock from '../../testutils/auditServiceMock'
 
 jest.mock('../../services/historicalPrisonerService')
-const historicalPrisonerService = new HistoricalPrisonerService() as jest.Mocked<HistoricalPrisonerService>
+const historicalPrisonerService = new HistoricalPrisonerService(null) as jest.Mocked<HistoricalPrisonerService>
 const auditService = auditServiceMock()
 const controller = new DetailController(historicalPrisonerService, auditService)
 

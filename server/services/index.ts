@@ -3,15 +3,12 @@ import AuditService from './auditService'
 import HistoricalPrisonerService from './historicalPrisonerService'
 
 export const services = () => {
-  const { applicationInfo, hmppsAuditClient } = dataAccess()
-
-  const auditService = new AuditService(hmppsAuditClient)
-  const historicalPrisonerService = new HistoricalPrisonerService()
+  const { applicationInfo, hmppsAuditClient, historicalPrisonerApiClient } = dataAccess()
 
   return {
     applicationInfo,
-    auditService,
-    historicalPrisonerService,
+    auditService: new AuditService(hmppsAuditClient),
+    historicalPrisonerService: new HistoricalPrisonerService(historicalPrisonerApiClient),
   }
 }
 

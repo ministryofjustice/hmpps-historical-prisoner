@@ -12,10 +12,12 @@ buildAppInsightsClient(applicationInfo)
 
 import config from '../config'
 import HmppsAuditClient from './hmppsAuditClient'
+import HistoricalPrisonerApiClient from './historicalPrisonerApiClient'
 
 export const dataAccess = () => ({
   applicationInfo,
   hmppsAuditClient: new HmppsAuditClient(config.sqs.audit),
+  historicalPrisonerApiClient: new HistoricalPrisonerApiClient(),
 })
 
 export type DataAccess = ReturnType<typeof dataAccess>

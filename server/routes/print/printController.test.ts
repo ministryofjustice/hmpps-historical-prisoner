@@ -6,7 +6,7 @@ import auditServiceMock from '../../testutils/auditServiceMock'
 import { PrisonerDetailDto } from '../../@types/historical-prisoner/historicalPrisonerApiTypes'
 
 jest.mock('../../services/historicalPrisonerService')
-const historicalPrisonerService = new HistoricalPrisonerService() as jest.Mocked<HistoricalPrisonerService>
+const historicalPrisonerService = new HistoricalPrisonerService(null) as jest.Mocked<HistoricalPrisonerService>
 const auditService = auditServiceMock()
 const controller = new PrintController(historicalPrisonerService, auditService)
 
