@@ -19,7 +19,7 @@ export default class GotenbergClient {
       .attach('files', Buffer.from(html), 'index.html')
       .attach('files2', Buffer.from(headerHtml), 'header.html')
       .attach('files3', Buffer.from(footerHtml), 'footer.html')
-      .attach('files4', Buffer.from(css), 'app.css')
+      .attach('files4', Buffer.from(css), 'index.css')
       .responseType('blob')
 
     // Execute the POST to the Gotenberg container
