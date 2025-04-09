@@ -1,4 +1,6 @@
-import HistoricalPrisonerService from './historicalPrisonerService'
+import nock from 'nock'
+import HistoricalPrisonerApiClient from './historicalPrisonerApiClient'
+import config from '../config'
 import {
   FindPrisonersByName,
   FindPrisonersByIdentifiers,
@@ -6,17 +8,19 @@ import {
   PrisonerDetailDto,
   FindPrisonersByAddress,
 } from '../@types/historical-prisoner/historicalPrisonerApiTypes'
-import HistoricalPrisonerApiClient from '../data/historicalPrisonerApiClient'
 
-jest.mock('../data/historicalPrisonerApiClient')
-
-describe('HistoricalPrisonerService', () => {
+describe('HistoricalPrisonerApiClient', () => {
   const token = 'test-token'
-  const apiClient = new HistoricalPrisonerApiClient() as jest.Mocked<HistoricalPrisonerApiClient>
-  let service: HistoricalPrisonerService
+  let fakeApi: nock.Scope
+  let apiClient: HistoricalPrisonerApiClient
 
   beforeEach(() => {
-    service = new HistoricalPrisonerService(apiClient)
+    fakeApi = nock(config.apis.historicalPrisonerApi.url)
+    apiClient = new HistoricalPrisonerApiClient()
+  })
+
+  afterEach(() => {
+    nock.cleanAll()
   })
 
   describe('findPrisonersByName', () => {
@@ -24,9 +28,12 @@ describe('HistoricalPrisonerService', () => {
       const prisonersByNameForm: FindPrisonersByName = { forename: 'John', surname: 'Doe' }
       const expectedResponse: PagedModelPrisonerSearchDto = { content: [], page: { totalElements: 0 } }
 
-      apiClient.findPrisonersByName.mockResolvedValue(expectedResponse)
+      fakeApi
+        .get('/search?forename=John&surname=Doe&page=')
+        .matchHeader('authorization', `Bearer ${token}`)
+        .reply(200, expectedResponse)
 
-      const result = await service.findPrisonersByName(token, prisonersByNameForm)
+      const result = await apiClient.findPrisonersByName(token, prisonersByNameForm)
 
       expect(result).toEqual(expectedResponse)
     })
@@ -37,9 +44,12 @@ describe('HistoricalPrisonerService', () => {
       const prisonersByIdentifiersForm: FindPrisonersByIdentifiers = { prisonNumber: 'A1234BC' }
       const expectedResponse: PagedModelPrisonerSearchDto = { content: [], page: { totalElements: 0 } }
 
-      apiClient.findPrisonersByIdentifiers.mockResolvedValue(expectedResponse)
+      fakeApi
+        .get('/identifiers?prisonNumber=A1234BC&page=')
+        .matchHeader('authorization', `Bearer ${token}`)
+        .reply(200, expectedResponse)
 
-      const result = await service.findPrisonersByIdentifiers(token, prisonersByIdentifiersForm)
+      const result = await apiClient.findPrisonersByIdentifiers(token, prisonersByIdentifiersForm)
 
       expect(result).toEqual(expectedResponse)
     })
@@ -50,9 +60,12 @@ describe('HistoricalPrisonerService', () => {
       const prisonersByAddressForm: FindPrisonersByAddress = { addressTerms: '123 Main & St' }
       const expectedResponse: PagedModelPrisonerSearchDto = { content: [], page: { totalElements: 0 } }
 
-      apiClient.findPrisonersByAddressTerms.mockResolvedValue(expectedResponse)
+      fakeApi
+        .get('/address-lookup?addressTerms=123 Main %26 St&page=')
+        .matchHeader('authorization', `Bearer ${token}`)
+        .reply(200, expectedResponse)
 
-      const result = await service.findPrisonersByAddressTerms(token, prisonersByAddressForm)
+      const result = await apiClient.findPrisonersByAddressTerms(token, prisonersByAddressForm)
 
       expect(result).toEqual(expectedResponse)
     })
@@ -66,9 +79,9 @@ describe('HistoricalPrisonerService', () => {
         summary: { prisonNumber: 'A1234BC', firstName: 'John', lastName: 'Doe' },
       }
 
-      apiClient.getPrisonerDetail.mockResolvedValue(expectedResponse)
+      fakeApi.get('/detail/A1234BC').matchHeader('authorization', `Bearer ${token}`).reply(200, expectedResponse)
 
-      const result = await service.getPrisonerDetail(token, prisonNumber)
+      const result = await apiClient.getPrisonerDetail(token, prisonNumber)
 
       expect(result).toEqual(expectedResponse)
     })
